@@ -1,4 +1,4 @@
-package model;
+package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.LocalDateTime;
 

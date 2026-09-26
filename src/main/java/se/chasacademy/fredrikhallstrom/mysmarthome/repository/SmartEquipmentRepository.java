@@ -12,6 +12,6 @@ public class SmartEquipmentRepository {
     public SmartEquipmentRepository() {}
 
     public Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap() {
-        return null;
+        return smartEquipmentRepositoryMap;
     }
 }

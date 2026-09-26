@@ -1,23 +1,23 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
+
 import java.time.LocalDateTime;
 
-public class SmartEquipment {
+public abstract class SmartEquipment {
     private static int uniqueIdCounter = 1000;
-    private int id;
-    private String name;
-    private LocalDateTime installationTime;
-    private LocalDateTime lastActivationTime;
-    private LocalDateTime lastDeactivationTime;
-    private boolean isStateActive;
+    protected int id;
+    protected String name;
+    protected LocalDateTime installationTime;
+    protected LocalDateTime lastActivationTime;
+    protected LocalDateTime lastDeactivationTime;
+    protected boolean isStateActive = false;
 
-    private SmartEquipment(String name, LocalDateTime installationTime, LocalDateTime lastActivationTime, LocalDateTime lastDeactivationTime, boolean isStateActive) {
+    protected SmartEquipment(String name, LocalDateTime installationTime) {
         this.id = uniqueIdCounter;
         this.name = name;
         this.installationTime = installationTime;
-        this.lastActivationTime = lastActivationTime;
-        this.lastDeactivationTime = lastDeactivationTime;
-        this.isStateActive = isStateActive;
         uniqueIdCounter++;
     }
 
@@ -46,10 +46,18 @@ public class SmartEquipment {
     }
 
     public void setStateActive() {
-        isStateActive = true;
+        if (isStateActive) {
+            throw new CantActiveAlreadyActivatedEquipmentException();
+        }
+
+       isStateActive = true;
     }
 
     public void setStateInactive() {
+        if (!isStateActive) {
+            throw new CantDeactivateAlreadyDeactivatedEquipmentException();
+        }
+
         isStateActive = false;
     }
 

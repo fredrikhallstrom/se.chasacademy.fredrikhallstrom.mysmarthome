@@ -21,7 +21,7 @@ public class SmartEquipmentTest {
     static Lamp instancedSubClass;
     static Clock installationClock;
 
-    public void setUpForClockMockingWithInstance() {
+    public static void setUpForClockMockingWithInstance() {
         installationClock = mock(Clock.class);
 
         // Std clock is now.

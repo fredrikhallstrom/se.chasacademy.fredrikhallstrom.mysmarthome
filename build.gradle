@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group = 'se.chasacademy'
+group = 'se.chasacademy.fredrikhallstrom'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -12,6 +12,10 @@ repositories {
 
 configurations {
     mockitoAgent
+}
+
+application {
+    mainClass = 'se.chasacademy.fredrikhallstrom.mysmarthome.Main'
 }
 
 dependencies {
@@ -26,4 +30,25 @@ dependencies {
 test {
     useJUnitPlatform()
     jvmArgs "-javaagent:${configurations.mockitoAgent.asPath}"
+
+    outputs.upToDateWhen { false }
+}
+
+tasks.named('jar') {
+    dependsOn 'test'
+    manifest {
+        attributes'Main-class': 'main'
+    }
+
+    doFirst {
+        println("Tester Godkända, Bygger JAR\n")
+    }
+}
+
+tasks.named("run") {
+    dependsOn('test')
+    standardInput = System.in
+
+    doFirst {println("Tester Godkända, Startar...\n")}
+
 }

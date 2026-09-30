@@ -1,40 +1,28 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class SmartEquipmentTest {
     // Setup using instancable class because of abstract class test
-    // Also wrote setup for tests with use of mocked clock
-
     static Lamp instancedSubClass;
-    static Clock installationClock;
-
-    public static void setUpForClockMockingWithInstance() {
-        installationClock = mock(Clock.class);
-
-        // Std clock is now.
-        when(installationClock.instant()).thenReturn(Instant.now());
-        when(installationClock.getZone()).thenReturn(ZoneId.systemDefault());
-
-        LocalDateTime installationTime = LocalDateTime.now(installationClock);
-        instancedSubClass = new Lamp("fakeLamp", installationTime);
-    }
 
     public static void setUpForSubclassInstance() {
-        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now());
+        Clock clock = Clock.systemUTC();
+        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock));
+    }
 
+    public static void setUpForSubclassInstanceWithMockedClock() {
+        Clock clock = mock(Clock.class);
+        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock));
     }
 
     @Test
@@ -98,6 +86,21 @@ public class SmartEquipmentTest {
 
         // Assert
         assertThrows(CantDeactivateAlreadyDeactivatedEquipmentException.class, throwAct);
+
+    }
+
+    @Test
+    public void shouldIncreaseUniqueIdByOneWhenEquipmentCreatedTest() {
+        // Arrange
+        setUpForSubclassInstance();
+        int idBefore = instancedSubClass.getId();
+
+        // Act
+        Lamp lamp2 = new Lamp("fakeLamp2", LocalDateTime.now());
+        int idAfter = lamp2.getId();
+
+        // Assert
+        assertEquals(1, idAfter - idBefore);
 
     }
 }

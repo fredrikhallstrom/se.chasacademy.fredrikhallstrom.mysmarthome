@@ -12,6 +12,19 @@ public class SmartEquipmentRepository {
     public SmartEquipmentRepository() {}
 
     public Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap() {
-        return smartEquipmentRepositoryMap;
+        return Map.copyOf(smartEquipmentRepositoryMap);
     }
+
+    public void insertSmartEquipment(SmartEquipment smartEquipment, Integer assignedId) {
+        smartEquipmentRepositoryMap.put(smartEquipment, assignedId);
+    }
+
+    public void removeSmartEquipment(SmartEquipment smartEquipment) {
+        smartEquipmentRepositoryMap.remove(smartEquipment);
+    }
+
+    public void getSmartEquipment(SmartEquipment smartEquipment) {
+        smartEquipmentRepositoryMap.get(smartEquipment);
+    }
+
 }

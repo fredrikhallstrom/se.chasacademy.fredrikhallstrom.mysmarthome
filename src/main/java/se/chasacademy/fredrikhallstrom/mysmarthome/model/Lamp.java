@@ -2,20 +2,34 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.LocalDateTime;
 
-public class Lamp extends SmartEquipment {
-    private String lampName;
-    private LocalDateTime installationTime;
+public class Lamp extends SmartEquipment implements Lightable {
+    private String name;
+    private final LocalDateTime installationTime;
     private LocalDateTime lastActivationTime;
     private LocalDateTime lastDeactivationTime;
     private boolean isStateActive = false;
 
+
     public Lamp(
-            String lampName,
+            String name,
             LocalDateTime installationTime) {
 
-        this.lampName = lampName;
+        this.name = name;
         this.installationTime = installationTime;
 
-        super(lampName, installationTime);
+        super(name, installationTime);
     }
+
+    @Override
+    public void setStateActive() {
+        super.setStateActive();
+        lightOn();
+    }
+
+    @Override
+    public void setStateInactive() {
+        super.setStateInactive();
+        lightOff();
+    }
+
 }

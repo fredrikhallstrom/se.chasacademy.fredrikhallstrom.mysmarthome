@@ -2,20 +2,33 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.LocalDateTime;
 
-public class Radiator extends SmartEquipment{
-    private String radiatorName;
-    private LocalDateTime installationTime;
+public class Radiator extends SmartEquipment implements Heatable {
+    private String name;
+    private final LocalDateTime installationTime;
     private LocalDateTime lastActivationTime;
     private LocalDateTime lastDeactivationTime;
     private boolean isStateActive = false;
 
     public Radiator(
-            String radiatorName,
+            String name,
             LocalDateTime installationTime) {
 
-        this.radiatorName = radiatorName;
+        this.name = name;
         this.installationTime = installationTime;
 
-        super(radiatorName, installationTime);
+        super(name, installationTime);
     }
+
+    @Override
+    public void setStateActive() {
+        super.setStateActive();
+        heatOn();
+    }
+
+    @Override
+    public void setStateInactive() {
+        super.setStateInactive();
+        heatOff();
+    }
+
 }

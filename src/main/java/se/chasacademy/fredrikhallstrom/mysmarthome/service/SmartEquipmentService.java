@@ -13,6 +13,7 @@ public class SmartEquipmentService {
     }
 
     public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) {
+        smartEquipmentRepository.insertSmartEquipment(smartEquipment);
         return null;
     }
 

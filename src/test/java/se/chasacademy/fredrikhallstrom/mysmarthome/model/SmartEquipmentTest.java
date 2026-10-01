@@ -30,10 +30,11 @@ public class SmartEquipmentTest {
         // Arrange
         setUpForSubclassInstance();
 
-        // Act
         if (instancedSubClass.isStateActive()) {
             instancedSubClass.setStateInactive();
         }
+
+        // Act
         instancedSubClass.setStateActive();
 
         // Assert
@@ -41,15 +42,48 @@ public class SmartEquipmentTest {
     }
 
     @Test
-    public void shouldThrowCantActiveAlreadyActivatedEquipmentTest() {
+    public void shouldReturnStringFromMethodLightOnInLightableInterfaceTest() {
         // Arrange
         setUpForSubclassInstance();
 
+        if (instancedSubClass.isStateActive()) {
+            instancedSubClass.setStateInactive();
+        }
+
         // Act
+        String returnedString = instancedSubClass.setStateActive();
+
+        // Assert
+        assertEquals(instancedSubClass.lightOn(), returnedString);
+
+    }
+
+    @Test
+    public void shouldReturnStringFromMethodLightOffInLightableInterfaceTest() {
+        // Arrange
+        setUpForSubclassInstance();
+
         if (!instancedSubClass.isStateActive()) {
             instancedSubClass.setStateActive();
         }
 
+        // Act
+        String returnedString = instancedSubClass.setStateInactive();
+
+        // Assert
+        assertEquals(instancedSubClass.lightOff(), returnedString);
+
+    }
+    @Test
+    public void shouldThrowCantActiveAlreadyActivatedEquipmentTest() {
+        // Arrange
+        setUpForSubclassInstance();
+
+        if (!instancedSubClass.isStateActive()) {
+            instancedSubClass.setStateActive();
+        }
+
+        // Act
         Executable throwAct = () -> instancedSubClass.setStateActive();
 
         // Assert
@@ -61,11 +95,11 @@ public class SmartEquipmentTest {
         // Arrange
         setUpForSubclassInstance();
 
-        // Act
         if (!instancedSubClass.isStateActive()) {
             instancedSubClass.setStateActive();
         }
 
+        // Act
         instancedSubClass.setStateInactive();
 
         // Assert
@@ -77,11 +111,11 @@ public class SmartEquipmentTest {
         // Arrange
         setUpForSubclassInstance();
 
-        // Act
         if (instancedSubClass.isStateActive()) {
             instancedSubClass.setStateInactive();
         }
 
+        // Act
         Executable throwAct = () -> instancedSubClass.setStateInactive();
 
         // Assert
@@ -89,18 +123,4 @@ public class SmartEquipmentTest {
 
     }
 
-    @Test
-    public void shouldIncreaseUniqueIdByOneWhenEquipmentCreatedTest() {
-        // Arrange
-        setUpForSubclassInstance();
-        int idBefore = instancedSubClass.getId();
-
-        // Act
-        Lamp lamp2 = new Lamp("fakeLamp2", LocalDateTime.now());
-        int idAfter = lamp2.getId();
-
-        // Assert
-        assertEquals(1, idAfter - idBefore);
-
-    }
 }

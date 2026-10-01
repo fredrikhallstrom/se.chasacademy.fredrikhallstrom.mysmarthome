@@ -2,27 +2,22 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
 import java.time.LocalDateTime;
 
 public abstract class SmartEquipment {
-    private static int uniqueIdCounter = 1000;
-    protected int id;
     protected String name;
     protected LocalDateTime installationTime;
     protected LocalDateTime lastActivationTime;
     protected LocalDateTime lastDeactivationTime;
     protected boolean isStateActive = false;
+    private SmartEquipmentRepository repository;
 
     protected SmartEquipment(String name, LocalDateTime installationTime) {
-        this.id = uniqueIdCounter;
         this.name = name;
         this.installationTime = installationTime;
-        uniqueIdCounter++;
-    }
 
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -45,20 +40,22 @@ public abstract class SmartEquipment {
         return isStateActive;
     }
 
-    public void setStateActive() {
+    public String setStateActive() {
         if (isStateActive) {
             throw new CantActiveAlreadyActivatedEquipmentException();
         }
 
-       isStateActive = true;
+        isStateActive = true;
+        return "";
     }
 
-    public void setStateInactive() {
+    public String setStateInactive() {
         if (!isStateActive) {
             throw new CantDeactivateAlreadyDeactivatedEquipmentException();
         }
 
         isStateActive = false;
+        return "";
     }
 
 }

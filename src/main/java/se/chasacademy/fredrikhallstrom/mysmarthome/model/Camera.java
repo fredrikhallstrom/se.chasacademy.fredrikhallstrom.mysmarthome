@@ -20,15 +20,15 @@ public class Camera extends SmartEquipment implements Recordable {
     }
 
     @Override
-    public void setStateActive() {
+    public String setStateActive() {
         super.setStateActive();
-        recordOn();
+        return recordOn();
     }
 
     @Override
-    public void setStateInactive() {
+    public String setStateInactive() {
         super.setStateInactive();
-        recordOff();
+        return recordOff();
     }
 
 }

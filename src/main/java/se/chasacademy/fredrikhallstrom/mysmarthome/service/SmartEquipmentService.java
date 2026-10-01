@@ -12,7 +12,7 @@ public class SmartEquipmentService {
         this.smartEquipmentRepository = smartEquipmentRepository;
     }
 
-    public SmartEquipment createSmartEquipment() {
+    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) {
         return null;
     }
 

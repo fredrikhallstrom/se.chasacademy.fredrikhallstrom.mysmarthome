@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -12,21 +13,13 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryRepositoryTest {
-    private static InMemoryRepository inMemoryRepository;
-
-    // Assures fresh RepositoryMap for tests
-    @BeforeEach
-    public void basicSetUpClass() {
-        inMemoryRepository = new InMemoryRepository();
-    }
-
-
     @Test
     public void shouldReturnRepositoryMap() {
         // Arrange
+        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
 
         // Act
-        Map<SmartEquipment, Integer> smartEquipmentMap = inMemoryRepository.getSmartEquipmentRepositoryMap();
+        Map<SmartEquipment, Integer> smartEquipmentMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
 
         // Assert
         assertTrue(smartEquipmentMap.isEmpty());
@@ -36,17 +29,20 @@ public class InMemoryRepositoryTest {
     @Test
     public void shouldReturnCorrectSmartEquipmentMap() {
         // Arrange
-        Lamp lamp = new Lamp("Kök", LocalDateTime.now());
-        int lampId = inMemoryRepository.getCurrentUniqueCounter();
+        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
 
-        inMemoryRepository.insertSmartEquipment(lamp);
+        Lamp lamp = new Lamp("Kök", LocalDateTime.now());
+        int lampId = smartEquipmentRepository.getCurrentUniqueCounter();
+
+        smartEquipmentRepository.insertSmartEquipment(lamp);
+
 
         // Act
         Map<SmartEquipment, Integer> smartEquipmentRepositoryTestMap = new HashMap<>();
         smartEquipmentRepositoryTestMap.put(lamp, lampId);
 
         // Assert
-        assertEquals(smartEquipmentRepositoryTestMap, inMemoryRepository.getSmartEquipmentRepositoryMap());
+        assertEquals(smartEquipmentRepositoryTestMap, smartEquipmentRepository.getSmartEquipmentRepositoryMap());
 
 
     }
@@ -54,12 +50,14 @@ public class InMemoryRepositoryTest {
     @Test
     public void shouldIncreaseUniqueIdByOneWhenEquipmentInsertedTest() {
         // Arrange
-        int idBefore = inMemoryRepository.getCurrentUniqueCounter();
+        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+
+        int idBefore = smartEquipmentRepository.getCurrentUniqueCounter();
         Lamp lamp = new Lamp("fakeLamp", LocalDateTime.now());
 
         // Act
-        inMemoryRepository.insertSmartEquipment(lamp);
-        int idAfter = inMemoryRepository.getCurrentUniqueCounter();
+        smartEquipmentRepository.insertSmartEquipment(lamp);
+        int idAfter = smartEquipmentRepository.getCurrentUniqueCounter();
 
         // Assert
         assertEquals(1, idAfter - idBefore);

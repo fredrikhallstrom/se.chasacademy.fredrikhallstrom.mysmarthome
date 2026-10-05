@@ -6,18 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface SmartEquipmentRepository {
-    Map<SmartEquipment, Integer> smartEquipmentRepositoryMap = new HashMap<>();
 
     Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap();
 
-    public int insertSmartEquipment(SmartEquipment smartEquipment);
+    int insertSmartEquipment(SmartEquipment smartEquipment);
 
-    public void removeSmartEquipment(SmartEquipment smartEquipment);
+    void removeSmartEquipment(SmartEquipment smartEquipment);
 
-    public int getSmartEquipmentId(SmartEquipment smartEquipment);
+    int getSmartEquipmentId(SmartEquipment smartEquipment);
 
-    public int getAndIncrementUniqueCounter();
+    int getAndIncrementUniqueCounter();
 
-    public int getCurrentUniqueCounter();
+    int getCurrentUniqueCounter();
 
 }

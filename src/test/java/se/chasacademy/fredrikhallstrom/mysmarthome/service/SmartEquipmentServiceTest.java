@@ -97,18 +97,12 @@ public class SmartEquipmentServiceTest {
         int fakeId = 1;
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-
-        Map<SmartEquipment, Integer> fakeSmartEquipmentRepoMap = new HashMap<>();
-        Lamp fakelamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
-
-        fakeSmartEquipmentRepoMap.put(fakelamp, fakeId);
-
         Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", LocalDateTime.now(clock));
 
 
         // Act
         Executable throwAct = () -> {
-          smartEquipmentService.removeSmartEquipment(nonExistentSmartEquipmentInRepo);
+            smartEquipmentService.removeSmartEquipment(nonExistentSmartEquipmentInRepo);
         };
 
         // Assert

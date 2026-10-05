@@ -71,6 +71,7 @@ public class SmartEquipmentServiceTest {
         fakeEquipmentRepoMap.put(fakeLamp, fakeLampId);
 
         when(smartEquipmentRepository.getCurrentUniqueCounter()).thenReturn(fakeLampId);
+        when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(Map.of(fakeLamp, fakeLampId));
 
         doAnswer(testCommand -> {
 

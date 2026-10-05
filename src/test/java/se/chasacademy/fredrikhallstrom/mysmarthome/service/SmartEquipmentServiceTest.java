@@ -3,13 +3,14 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 import org.junit.jupiter.api.Test;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotypes.InMemoryRepository;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class SmartEquipmentServiceTest {
@@ -51,6 +52,39 @@ public class SmartEquipmentServiceTest {
 
 
     }
+
+    @Test
+    public void shouldRemoveSmartEquipmentTest() {
+        // Arrange
+        InMemoryRepository inMemoryRepository = mock(InMemoryRepository.class);
+        Clock clock = Clock.systemUTC();
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(inMemoryRepository, clock);
+
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
+        Integer fakeLampId = 1;
+
+        Map<SmartEquipment, Integer> fakeEquipmentRepoMap = new HashMap<>();
+        fakeEquipmentRepoMap.put(fakeLamp, fakeLampId);
+
+        when(inMemoryRepository.getCurrentUniqueCounter()).thenReturn(fakeLampId);
+
+        doAnswer(testCommand -> {
+
+            SmartEquipment removedSmartEquipment = testCommand.getArgument(0);
+            fakeEquipmentRepoMap.remove(removedSmartEquipment);
+            return null;
+        }).when(inMemoryRepository).removeSmartEquipment(fakeLamp);
+
+        // Act
+        smartEquipmentService.removeSmartEquipment(fakeLamp);
+
+        // Assert
+        verify(inMemoryRepository).removeSmartEquipment(fakeLamp);
+        assertFalse(fakeEquipmentRepoMap.containsKey(fakeLamp));
+
+    }
+
 
 
 }

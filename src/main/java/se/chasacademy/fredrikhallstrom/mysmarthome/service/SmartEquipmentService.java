@@ -22,4 +22,8 @@ public class SmartEquipmentService {
         throw new CreationOfSmartEquipmentDidFailSomewhereException();
     }
 
+    public void removeSmartEquipment(SmartEquipment smartEquipmentToRemove) {
+        smartEquipmentRepository.removeSmartEquipment(smartEquipmentToRemove);
+    }
+
 }

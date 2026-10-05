@@ -7,6 +7,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepo
 import java.time.LocalDateTime;
 
 public abstract class SmartEquipment {
+    protected int id = -1;
     protected String name;
     protected LocalDateTime installationTime;
     protected LocalDateTime lastActivationTime;
@@ -22,6 +23,12 @@ public abstract class SmartEquipment {
 
     public String getName() {
         return name;
+    }
+
+    public void setId(int assignedId) {
+        if (id == -1) {
+            this.id = assignedId;
+        }
     }
 
     public LocalDateTime getInstallationTime() {
@@ -56,6 +63,10 @@ public abstract class SmartEquipment {
 
         isStateActive = false;
         return "";
+    }
+
+    public int getId() {
+        return id;
     }
 
 }

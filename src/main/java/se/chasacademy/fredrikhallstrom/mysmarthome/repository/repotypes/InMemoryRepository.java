@@ -28,8 +28,10 @@ public class InMemoryRepository implements SmartEquipmentRepository {
     }
 
     @Override
-    public void insertSmartEquipment(SmartEquipment smartEquipment) {
-        smartEquipmentRepositoryMap.put(smartEquipment, getAndIncrementUniqueCounter());
+    public int insertSmartEquipment(SmartEquipment smartEquipment) {
+        int assignedId = getAndIncrementUniqueCounter();
+        smartEquipmentRepositoryMap.put(smartEquipment, assignedId);
+        return assignedId;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class InMemoryRepository implements SmartEquipmentRepository {
     }
 
     @Override
-    public void getSmartEquipment(SmartEquipment smartEquipment) {
-
+    public int getSmartEquipmentId(SmartEquipment wantedSmartEquipmentId) {
+        return smartEquipmentRepositoryMap.get(wantedSmartEquipmentId);
     }
 }

@@ -1,10 +1,9 @@
-package se.chasacademy.fredrikhallstrom.mysmarthome.repository;
+package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotypes;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotypes.InMemoryRepository;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -43,7 +42,6 @@ public class InMemoryRepositoryTest {
         inMemoryRepository.insertSmartEquipment(lamp);
 
         // Act
-        inMemoryRepository.getSmartEquipment(lamp);
         Map<SmartEquipment, Integer> smartEquipmentRepositoryTestMap = new HashMap<>();
         smartEquipmentRepositoryTestMap.put(lamp, lampId);
 

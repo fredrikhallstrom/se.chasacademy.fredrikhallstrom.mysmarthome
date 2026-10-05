@@ -1,5 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
@@ -12,9 +13,13 @@ public class SmartEquipmentService {
         this.smartEquipmentRepository = smartEquipmentRepository;
     }
 
-    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) {
-        smartEquipmentRepository.insertSmartEquipment(smartEquipment);
-        return null;
+    public int addSmartEquipment(SmartEquipment smartEquipment) {
+        int assignedId = smartEquipmentRepository.insertSmartEquipment(smartEquipment);
+        smartEquipment.setId(assignedId);
+        if  (smartEquipment.getId() == assignedId) {
+            return smartEquipment.getId();
+        }
+        throw new CreationOfSmartEquipmentDidFailSomewhereException();
     }
 
 }

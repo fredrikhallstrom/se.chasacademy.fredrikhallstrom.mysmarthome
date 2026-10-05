@@ -1,7 +1,7 @@
-package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotypes;
+package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
@@ -25,6 +25,21 @@ public class InMemoryRepositoryTest {
         assertTrue(smartEquipmentMap.isEmpty());
 
     }
+
+    @Test
+    public void shouldReturnRepositoryMapInReadOnly() {
+        // Arrange
+        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        Map<SmartEquipment, Integer> smartEquipmentIntegerMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
+
+        // Act
+        Executable throwAct = smartEquipmentIntegerMap::clear;
+
+        // Assert
+        assertThrows(UnsupportedOperationException.class, throwAct);
+
+    }
+
 
     @Test
     public void shouldReturnCorrectSmartEquipmentMap() {

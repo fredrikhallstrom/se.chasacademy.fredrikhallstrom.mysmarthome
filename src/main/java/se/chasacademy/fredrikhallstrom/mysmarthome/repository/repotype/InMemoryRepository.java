@@ -1,16 +1,14 @@
-package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotypes;
+package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class InMemoryRepository implements SmartEquipmentRepository {
-    private final Map<SmartEquipment, Integer> smartEquipmentRepositoryMap = new HashMap<>();
+public class InMemoryRepository extends SmartEquipmentRepository {
     private static int uniqueCounterId = 1000;
 
-    public InMemoryRepository() {}
+    public InMemoryRepository() {
+        super();
+    }
 
     public int getAndIncrementUniqueCounter() {
         int uniqueCounterIdToReturn = getCurrentUniqueCounter();
@@ -20,11 +18,6 @@ public class InMemoryRepository implements SmartEquipmentRepository {
 
     public int getCurrentUniqueCounter() {
         return uniqueCounterId;
-    }
-
-    @Override
-    public Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap() {
-        return Map.copyOf(smartEquipmentRepositoryMap);
     }
 
     @Override

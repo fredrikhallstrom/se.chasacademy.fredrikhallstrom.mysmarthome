@@ -5,18 +5,10 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface SmartEquipmentRepository {
+public non-sealed abstract class SmartEquipmentRepository implements SmartEquipmentRepositoryInterface {
+    protected final Map<SmartEquipment, Integer> smartEquipmentRepositoryMap = new HashMap<>();
 
-    Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap();
-
-    int insertSmartEquipment(SmartEquipment smartEquipment);
-
-    void removeSmartEquipment(SmartEquipment smartEquipment);
-
-    int getSmartEquipmentId(SmartEquipment smartEquipment);
-
-    int getAndIncrementUniqueCounter();
-
-    int getCurrentUniqueCounter();
-
+    public Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap() {
+        return Map.copyOf(smartEquipmentRepositoryMap);
+    }
 }

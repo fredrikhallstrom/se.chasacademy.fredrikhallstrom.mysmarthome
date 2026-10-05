@@ -1,6 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
@@ -23,6 +24,10 @@ public class SmartEquipmentService {
     }
 
     public void removeSmartEquipment(SmartEquipment smartEquipmentToRemove) {
+        if (!smartEquipmentRepository.getSmartEquipmentRepositoryMap().containsKey(smartEquipmentToRemove)) {
+            throw new RemoveOfSmartEquipmentDidFailSomewhereException(smartEquipmentToRemove);
+        }
+
         smartEquipmentRepository.removeSmartEquipment(smartEquipmentToRemove);
     }
 

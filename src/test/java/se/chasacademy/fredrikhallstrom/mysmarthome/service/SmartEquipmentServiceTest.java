@@ -1,6 +1,8 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotypes.InMemoryRepository;
@@ -84,6 +86,34 @@ public class SmartEquipmentServiceTest {
         assertFalse(fakeEquipmentRepoMap.containsKey(fakeLamp));
 
     }
+
+    @Test
+    public void shouldThrowRemoveOfSmartEquipmentDidFailSomewhereExceptionWhenRemoveFailed() {
+        // Arrange
+        InMemoryRepository inMemoryRepository = mock(InMemoryRepository.class);
+        Clock clock = Clock.systemUTC();
+        int fakeId = 1;
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(inMemoryRepository, clock);
+
+
+        Map<SmartEquipment, Integer> fakeSmartEquipmentRepoMap = new HashMap<>();
+        Lamp fakelamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
+
+        fakeSmartEquipmentRepoMap.put(fakelamp, fakeId);
+
+        Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", LocalDateTime.now(clock));
+
+
+        // Act
+        Executable throwAct = () -> {
+          smartEquipmentService.removeSmartEquipment(nonExistentSmartEquipmentInRepo);
+        };
+
+        // Assert
+        assertThrows(RemoveOfSmartEquipmentDidFailSomewhereException.class, throwAct);
+
+    }
+
 
 
 

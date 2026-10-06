@@ -3,11 +3,10 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -170,7 +169,7 @@ public class SmartEquipmentServiceTest {
         };
 
         // Assert
-        assertThrows(SearchFoundNoSmartEquipmentsException.class, throwAct);
+        assertThrows(SearchFoundNoSmartEquipmentsByNameException.class, throwAct);
 
     }
 
@@ -248,6 +247,39 @@ public class SmartEquipmentServiceTest {
         assertEquals(referenceList, foundSmartEquipmentSorted);
     }
 
+    @Test
+    public void shouldReturnSmartEquipmentWhenCorrectIdInSearchId() {
+        // Arrange
+        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        Clock clock = Clock.systemUTC();
+        int fakeIdStart = 1;
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
+        fakeLamp1.setId(fakeIdStart);
+
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
+        fakeLamp2.setId(fakeIdStart + 1);
+
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
+        fakeLamp3.setId(fakeIdStart + 2);
+
+        Map<SmartEquipment, Integer> fakeRepoMap = new HashMap<>(Map.of(
+                fakeLamp1, fakeLamp1.getId(),
+                fakeLamp3, fakeLamp3.getId(),
+                fakeLamp2, fakeLamp2.getId())
+        );
+
+        when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepoMap);
+
+        // Act
+        SmartEquipment gettedSmartEquipmentById = smartEquipmentService.searchSmartEquipmentById(1);
+
+        // Assert
+        assertEquals(fakeLamp1, gettedSmartEquipmentById);
+
+    }
 
 
 }

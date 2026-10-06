@@ -2,7 +2,8 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
@@ -35,9 +36,12 @@ public class SmartEquipmentService {
         smartEquipmentRepository.removeSmartEquipment(smartEquipmentToRemove);
     }
 
-    public List<SmartEquipment> searchSmartEquipmentByName(String searchTerm, SearchSortingTypes sortingType) {
+    public List<SmartEquipment> searchSmartEquipmentByName(String searchTerm, SearchSortingTypes sortingType)
+            throws SearchFoundNoSmartEquipmentsByNameException {
+
         List<SmartEquipment> smartEquipments = new ArrayList<>(List.copyOf(smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet()));
         List<SmartEquipment> foundSmartEquipment = new ArrayList<>();
+
         for (SmartEquipment smartEquipment : smartEquipments) {
             if (smartEquipment.getName().contains(searchTerm)) {
                 foundSmartEquipment.add(smartEquipment);
@@ -45,7 +49,7 @@ public class SmartEquipmentService {
         }
 
         if (foundSmartEquipment.isEmpty())
-            throw new SearchFoundNoSmartEquipmentsException(searchTerm);
+            throw new SearchFoundNoSmartEquipmentsByNameException(searchTerm);
 
         if (sortingType == SearchSortingTypes.ASCENDING) {
             return foundSmartEquipment.stream()
@@ -60,5 +64,15 @@ public class SmartEquipmentService {
 
         return foundSmartEquipment;
 
+    }
+
+    public SmartEquipment searchSmartEquipmentById(int id) throws SearchFoundNoSmartEquipmentByIdException{
+        for (SmartEquipment smartEquipment : smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet()) {
+            if (smartEquipment.getId() == id) {
+                return smartEquipment;
+            }
+        }
+
+        throw new SearchFoundNoSmartEquipmentByIdException(id);
     }
 }

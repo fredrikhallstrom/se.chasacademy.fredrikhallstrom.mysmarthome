@@ -8,7 +8,6 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +19,7 @@ public class SmartEquipmentHandlerServiceTest {
         SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", clock);
         fakeLamp.setId(fakeId);
         if (fakeLamp.isStateActive()) {
             fakeLamp.setStateInactive();
@@ -40,7 +39,7 @@ public class SmartEquipmentHandlerServiceTest {
         SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", clock);
         fakeLamp.setId(fakeId);
         if (!fakeLamp.isStateActive()) {
             fakeLamp.setStateActive();
@@ -60,7 +59,7 @@ public class SmartEquipmentHandlerServiceTest {
         SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", clock);
         fakeLamp.setId(fakeId);
         if (!fakeLamp.isStateActive()) {
             fakeLamp.setStateActive();
@@ -82,7 +81,7 @@ public class SmartEquipmentHandlerServiceTest {
         SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", clock);
         fakeLamp.setId(fakeId);
         if (fakeLamp.isStateActive()) {
             fakeLamp.setStateInactive();

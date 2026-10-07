@@ -7,16 +7,16 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 public class SmartEquipmentHandlerService {
     public SmartEquipmentHandlerService() {}
 
-    public void setSmartEquipmentState(SmartEquipment smartEquipment, boolean turnStateOn)
+    public String setSmartEquipmentState(SmartEquipment smartEquipment, boolean turnStateOn)
             throws
             CantActiveAlreadyActivatedEquipmentException,
             CantDeactivateAlreadyDeactivatedEquipmentException {
 
         if (turnStateOn) {
-            smartEquipment.setStateActive();
+            return smartEquipment.setStateActive();
 
         } else {
-            smartEquipment.setStateInactive();
+            return smartEquipment.setStateInactive();
 
         }
     }

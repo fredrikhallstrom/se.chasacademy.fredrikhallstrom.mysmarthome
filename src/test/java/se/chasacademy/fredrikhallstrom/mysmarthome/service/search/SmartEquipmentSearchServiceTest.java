@@ -8,7 +8,6 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +25,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -58,9 +57,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -90,9 +89,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
 
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
@@ -127,9 +126,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -166,15 +165,15 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
         fakeLamp1.setId(fakeIdStart);
         fakeIdStart++;
 
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
         fakeLamp2.setId(fakeIdStart);
         fakeIdStart++;
 
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
         fakeLamp3.setId(fakeIdStart);
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(

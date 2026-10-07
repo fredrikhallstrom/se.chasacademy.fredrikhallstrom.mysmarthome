@@ -17,9 +17,11 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
     protected boolean isStateActive = false;
     private final Clock clock;
 
-    protected SmartEquipment(String name, LocalDateTime installationTime, Clock clock) {
+    protected SmartEquipment(String name,Clock clock) {
         this.name = name;
-        this.installationTime = installationTime;
+        this.installationTime = LocalDateTime.now(clock);
+        this.lastActivationTime = LocalDateTime.now(clock);
+        this.lastDeactivationTime  = LocalDateTime.now(clock);
         this.clock = clock;
     }
 
@@ -79,8 +81,9 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
 
     public String toString() {
         String statusMessageString = getStateString();
-        List<String> splitStatusMessageStringAsList = List.of(statusMessageString.split(", "));
+        List<String> splitStatusMessageStringAsList = List.of(statusMessageString.split(";"));
         LocalDateTime lastStateChangeTime;
+        DateTimeFormatter SWEDISH_DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         if (getLastActivationTime().isAfter(getLastDeactivationTime())) {
             lastStateChangeTime = getLastActivationTime();
@@ -94,23 +97,28 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
                 if (i == 0) {
                     continue;
                 }
+                if (i != 1) {
+                    nonMainState.append(", ");
+                }
 
-                nonMainState.append(", ");
                 nonMainState.append(splitStatusMessageStringAsList.get(i));
             }
-            return String.format("%s(Installerad: %s)- Current state: %s @ %s, Other states: %s",
+            return String.format("%s(Installed: %s)- Current state: %s @ %s , Other state/-s: %s",
                     getName(),
-                    getInstallationTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                    statusMessageString,
-                    lastStateChangeTime,
-                    nonMainState);
+                    getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
+                    splitStatusMessageStringAsList.getFirst(),
+                    lastStateChangeTime.format(SWEDISH_DATE_TIME_FORMAT),
+                    nonMainState
+
+            );
 
         } else {
-            return String.format("%s(Installerad: %s) - Current state: %s @ %s",
+            return String.format("%s(Installed: %s) - Current state: %s @ %s",
                     getName(),
-                    getInstallationTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
                     statusMessageString,
-                    lastStateChangeTime);
+                    lastStateChangeTime.format(SWEDISH_DATE_TIME_FORMAT)
+            );
         }
     }
 

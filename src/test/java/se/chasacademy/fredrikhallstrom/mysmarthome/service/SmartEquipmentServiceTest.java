@@ -12,7 +12,6 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +40,7 @@ public class SmartEquipmentServiceTest {
         SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
         Clock clock = Clock.systemUTC();
 
-        SmartEquipment fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        SmartEquipment fakeLamp = new Lamp("fakeLamp", clock);
 
         int fakeId = 1;
 
@@ -65,7 +64,7 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
-        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", clock);
         Integer fakeLampId = 1;
 
         Map<SmartEquipment, Integer> fakeEquipmentRepoMap = new HashMap<>();
@@ -97,7 +96,7 @@ public class SmartEquipmentServiceTest {
         Clock clock = Clock.systemUTC();
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
-        Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", LocalDateTime.now(clock), clock);
+        Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", clock);
 
 
         // Act
@@ -126,10 +125,10 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
-        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
-        Radiator fakeRadiator = new Radiator("fakeRadiator", LocalDateTime.now(clock), clock);
-        Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(clock), clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", clock);
+        Radiator fakeRadiator = new Radiator("fakeRadiator", clock);
+        Camera fakeCamera = new Camera("fakeCamera", clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
 
         List<SmartEquipment> referenceList = List.of(fakeLamp, fakeRadiator, fakeCamera, fakeLamp2);
 

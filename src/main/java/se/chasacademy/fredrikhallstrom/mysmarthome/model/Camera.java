@@ -1,15 +1,14 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 
 public class Camera extends SmartEquipment implements Recordable, Lightable {
     private boolean cameraLightState;
 
       public Camera(
             String name,
-            LocalDateTime installationTime, Clock clock) {
-        super(name, installationTime, clock);
+            Clock clock) {
+        super(name, clock);
     }
 
     @Override
@@ -21,7 +20,7 @@ public class Camera extends SmartEquipment implements Recordable, Lightable {
               statusMessageString = recordOff();
           }
 
-          statusMessageString += ", ";
+          statusMessageString += ";";
 
           if (getCameraLightState()) {
               statusMessageString += lightOn();

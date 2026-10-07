@@ -39,7 +39,7 @@ public class SmartEquipmentServiceTest {
         SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
         Clock clock = Clock.systemUTC();
 
-        SmartEquipment fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
+        SmartEquipment fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
 
         int fakeId = 1;
 
@@ -63,7 +63,7 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
         Integer fakeLampId = 1;
 
         Map<SmartEquipment, Integer> fakeEquipmentRepoMap = new HashMap<>();
@@ -96,7 +96,7 @@ public class SmartEquipmentServiceTest {
         int fakeId = 1;
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-        Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", LocalDateTime.now(clock));
+        Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", LocalDateTime.now(clock), clock);
 
 
         // Act
@@ -118,9 +118,9 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
 
         Map<SmartEquipment, Integer> fakeRepoMap = new HashMap<>(Map.of(
                 fakeLamp1, fakeIdStart,
@@ -151,9 +151,9 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
 
         Map<SmartEquipment, Integer> fakeRepoMap = new HashMap<>(Map.of(
                 fakeLamp1, fakeIdStart,
@@ -182,9 +182,9 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
 
         Map<SmartEquipment, Integer> fakeRepoMap = new HashMap<>(Map.of(
                 fakeLamp1, fakeIdStart,
@@ -219,9 +219,9 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
 
         Map<SmartEquipment, Integer> fakeRepoMap = new HashMap<>(Map.of(
                 fakeLamp1, fakeIdStart,
@@ -256,13 +256,13 @@ public class SmartEquipmentServiceTest {
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
         fakeLamp1.setId(fakeIdStart);
 
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
         fakeLamp2.setId(fakeIdStart + 1);
 
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
         fakeLamp3.setId(fakeIdStart + 2);
 
         Map<SmartEquipment, Integer> fakeRepoMap = new HashMap<>(Map.of(

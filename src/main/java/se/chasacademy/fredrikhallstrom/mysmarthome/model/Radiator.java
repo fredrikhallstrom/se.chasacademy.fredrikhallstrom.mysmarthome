@@ -1,12 +1,14 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 public class Radiator extends SmartEquipment implements Heatable {
     public Radiator(
             String name,
-            LocalDateTime installationTime) {
-        super(name, installationTime);
+            LocalDateTime installationTime,
+            Clock clock) {
+        super(name, installationTime, clock);
     }
 
     @Override

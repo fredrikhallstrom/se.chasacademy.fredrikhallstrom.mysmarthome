@@ -17,12 +17,12 @@ public class SmartEquipmentTest {
 
     public static void setUpForSubclassInstance() {
         Clock clock = Clock.systemUTC();
-        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock));
+        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
     }
 
     public static void setUpForSubclassInstanceWithMockedClock() {
         Clock clock = mock(Clock.class);
-        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock));
+        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
     }
 
     @Test

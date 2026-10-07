@@ -6,6 +6,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,9 +45,10 @@ public class InMemoryRepositoryTest {
     @Test
     public void shouldReturnCorrectSmartEquipmentMap() {
         // Arrange
+        Clock clock = Clock.systemUTC();
         SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
 
-        Lamp lamp = new Lamp("Kök", LocalDateTime.now());
+        Lamp lamp = new Lamp("Kök", LocalDateTime.now(clock), clock);
         int lampId = smartEquipmentRepository.getCurrentUniqueCounter();
 
         smartEquipmentRepository.insertSmartEquipment(lamp);
@@ -65,10 +67,11 @@ public class InMemoryRepositoryTest {
     @Test
     public void shouldIncreaseUniqueIdByOneWhenEquipmentInsertedTest() {
         // Arrange
+        Clock clock = Clock.systemUTC();
         SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
 
         int idBefore = smartEquipmentRepository.getCurrentUniqueCounter();
-        Lamp lamp = new Lamp("fakeLamp", LocalDateTime.now());
+        Lamp lamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
 
         // Act
         smartEquipmentRepository.insertSmartEquipment(lamp);

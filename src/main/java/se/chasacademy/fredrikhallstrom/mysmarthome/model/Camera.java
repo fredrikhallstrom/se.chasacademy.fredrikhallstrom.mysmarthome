@@ -1,12 +1,13 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 public class Camera extends SmartEquipment implements Recordable {
       public Camera(
             String name,
-            LocalDateTime installationTime) {
-        super(name, installationTime);
+            LocalDateTime installationTime, Clock clock) {
+        super(name, installationTime, clock);
     }
 
     @Override

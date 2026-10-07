@@ -1,14 +1,21 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 
 public class Lamp extends SmartEquipment implements Lightable {
     public Lamp(
             String name,
-            LocalDateTime installationTime,
             Clock clock) {
-        super(name, installationTime, clock);
+        super(name, clock);
+    }
+
+    @Override
+    public String getStateString() {
+        if (isStateActive) {
+            return lightOn();
+        } else {
+            return lightOff();
+        }
     }
 
     @Override

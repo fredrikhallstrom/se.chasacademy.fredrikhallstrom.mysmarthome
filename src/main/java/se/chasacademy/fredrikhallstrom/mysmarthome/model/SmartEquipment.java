@@ -5,8 +5,10 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlrea
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-public abstract class SmartEquipment {
+public abstract class SmartEquipment implements SmartEquipmentInterface {
     protected int id = -1;
     protected String name;
     protected LocalDateTime installationTime;
@@ -15,15 +17,19 @@ public abstract class SmartEquipment {
     protected boolean isStateActive = false;
     private final Clock clock;
 
-    protected SmartEquipment(String name, LocalDateTime installationTime, Clock clock) {
+    SmartEquipment(String name,Clock clock) {
         this.name = name;
-        this.installationTime = installationTime;
+        this.installationTime = LocalDateTime.now(clock);
+        this.lastActivationTime = LocalDateTime.now(clock);
+        this.lastDeactivationTime  = LocalDateTime.now(clock);
         this.clock = clock;
     }
 
     public String getName() {
         return name;
     }
+
+    public abstract String getStateString();
 
     public LocalDateTime getInstallationTime() {
         return installationTime;
@@ -73,5 +79,47 @@ public abstract class SmartEquipment {
         return "";
     }
 
+    public String toString() {
+        String statusMessageString = getStateString();
+        List<String> splitStatusMessageStringAsList = List.of(statusMessageString.split(";"));
+        LocalDateTime lastStateChangeTime;
+        DateTimeFormatter SWEDISH_DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        if (getLastActivationTime().isAfter(getLastDeactivationTime())) {
+            lastStateChangeTime = getLastActivationTime();
+        } else {
+            lastStateChangeTime = getLastDeactivationTime();
+        }
+
+        if (splitStatusMessageStringAsList.size() > 1) {
+            StringBuilder nonMainState = new StringBuilder();
+            for (int i = 0; i < splitStatusMessageStringAsList.size(); i++) {
+                if (i == 0) {
+                    continue;
+                }
+                if (i != 1) {
+                    nonMainState.append(", ");
+                }
+
+                nonMainState.append(splitStatusMessageStringAsList.get(i));
+            }
+            return String.format("%s(Installed: %s) - Current state: %s @ %s , Other state/-s: %s",
+                    getName(),
+                    getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
+                    splitStatusMessageStringAsList.getFirst(),
+                    lastStateChangeTime.format(SWEDISH_DATE_TIME_FORMAT),
+                    nonMainState
+
+            );
+
+        } else {
+            return String.format("%s(Installed: %s) - Current state: %s @ %s",
+                    getName(),
+                    getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
+                    statusMessageString,
+                    lastStateChangeTime.format(SWEDISH_DATE_TIME_FORMAT)
+            );
+        }
+    }
 
 }

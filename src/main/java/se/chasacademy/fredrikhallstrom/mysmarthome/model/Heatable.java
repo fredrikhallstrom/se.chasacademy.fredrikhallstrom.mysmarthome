@@ -1,15 +1,16 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 public interface Heatable {
-    String name = null;
+
+    String getName();
 
     default String heatOn() {
-        return String.format("Heating source %s is now heating", name);
+        return String.format("Heater, %s is now heating", getName());
 
     }
 
     default String heatOff() {
-        return String.format("Heating source %s is not heating", name);
+        return String.format("Heater, %s is not heating", getName());
     }
 
 }

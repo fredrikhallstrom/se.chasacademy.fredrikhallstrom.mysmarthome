@@ -6,23 +6,16 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyAc
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class SmartEquipmentTest {
-    // Setup using instancable class because of abstract class test
+    // Setup using subclass because of abstract class test
     static Lamp instancedSubClass;
 
     public static void setUpForSubclassInstance() {
         Clock clock = Clock.systemUTC();
-        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
-    }
-
-    public static void setUpForSubclassInstanceWithMockedClock() {
-        Clock clock = mock(Clock.class);
-        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        instancedSubClass = new Lamp("fakeLamp", clock);
     }
 
     @Test

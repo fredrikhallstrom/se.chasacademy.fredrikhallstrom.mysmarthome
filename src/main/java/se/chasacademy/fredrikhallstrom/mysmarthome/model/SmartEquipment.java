@@ -17,7 +17,7 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
     protected boolean isStateActive = false;
     private final Clock clock;
 
-    protected SmartEquipment(String name,Clock clock) {
+    SmartEquipment(String name,Clock clock) {
         this.name = name;
         this.installationTime = LocalDateTime.now(clock);
         this.lastActivationTime = LocalDateTime.now(clock);
@@ -103,7 +103,7 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
 
                 nonMainState.append(splitStatusMessageStringAsList.get(i));
             }
-            return String.format("%s(Installed: %s)- Current state: %s @ %s , Other state/-s: %s",
+            return String.format("%s(Installed: %s) - Current state: %s @ %s , Other state/-s: %s",
                     getName(),
                     getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
                     splitStatusMessageStringAsList.getFirst(),

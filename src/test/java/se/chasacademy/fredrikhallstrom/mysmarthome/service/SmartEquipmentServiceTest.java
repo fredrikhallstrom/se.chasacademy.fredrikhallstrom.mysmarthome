@@ -2,9 +2,13 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.internal.util.Supplier;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.model.Camera;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
+import se.chasacademy.fredrikhallstrom.mysmarthome.model.Radiator;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
@@ -93,16 +97,14 @@ public class SmartEquipmentServiceTest {
         // Arrange
         SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
         Clock clock = Clock.systemUTC();
-        int fakeId = 1;
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
 
         Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", LocalDateTime.now(clock), clock);
 
 
         // Act
-        Executable throwAct = () -> {
-            smartEquipmentService.removeSmartEquipment(nonExistentSmartEquipmentInRepo);
-        };
+        Executable throwAct = () ->
+                smartEquipmentService.removeSmartEquipment(nonExistentSmartEquipmentInRepo);
 
         // Assert
         assertThrows(RemoveOfSmartEquipmentDidFailSomewhereException.class, throwAct);
@@ -164,9 +166,9 @@ public class SmartEquipmentServiceTest {
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepoMap);
 
         // Act
-        Executable throwAct = () -> {
-            smartEquipmentService.searchSmartEquipmentByName("notInMap", SearchSortingTypes.NONE);
-        };
+        Executable throwAct = () ->
+                smartEquipmentService.searchSmartEquipmentByName("notInMap", SearchSortingTypes.NONE);
+
 
         // Assert
         assertThrows(SearchFoundNoSmartEquipmentsByNameException.class, throwAct);
@@ -280,6 +282,64 @@ public class SmartEquipmentServiceTest {
         assertEquals(fakeLamp1, gettedSmartEquipmentById);
 
     }
+
+    @Test
+    public void shouldReturnListOfAllSmartEquipment() {
+        // Arrange
+        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        Clock clock = Clock.systemUTC();
+        final int[] fakeIdArray = {1};
+
+        Supplier<Integer> getFakeId = () -> {
+            int fakeStartIdReturn = fakeIdArray[0];
+            fakeIdArray[0]++;
+            return fakeStartIdReturn;
+        };
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
+        Radiator fakeRadiator = new Radiator("fakeRadiator", LocalDateTime.now(clock), clock);
+        Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(clock), clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+
+        List<SmartEquipment> referenceList = List.of(fakeLamp, fakeRadiator, fakeCamera, fakeLamp2);
+
+        Map<SmartEquipment, Integer> fakeRepositoryMap = new LinkedHashMap<>();
+        for (SmartEquipment smartEquipment : referenceList) {
+            fakeRepositoryMap.put(smartEquipment, getFakeId.get());
+        }
+
+        when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
+
+        // Act
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.listAllSmartEquipment();
+
+        // Assert
+        assertEquals(referenceList, smartEquipmentList);
+
+    }
+
+    @Test
+    public void shouldThrowSmartEquipmentInRepositoryNotFoundExceptionWhenMapIsEmpty() {
+        // Arrange
+        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        Clock clock = Clock.systemUTC();
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+
+        Map<SmartEquipment, Integer> fakeRepositoryMap = new HashMap<>();
+
+        when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
+
+        // Act
+        Executable throwAct = smartEquipmentService::listAllSmartEquipment;
+
+        // Assert
+        assertThrows(SmartEquipmentInRepositoryNotFoundException.class, throwAct);
+
+    }
+
 
 
 }

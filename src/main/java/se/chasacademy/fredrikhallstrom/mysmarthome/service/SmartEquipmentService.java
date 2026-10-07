@@ -1,9 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
@@ -74,5 +71,15 @@ public class SmartEquipmentService {
         }
 
         throw new SearchFoundNoSmartEquipmentByIdException(id);
+    }
+
+    public List<SmartEquipment> listAllSmartEquipment() throws SmartEquipmentInRepositoryNotFoundException {
+        List<SmartEquipment> listOfSmartEquipment = new ArrayList<>(smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet());
+
+        if (listOfSmartEquipment.isEmpty()) {
+            throw new SmartEquipmentInRepositoryNotFoundException();
+        }
+
+        return listOfSmartEquipment;
     }
 }

@@ -5,6 +5,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlrea
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public abstract class SmartEquipment {
     protected int id = -1;
@@ -77,8 +78,31 @@ public abstract class SmartEquipment {
 
     public String toString() {
         String statusMessageString = getStateString();
+        List<String> splitStatusMessageStringAsList = List.of(statusMessageString.split(", "));
+        LocalDateTime lastStateChangeTime;
 
-        return String.format("%s: %s", getName(), statusMessageString);
+        if (lastActivationTime.isAfter(lastDeactivationTime)) {
+            lastStateChangeTime = lastActivationTime;
+        } else {
+            lastStateChangeTime = lastDeactivationTime;
+        }
+
+        if (splitStatusMessageStringAsList.size() > 1) {
+            StringBuilder nonMainState = new StringBuilder();
+            for (int i = 0; i < splitStatusMessageStringAsList.size(); i++) {
+                if (i == 0) {
+                    continue;
+                }
+
+                nonMainState.append(", ");
+                nonMainState.append(splitStatusMessageStringAsList.get(i));
+            }
+            return String.format("%s - Current state: %s @ %s, Other states: %s",
+                    getName(), statusMessageString, lastStateChangeTime, nonMainState);
+
+        } else {
+            return String.format("%s - Current state: %s @ %s", getName(), statusMessageString, lastStateChangeTime);
+        }
     }
 
 }

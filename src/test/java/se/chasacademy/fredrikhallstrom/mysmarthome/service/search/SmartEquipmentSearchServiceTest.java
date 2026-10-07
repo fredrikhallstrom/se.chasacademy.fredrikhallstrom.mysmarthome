@@ -162,14 +162,20 @@ public class SmartEquipmentSearchServiceTest {
         SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
         Clock clock = Clock.systemUTC();
 
+        int fakeIdStart = 1;
+
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
+        fakeLamp1.setId(fakeIdStart);
+        fakeIdStart++;
 
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
+        fakeLamp2.setId(fakeIdStart);
+        fakeIdStart++;
 
         Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock), clock);
-
+        fakeLamp3.setId(fakeIdStart);
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,

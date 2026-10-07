@@ -4,7 +4,6 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 public class SmartEquipmentService {
     private final SmartEquipmentRepository smartEquipmentRepository;
 
-    public SmartEquipmentService(SmartEquipmentRepository smartEquipmentRepository, Clock clock) {
+    public SmartEquipmentService(SmartEquipmentRepository smartEquipmentRepository) {
         this.smartEquipmentRepository = smartEquipmentRepository;
     }
 

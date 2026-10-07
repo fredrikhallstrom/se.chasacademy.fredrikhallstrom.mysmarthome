@@ -25,9 +25,8 @@ public class SmartEquipmentServiceTest {
         // Arrange
         SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
         SmartEquipment smartEquipment = mock(SmartEquipment.class);
-        Clock clock = Clock.systemUTC();
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         // Act
         smartEquipmentService.addSmartEquipment(smartEquipment);
@@ -47,7 +46,7 @@ public class SmartEquipmentServiceTest {
 
         int fakeId = 1;
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
         when(smartEquipmentRepository.insertSmartEquipment(fakeLamp)).thenReturn(fakeId);
 
         // Act
@@ -65,7 +64,7 @@ public class SmartEquipmentServiceTest {
         SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
         Clock clock = Clock.systemUTC();
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
         Integer fakeLampId = 1;
@@ -97,7 +96,7 @@ public class SmartEquipmentServiceTest {
         // Arrange
         SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
         Clock clock = Clock.systemUTC();
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", LocalDateTime.now(clock), clock);
 
@@ -118,7 +117,7 @@ public class SmartEquipmentServiceTest {
         Clock clock = Clock.systemUTC();
         int fakeIdStart = 1;
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
@@ -151,7 +150,7 @@ public class SmartEquipmentServiceTest {
         Clock clock = Clock.systemUTC();
         int fakeIdStart = 1;
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
@@ -182,7 +181,7 @@ public class SmartEquipmentServiceTest {
         Clock clock = Clock.systemUTC();
         int fakeIdStart = 1;
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
@@ -219,7 +218,7 @@ public class SmartEquipmentServiceTest {
         Clock clock = Clock.systemUTC();
         int fakeIdStart = 1;
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock), clock);
@@ -256,7 +255,7 @@ public class SmartEquipmentServiceTest {
         Clock clock = Clock.systemUTC();
         int fakeIdStart = 1;
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock), clock);
         fakeLamp1.setId(fakeIdStart);
@@ -296,7 +295,7 @@ public class SmartEquipmentServiceTest {
             return fakeStartIdReturn;
         };
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock), clock);
         Radiator fakeRadiator = new Radiator("fakeRadiator", LocalDateTime.now(clock), clock);
@@ -324,9 +323,8 @@ public class SmartEquipmentServiceTest {
     public void shouldThrowSmartEquipmentInRepositoryNotFoundExceptionWhenMapIsEmpty() {
         // Arrange
         SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
-        Clock clock = Clock.systemUTC();
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
 
         Map<SmartEquipment, Integer> fakeRepositoryMap = new HashMap<>();
 

@@ -5,9 +5,10 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlrea
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public abstract class SmartEquipment {
+public abstract class SmartEquipment implements SmartEquipmentInterface {
     protected int id = -1;
     protected String name;
     protected LocalDateTime installationTime;
@@ -81,10 +82,10 @@ public abstract class SmartEquipment {
         List<String> splitStatusMessageStringAsList = List.of(statusMessageString.split(", "));
         LocalDateTime lastStateChangeTime;
 
-        if (lastActivationTime.isAfter(lastDeactivationTime)) {
-            lastStateChangeTime = lastActivationTime;
+        if (getLastActivationTime().isAfter(getLastDeactivationTime())) {
+            lastStateChangeTime = getLastActivationTime();
         } else {
-            lastStateChangeTime = lastDeactivationTime;
+            lastStateChangeTime = getLastDeactivationTime();
         }
 
         if (splitStatusMessageStringAsList.size() > 1) {
@@ -97,11 +98,19 @@ public abstract class SmartEquipment {
                 nonMainState.append(", ");
                 nonMainState.append(splitStatusMessageStringAsList.get(i));
             }
-            return String.format("%s - Current state: %s @ %s, Other states: %s",
-                    getName(), statusMessageString, lastStateChangeTime, nonMainState);
+            return String.format("%s(Installerad: %s)- Current state: %s @ %s, Other states: %s",
+                    getName(),
+                    getInstallationTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    statusMessageString,
+                    lastStateChangeTime,
+                    nonMainState);
 
         } else {
-            return String.format("%s - Current state: %s @ %s", getName(), statusMessageString, lastStateChangeTime);
+            return String.format("%s(Installerad: %s) - Current state: %s @ %s",
+                    getName(),
+                    getInstallationTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    statusMessageString,
+                    lastStateChangeTime);
         }
     }
 

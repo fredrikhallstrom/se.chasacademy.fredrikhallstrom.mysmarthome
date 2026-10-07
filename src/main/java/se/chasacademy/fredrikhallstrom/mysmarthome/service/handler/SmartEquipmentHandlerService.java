@@ -21,7 +21,4 @@ public class SmartEquipmentHandlerService {
         }
     }
 
-    public void setOtherStates(Runnable otherStates) {
-
-    }
 }

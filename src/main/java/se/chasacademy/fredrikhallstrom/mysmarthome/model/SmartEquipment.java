@@ -3,26 +3,22 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 public abstract class SmartEquipment {
-    private static int uniqueIdCounter = 1000;
-    protected int id;
+    protected int id = -1;
     protected String name;
     protected LocalDateTime installationTime;
     protected LocalDateTime lastActivationTime;
     protected LocalDateTime lastDeactivationTime;
     protected boolean isStateActive = false;
+    private Clock clock;
 
-    protected SmartEquipment(String name, LocalDateTime installationTime) {
-        this.id = uniqueIdCounter;
+    protected SmartEquipment(String name, LocalDateTime installationTime, Clock clock) {
         this.name = name;
         this.installationTime = installationTime;
-        uniqueIdCounter++;
-    }
-
-    public int getId() {
-        return id;
+        this.clock = clock;
     }
 
     public String getName() {
@@ -41,24 +37,37 @@ public abstract class SmartEquipment {
         return lastDeactivationTime;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public boolean isStateActive() {
         return isStateActive;
     }
 
-    public void setStateActive() {
+    public void setId(int assignedId) {
+        if (id == -1) {
+            this.id = assignedId;
+        }
+    }
+
+    public String setStateActive() {
         if (isStateActive) {
             throw new CantActiveAlreadyActivatedEquipmentException();
         }
 
-       isStateActive = true;
+        isStateActive = true;
+        return "";
     }
 
-    public void setStateInactive() {
+    public String setStateInactive() {
         if (!isStateActive) {
             throw new CantDeactivateAlreadyDeactivatedEquipmentException();
         }
 
         isStateActive = false;
+        return "";
     }
+
 
 }

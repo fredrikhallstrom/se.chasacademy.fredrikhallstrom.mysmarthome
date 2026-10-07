@@ -25,6 +25,8 @@ public abstract class SmartEquipment {
         return name;
     }
 
+    public abstract String getStateString();
+
     public LocalDateTime getInstallationTime() {
         return installationTime;
     }
@@ -73,5 +75,10 @@ public abstract class SmartEquipment {
         return "";
     }
 
+    public String toString() {
+        String statusMessageString = getStateString();
+
+        return String.format("%s: %s", getName(), statusMessageString);
+    }
 
 }

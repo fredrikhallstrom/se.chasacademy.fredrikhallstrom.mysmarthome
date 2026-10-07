@@ -5,11 +5,11 @@ public interface Lightable {
     String getName();
 
     default String lightOn() {
-        return String.format("Lamp %s is on", getName());
+        return String.format("%s lamp is on", getName());
     }
 
     default String lightOff() {
-        return String.format("Lamp %s is off", getName());
+        return String.format("%s lamp is off", getName());
     }
 
 }

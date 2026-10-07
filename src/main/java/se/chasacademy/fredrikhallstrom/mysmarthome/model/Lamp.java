@@ -12,6 +12,15 @@ public class Lamp extends SmartEquipment implements Lightable {
     }
 
     @Override
+    public String getStateString() {
+        if (isStateActive) {
+            return lightOn();
+        } else {
+            return lightOff();
+        }
+    }
+
+    @Override
     public String setStateActive() {
         super.setStateActive();
         return lightOn();

@@ -12,6 +12,15 @@ public class Radiator extends SmartEquipment implements Heatable {
     }
 
     @Override
+    public String getStateString() {
+        if (isStateActive) {
+            return heatOn();
+        } else {
+            return heatOff();
+        }
+    }
+
+    @Override
     public String setStateActive() {
         super.setStateActive();
         return heatOn();

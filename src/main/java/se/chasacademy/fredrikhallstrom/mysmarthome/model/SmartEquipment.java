@@ -13,7 +13,7 @@ public abstract class SmartEquipment {
     protected LocalDateTime lastActivationTime;
     protected LocalDateTime lastDeactivationTime;
     protected boolean isStateActive = false;
-    private Clock clock;
+    private final Clock clock;
 
     protected SmartEquipment(String name, LocalDateTime installationTime, Clock clock) {
         this.name = name;
@@ -57,6 +57,8 @@ public abstract class SmartEquipment {
         }
 
         isStateActive = true;
+        this.lastActivationTime = LocalDateTime.now(clock);
+
         return "";
     }
 
@@ -66,6 +68,8 @@ public abstract class SmartEquipment {
         }
 
         isStateActive = false;
+        this.lastDeactivationTime = LocalDateTime.now(clock);
+
         return "";
     }
 

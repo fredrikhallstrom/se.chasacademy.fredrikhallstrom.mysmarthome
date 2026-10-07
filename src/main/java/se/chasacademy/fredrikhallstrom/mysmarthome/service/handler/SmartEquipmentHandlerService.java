@@ -1,4 +1,4 @@
-package se.chasacademy.fredrikhallstrom.mysmarthome.service;
+package se.chasacademy.fredrikhallstrom.mysmarthome.service.handler;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
@@ -19,5 +19,9 @@ public class SmartEquipmentHandlerService {
             smartEquipment.setStateInactive();
 
         }
+    }
+
+    public void setOtherStates(Runnable otherStates) {
+
     }
 }

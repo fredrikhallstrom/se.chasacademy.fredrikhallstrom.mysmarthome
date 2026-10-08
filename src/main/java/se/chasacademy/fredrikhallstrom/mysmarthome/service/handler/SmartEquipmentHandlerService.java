@@ -21,4 +21,9 @@ public class SmartEquipmentHandlerService {
         }
     }
 
+    public String getSmartEquipmentState(SmartEquipment smartEquipment) {
+        return smartEquipment.getStateString();
+
+    }
+
 }

@@ -21,10 +21,10 @@ public class MenuSmartEquipmentAddRemove extends BaseForMenu {
         menuItemsMap = new LinkedHashMap<>();
 
             menuItemsMap.put("Add Smart Equipment",
-                    () -> optionAddSmartEquipment.addSmartEquipment(smartEquipmentService)
+                    () -> optionAddSmartEquipment.addSmartEquipment()
             );
             menuItemsMap.put("Remove Smart Equipment",
-                    () -> optionRemoveSmartEquipment.removeSmartEquipment(smartEquipmentService)
+                    () -> optionRemoveSmartEquipment.removeSmartEquipment()
             );
     }
 

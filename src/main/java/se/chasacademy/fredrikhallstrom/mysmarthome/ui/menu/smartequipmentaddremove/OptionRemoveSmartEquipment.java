@@ -2,13 +2,14 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentaddrem
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
-public class OptionRemoveSmartEquipment {
+class OptionRemoveSmartEquipment {
     SmartEquipmentService smartEquipmentService;
 
-    protected OptionRemoveSmartEquipment(SmartEquipmentService smartEquipmentService) {
+    OptionRemoveSmartEquipment(SmartEquipmentService smartEquipmentService) {
         this.smartEquipmentService = smartEquipmentService;
     }
-    protected void removeSmartEquipment(SmartEquipmentService smartEquipmentService) {
+
+    void removeSmartEquipment() {
 
     }
 }

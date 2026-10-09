@@ -1,4 +1,4 @@
-    package se.chasacademy.fredrikhallstrom.mysmarthome.ui;
+package se.chasacademy.fredrikhallstrom.mysmarthome.ui;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceNumberNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceMustBeANumberException;
@@ -21,7 +21,7 @@ public abstract class BaseForMenu implements Menu {
             IO.println(line);
 
             int menuIndex = 0;
-            for (Map.Entry<String, Runnable> entryOfKeyAndValue : menuItemsMap.entrySet() ) {
+            for (Map.Entry<String, Runnable> entryOfKeyAndValue : menuItemsMap.entrySet()) {
                 if (menuIndex == 0) {
                     menuIndex++;
                 } else {

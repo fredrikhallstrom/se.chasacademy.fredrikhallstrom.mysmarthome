@@ -23,8 +23,7 @@ public class MenuMain extends BaseForMenu {
             SmartEquipmentService smartEquipmentService,
             SmartEquipmentHandlerService smartEquipmentHandlerService,
             SmartEquipmentSearchService smartEquipmentSearchService
-    )
-    {
+    ) {
         this.menuSmartEquipmentAddRemove = new MenuSmartEquipmentAddRemove(smartEquipmentService);
         this.menuSmartEquipmentList = new MenuSmartEquipmentList(smartEquipmentService);
         this.menuSmartEquipmentStates = new MenuSmartEquipmentStates(smartEquipmentHandlerService);
@@ -37,17 +36,17 @@ public class MenuMain extends BaseForMenu {
     public void menu() {
         menuItemsMap = new LinkedHashMap<>();
 
-            // MenuItems
-            menuItemsMap.put("Main menu", () -> {});
-            menuItemsMap.put("Add/Remove SmartEquipment", menuSmartEquipmentAddRemove::menu);
-            menuItemsMap.put("Search SmartEquipment", menuSmartEquipmentSearch::menu);
-            menuItemsMap.put("List All SmartEquipment", menuSmartEquipmentList::menu);
-            menuItemsMap.put("SmartEquipment State Menu", menuSmartEquipmentStates::menu);
-            menuItemsMap.put("Demonstration", menuDemonstration::menu);
+        // MenuItems
+        menuItemsMap.put("Main menu", () -> {
+        });
+        menuItemsMap.put("Add/Remove SmartEquipment", menuSmartEquipmentAddRemove::menu);
+        menuItemsMap.put("Search SmartEquipment", menuSmartEquipmentSearch::menu);
+        menuItemsMap.put("List All SmartEquipment", menuSmartEquipmentList::menu);
+        menuItemsMap.put("SmartEquipment State Menu", menuSmartEquipmentStates::menu);
+        menuItemsMap.put("Demonstration", menuDemonstration::menu);
 
-    super.menu(menuItemsMap);
+        super.menu(menuItemsMap);
     }
-
 
 
 }

@@ -20,7 +20,7 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         this.name = name;
         this.installationTime = installationTime;
         this.lastActivationTime = installationTime;
-        this.lastDeactivationTime  = installationTime;
+        this.lastDeactivationTime = installationTime;
     }
 
     public String getName() {
@@ -59,8 +59,8 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         }
     }
 
-    public String setStateActive(LocalDateTime activationTime) throws
-            CantActiveAlreadyActivatedEquipmentException {
+    public String setStateActive(LocalDateTime activationTime)
+            throws CantActiveAlreadyActivatedEquipmentException {
 
         if (isStateActive) {
             throw new CantActiveAlreadyActivatedEquipmentException();
@@ -72,8 +72,8 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         return "";
     }
 
-    public String setStateInactive(LocalDateTime deactivationTime) throws
-            CantDeactivateAlreadyDeactivatedEquipmentException {
+    public String setStateInactive(LocalDateTime deactivationTime)
+            throws CantDeactivateAlreadyDeactivatedEquipmentException {
 
         if (!isStateActive) {
             throw new CantDeactivateAlreadyDeactivatedEquipmentException();
@@ -115,7 +115,7 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
                     TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(getInstallationTime()),
                     splitStatusMessageStringAsList
                             .getFirst()
-                            .split(", ",2)[1],
+                            .split(", ", 2)[1],
                     TimeFormatter
                             .formatLocalDateTimeAndTimeZoneForSystemDefault(lastStateChangeTime),
                     nonMainState
@@ -128,7 +128,7 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
                     getId(),
                     getName(),
                     TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(getInstallationTime()),
-                    statusMessageString.split(", ",2)[1],
+                    statusMessageString.split(", ", 2)[1],
                     TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(lastStateChangeTime)
             );
         }

@@ -18,14 +18,15 @@ public class MenuSmartEquipmentAddRemove extends BaseForMenu {
     @Override
     public void menu() {
         menuItemsMap = new LinkedHashMap<>();
-            menuItemsMap.put("SmartEquipment Add/Remove Menu", () -> {});
+        menuItemsMap.put("SmartEquipment Add/Remove Menu", () -> {
+        });
 
-            menuItemsMap.put("Add Smart Equipment",
-                    optionAddSmartEquipment::addSmartEquipment
-            );
-            menuItemsMap.put("Remove Smart Equipment",
-                    optionRemoveSmartEquipment::removeSmartEquipment
-            );
+        menuItemsMap.put("Add Smart Equipment",
+                optionAddSmartEquipment::addSmartEquipment
+        );
+        menuItemsMap.put("Remove Smart Equipment",
+                optionRemoveSmartEquipment::removeSmartEquipment
+        );
 
         super.menu(menuItemsMap);
     }

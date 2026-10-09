@@ -15,8 +15,7 @@ public class SmartEquipmentHandlerService {
     }
 
     public String setSmartEquipmentState(SmartEquipment smartEquipment, boolean turnStateOn)
-            throws
-            CantActiveAlreadyActivatedEquipmentException,
+            throws CantActiveAlreadyActivatedEquipmentException,
             CantDeactivateAlreadyDeactivatedEquipmentException {
 
         if (turnStateOn) {

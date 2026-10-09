@@ -51,8 +51,8 @@ public class SmartEquipmentSearchService {
 
     }
 
-    public SmartEquipment searchSmartEquipmentById(int id) throws
-            SearchFoundNoSmartEquipmentByIdException,
+    public SmartEquipment searchSmartEquipmentById(int id)
+            throws SearchFoundNoSmartEquipmentByIdException,
             SmartEquipmentInRepositoryNotFoundException {
 
         for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {

@@ -16,7 +16,7 @@ class OptionRemoveSmartEquipment {
         IO.println(optionString);
         IO.println("*".repeat(optionString.length()) + "\n");
 
-        while(true) {
+        while (true) {
             IO.println("Enter the id of the SmartEquipment you want to remove:");
             String smartEquipmentIdString = IO.readln("ID: ");
             if (smartEquipmentIdString == null) {

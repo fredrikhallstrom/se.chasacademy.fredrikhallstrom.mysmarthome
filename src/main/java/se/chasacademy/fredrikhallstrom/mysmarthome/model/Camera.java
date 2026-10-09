@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Camera extends SmartEquipment implements Recordable, Lightable {
     private boolean cameraLightState;
 
-      public Camera(
+    public Camera(
             String name,
             LocalDateTime installationTime) {
         super(name, installationTime);
@@ -13,22 +13,22 @@ public class Camera extends SmartEquipment implements Recordable, Lightable {
 
     @Override
     public String getStateString() {
-          String statusMessageString;
-          if (isStateActive) {
-              statusMessageString = recordOn();
-          } else {
-              statusMessageString = recordOff();
-          }
+        String statusMessageString;
+        if (isStateActive) {
+            statusMessageString = recordOn();
+        } else {
+            statusMessageString = recordOff();
+        }
 
-          statusMessageString += ";";
+        statusMessageString += ";";
 
-          if (getCameraLightState()) {
-              statusMessageString += lightOn();
-          } else {
-              statusMessageString += lightOff();
-          }
+        if (getCameraLightState()) {
+            statusMessageString += lightOn();
+        } else {
+            statusMessageString += lightOff();
+        }
 
-          return statusMessageString;
+        return statusMessageString;
     }
 
     @Override
@@ -44,24 +44,24 @@ public class Camera extends SmartEquipment implements Recordable, Lightable {
     }
 
     public String setCameraLightOn() {
-          cameraLightState = true;
-          return lightOn();
+        cameraLightState = true;
+        return lightOn();
     }
 
     public String setCameraLightOff() {
-          cameraLightState = false;
-          return lightOff();
+        cameraLightState = false;
+        return lightOff();
     }
 
     public String getCameraLightStateString() {
-          if (cameraLightState) {
-              return lightOn();
-          } else {
-              return lightOff();
-          }
+        if (cameraLightState) {
+            return lightOn();
+        } else {
+            return lightOff();
+        }
     }
 
     public boolean getCameraLightState() {
-          return cameraLightState;
+        return cameraLightState;
     }
 }

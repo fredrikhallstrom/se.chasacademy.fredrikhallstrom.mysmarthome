@@ -17,14 +17,15 @@ public class MenuSmartEquipmentStates extends BaseForMenu {
     @Override
     public void menu() {
         menuItemsMap = new LinkedHashMap<>();
-            menuItemsMap.put("SmartEquipment State Menu", () -> {});
+        menuItemsMap.put("SmartEquipment State Menu", () -> {
+        });
 
-            menuItemsMap.put("Show Smart Equipment State",
-                    optionSmartEquipmentShowState::showSmartEquipmentState
-                    );
-            menuItemsMap.put("Change Smart Equipment State",
-                    optionSmartEquipmentStateChange::changeSmartEquipmentState
-                    );
+        menuItemsMap.put("Show Smart Equipment State",
+                optionSmartEquipmentShowState::showSmartEquipmentState
+        );
+        menuItemsMap.put("Change Smart Equipment State",
+                optionSmartEquipmentStateChange::changeSmartEquipmentState
+        );
 
         super.menu(menuItemsMap);
 

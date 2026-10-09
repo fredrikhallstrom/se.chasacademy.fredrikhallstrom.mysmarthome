@@ -24,7 +24,7 @@ public class SmartEquipmentService {
 
         int assignedId = smartEquipmentRepository.insertSmartEquipment(smartEquipment);
         smartEquipment.setId(assignedId);
-        if  (smartEquipment.getId() == assignedId) {
+        if (smartEquipment.getId() == assignedId) {
             return smartEquipment;
         }
         throw new CreationOfSmartEquipmentDidFailSomewhereException();
@@ -47,12 +47,14 @@ public class SmartEquipmentService {
 
         validateSmartEquipmentName(name, type);
 
-         SmartEquipment smartEquipment = type.getCreator()
+        SmartEquipment smartEquipment = type.getCreator()
                 .create(name, getCurrentLocalDateTime());
         return addSmartEquipment(smartEquipment);
     }
 
-    public List<SmartEquipment> AllSmartEquipmentAsList() throws SmartEquipmentInRepositoryNotFoundException {
+    public List<SmartEquipment> AllSmartEquipmentAsList()
+            throws SmartEquipmentInRepositoryNotFoundException {
+
         List<SmartEquipment> listOfSmartEquipment = new ArrayList<>(smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet());
 
         if (listOfSmartEquipment.isEmpty()) {
@@ -66,16 +68,16 @@ public class SmartEquipmentService {
         return LocalDateTime.now(clock);
     }
 
-   public void validateSmartEquipmentName(
-           String smartEquipmentName,
-           SmartEquipmentType typeChoice)
-           throws InvalidSmartEquipmentNameException {
+    public void validateSmartEquipmentName(
+            String smartEquipmentName,
+            SmartEquipmentType typeChoice)
+            throws InvalidSmartEquipmentNameException {
 
         boolean evaluatedExpressionOfNameEqualsType;
         try {
-             evaluatedExpressionOfNameEqualsType = AllSmartEquipmentAsList().stream().anyMatch(
+            evaluatedExpressionOfNameEqualsType = AllSmartEquipmentAsList().stream().anyMatch(
                     smartEquipment -> smartEquipment.getName()
-                           .equalsIgnoreCase(smartEquipmentName));
+                            .equalsIgnoreCase(smartEquipmentName));
         } catch (SmartEquipmentInRepositoryNotFoundException e) {
             evaluatedExpressionOfNameEqualsType = false;
         }
@@ -87,15 +89,15 @@ public class SmartEquipmentService {
         ) {
             throw new InvalidSmartEquipmentNameException();
         }
-   }
+    }
 
-   public int validateSmartEquipmentId(String smartEquipmentIdString)
-           throws MustBeANumberException {
+    public int validateSmartEquipmentId(String smartEquipmentIdString)
+            throws MustBeANumberException {
 
         try {
             return Integer.parseInt(smartEquipmentIdString);
         } catch (NumberFormatException e) {
             throw new MustBeANumberException();
         }
-   }
+    }
 }

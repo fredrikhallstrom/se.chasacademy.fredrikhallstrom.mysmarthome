@@ -1,11 +1,10 @@
-package se.chasacademy.fredrikhallstrom.mysmarthome.service;
+package se.chasacademy.fredrikhallstrom.mysmarthome.service.handler;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 
 import java.time.Clock;
 import java.time.LocalDateTime;

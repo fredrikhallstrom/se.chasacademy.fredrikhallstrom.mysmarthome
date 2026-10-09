@@ -5,7 +5,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
 public class InMemoryRepository extends SmartEquipmentRepository {
-    private static int uniqueCounterId = 1000;
+    private int uniqueCounterId = 1000;
 
     public InMemoryRepository() {
         super();

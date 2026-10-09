@@ -2,10 +2,9 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.util.TimeFormatter;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public abstract class SmartEquipment implements SmartEquipmentInterface {
@@ -81,7 +80,6 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         String statusMessageString = getStateString();
         List<String> splitStatusMessageStringAsList = List.of(statusMessageString.split(";"));
         LocalDateTime lastStateChangeTime;
-        DateTimeFormatter SWEDISH_DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         if (getLastActivationTime().isAfter(getLastDeactivationTime())) {
             lastStateChangeTime = getLastActivationTime();
@@ -105,9 +103,12 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
                     getClass().getSimpleName(),
                     getId(),
                     getName(),
-                    getInstallationTime().atZone(ZoneId.systemDefault()).format(SWEDISH_DATE_TIME_FORMAT),
-                    splitStatusMessageStringAsList.getFirst().split(", ",2)[1],
-                    lastStateChangeTime.atZone(ZoneId.systemDefault()).format(SWEDISH_DATE_TIME_FORMAT),
+                    TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(getInstallationTime()),
+                    splitStatusMessageStringAsList
+                            .getFirst()
+                            .split(", ",2)[1],
+                    TimeFormatter
+                            .formatLocalDateTimeAndTimeZoneForSystemDefault(lastStateChangeTime),
                     nonMainState
 
             );
@@ -117,9 +118,9 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
                     getClass().getSimpleName(),
                     getId(),
                     getName(),
-                    getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
+                    TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(getInstallationTime()),
                     statusMessageString.split(", ",2)[1],
-                    lastStateChangeTime.format(SWEDISH_DATE_TIME_FORMAT)
+                    TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(lastStateChangeTime)
             );
         }
     }

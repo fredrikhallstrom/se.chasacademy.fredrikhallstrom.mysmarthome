@@ -3,7 +3,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmartEquipmentService {
-    private final SmartEquipmentRepository smartEquipmentRepository;
+    private final SmartEquipmentRepositoryInterface smartEquipmentRepository;
     private final Clock clock;
 
-    public SmartEquipmentService(SmartEquipmentRepository smartEquipmentRepository, Clock clock) {
+    public SmartEquipmentService(SmartEquipmentRepositoryInterface smartEquipmentRepository, Clock clock) {
         this.smartEquipmentRepository = smartEquipmentRepository;
         this.clock = clock;
     }

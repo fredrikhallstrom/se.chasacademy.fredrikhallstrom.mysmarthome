@@ -11,14 +11,10 @@ public class InMemoryRepository extends SmartEquipmentRepository {
         super();
     }
 
-    public int getAndIncrementUniqueCounter() {
-        int uniqueCounterIdToReturn = getCurrentUniqueCounter();
+    private int getAndIncrementUniqueCounter() {
+        int uniqueCounterIdToReturn = uniqueCounterId;
         uniqueCounterId++;
         return uniqueCounterIdToReturn;
-    }
-
-    public int getCurrentUniqueCounter() {
-        return uniqueCounterId;
     }
 
     @Override

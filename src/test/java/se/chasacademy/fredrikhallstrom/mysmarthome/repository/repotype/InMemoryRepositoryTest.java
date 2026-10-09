@@ -5,8 +5,7 @@ import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -20,7 +19,7 @@ public class InMemoryRepositoryTest {
     @Test
     public void shouldReturnRepositoryMap() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = new InMemoryRepository();
 
         // Act
         Map<SmartEquipment, Integer> smartEquipmentMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
@@ -33,7 +32,7 @@ public class InMemoryRepositoryTest {
     @Test
     public void shouldReturnRepositoryMapInReadOnly() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = new InMemoryRepository();
         Map<SmartEquipment, Integer> smartEquipmentIntegerMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
 
         // Act
@@ -49,17 +48,15 @@ public class InMemoryRepositoryTest {
     public void shouldReturnCorrectSmartEquipmentMap() {
         // Arrange
         Clock clock = Clock.systemUTC();
-        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = new InMemoryRepository();
 
         Lamp lamp = new Lamp("Kök", LocalDateTime.now(clock));
-        int lampId = smartEquipmentRepository.getCurrentUniqueCounter();
-
+        lamp.setId(1000); //Initial ID
         smartEquipmentRepository.insertSmartEquipment(lamp);
-
 
         // Act
         Map<SmartEquipment, Integer> smartEquipmentRepositoryTestMap = new HashMap<>();
-        smartEquipmentRepositoryTestMap.put(lamp, lampId);
+        smartEquipmentRepositoryTestMap.put(lamp, lamp.getId());
 
         // Assert
         assertEquals(smartEquipmentRepositoryTestMap, smartEquipmentRepository.getSmartEquipmentRepositoryMap());
@@ -71,17 +68,19 @@ public class InMemoryRepositoryTest {
     public void shouldIncreaseUniqueIdByOneWhenEquipmentInsertedTest() {
         // Arrange
         Clock clock = Clock.systemUTC();
-        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = new InMemoryRepository();
 
-        int idBefore = smartEquipmentRepository.getCurrentUniqueCounter();
         Lamp lamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
-
-        // Act
+        Lamp lamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
         smartEquipmentRepository.insertSmartEquipment(lamp);
-        int idAfter = smartEquipmentRepository.getCurrentUniqueCounter();
+        int assignedID = smartEquipmentRepository.insertSmartEquipment(lamp);
+        lamp.setId(assignedID);
+        // Act
+        int assignedID2 = smartEquipmentRepository.insertSmartEquipment(lamp2);
+        lamp2.setId(assignedID2);
 
         // Assert
-        assertEquals(1, idAfter - idBefore);
+        assertEquals(1, lamp2.getId() - lamp.getId());
 
     }
     @Test
@@ -89,7 +88,7 @@ public class InMemoryRepositoryTest {
         // Arrange
         Clock clock = Clock.systemUTC();
 
-        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = new InMemoryRepository();
 
         // Act
         Executable throwAct = () -> smartEquipmentRepository.removeSmartEquipment(-1);

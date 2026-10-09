@@ -10,7 +10,7 @@ import org.mockito.internal.util.Supplier;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.*;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
 
 import java.time.Clock;
@@ -33,7 +33,7 @@ public class SmartEquipmentServiceTest {
     public void InsertsSmartEquipmentInInMemoryRepositoryTest() {
         // Arrange
         Clock clock = Clock.systemUTC();
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
         SmartEquipment smartEquipment = mock(SmartEquipment.class);
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
@@ -49,7 +49,7 @@ public class SmartEquipmentServiceTest {
     @Test
     public void SetsIdInSmartEquipmentWhenInsertedIntoInMemoryRepositoryTest() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
         Clock clock = Clock.systemUTC();
 
         SmartEquipment fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
@@ -71,7 +71,7 @@ public class SmartEquipmentServiceTest {
     @Test
     public void shouldRemoveSmartEquipmentTest() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
         Clock clock = Clock.systemUTC();
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
@@ -83,7 +83,6 @@ public class SmartEquipmentServiceTest {
         Map<SmartEquipment, Integer> fakeEquipmentRepoMap = new HashMap<>();
         fakeEquipmentRepoMap.put(fakeLamp, fakeLampId);
 
-        when(smartEquipmentRepository.getCurrentUniqueCounter()).thenReturn(fakeLampId);
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(Map.of(fakeLamp, fakeLampId));
 
         doAnswer(_ -> {
@@ -107,7 +106,7 @@ public class SmartEquipmentServiceTest {
     @Test
     public void shouldReturnListOfAllSmartEquipment() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
         Clock clock = Clock.systemUTC();
         final int[] fakeIdArray = {1};
 
@@ -144,7 +143,7 @@ public class SmartEquipmentServiceTest {
     @Test
     public void shouldThrowSmartEquipmentInRepositoryNotFoundExceptionWhenMapIsEmpty() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
         Clock clock = Clock.systemUTC();
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);

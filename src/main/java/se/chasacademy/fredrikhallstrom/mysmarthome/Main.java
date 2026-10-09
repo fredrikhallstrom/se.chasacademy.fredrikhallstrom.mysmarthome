@@ -1,7 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.demomysmarthome.DemoMySmartHome;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
@@ -16,7 +16,7 @@ import static se.chasacademy.fredrikhallstrom.mysmarthome.ui.ascii.WelcomeLogo.w
 
 public class Main {
     void main(String[] args) {
-        SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = new InMemoryRepository();
         Clock clock = Clock.systemUTC();
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);

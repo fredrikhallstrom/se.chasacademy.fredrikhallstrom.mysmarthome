@@ -5,7 +5,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import java.util.HashMap;
 import java.util.Map;
 
-public non-sealed abstract class SmartEquipmentRepository implements SmartEquipmentRepositoryInterface {
+public abstract class SmartEquipmentRepository implements SmartEquipmentRepositoryInterface {
     protected final Map<SmartEquipment, Integer> smartEquipmentRepositoryMap = new HashMap<>();
 
     public Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap() {

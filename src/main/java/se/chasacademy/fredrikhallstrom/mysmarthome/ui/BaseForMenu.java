@@ -1,8 +1,9 @@
-package se.chasacademy.fredrikhallstrom.mysmarthome.ui;
+    package se.chasacademy.fredrikhallstrom.mysmarthome.ui;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceNumberNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceMustBeANumberException;
 
+import java.util.List;
 import java.util.Map;
 
 public abstract class BaseForMenu implements Menu {
@@ -48,7 +49,11 @@ public abstract class BaseForMenu implements Menu {
 
         int choiceInt;
 
-        if (choiceString == null || choiceString.isBlank()) {
+        if (choiceString == null) {
+            return false;
+        }
+
+        if (choiceString.isBlank()) {
             IO.println("Can't be blank! Try again!\n");
             return true;
         }
@@ -63,16 +68,12 @@ public abstract class BaseForMenu implements Menu {
             return false;
         }
 
-        int menuIndex = 0;
-        for (Runnable menuRunnable : menuItemsMap.values()) {
-            if (menuIndex == choiceInt) {
-                menuRunnable.run();
-                return true;
-            } else {
-                menuIndex++;
-            }
+        if (choiceInt < 1 || choiceInt > menuItemsMap.size()) {
+            throw new MenuChoiceNumberNotFoundException();
         }
 
-        throw new MenuChoiceNumberNotFoundException();
+        List<Runnable> menuActions = List.copyOf(menuItemsMap.values());
+        menuActions.get(choiceInt).run();
+        return true;
     }
 }

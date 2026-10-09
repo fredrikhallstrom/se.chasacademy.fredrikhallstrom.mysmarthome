@@ -1,5 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
@@ -28,12 +29,19 @@ public class InMemoryRepository extends SmartEquipmentRepository {
     }
 
     @Override
-    public void removeSmartEquipment(SmartEquipment smartEquipment) {
-        smartEquipmentRepositoryMap.remove(smartEquipment);
+    public boolean removeSmartEquipment(int smartEquipmentIdToRemove) {
+        if (smartEquipmentRepositoryMap.keySet().stream().noneMatch(
+                smartEquipment -> smartEquipment.getId() == smartEquipmentIdToRemove)
+                ||
+                smartEquipmentRepositoryMap.isEmpty()) {
+            throw new RemoveOfSmartEquipmentDidFailSomewhereException();
+        }
+
+        smartEquipmentRepositoryMap.keySet().removeIf(
+            smartEquipment -> smartEquipment.getId() == smartEquipmentIdToRemove
+        );
+
+        return true;
     }
 
-    @Override
-    public int getSmartEquipmentId(SmartEquipment wantedSmartEquipmentId) {
-        return smartEquipmentRepositoryMap.get(wantedSmartEquipmentId);
-    }
 }

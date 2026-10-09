@@ -4,8 +4,15 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyAc
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 public class SmartEquipmentHandlerService {
-    public SmartEquipmentHandlerService() {}
+    Clock clock;
+
+    public SmartEquipmentHandlerService(Clock clock) {
+        this.clock = clock;
+    }
 
     public String setSmartEquipmentState(SmartEquipment smartEquipment, boolean turnStateOn)
             throws
@@ -13,10 +20,10 @@ public class SmartEquipmentHandlerService {
             CantDeactivateAlreadyDeactivatedEquipmentException {
 
         if (turnStateOn) {
-            return smartEquipment.setStateActive();
+            return smartEquipment.setStateActive(LocalDateTime.now(clock));
 
         } else {
-            return smartEquipment.setStateInactive();
+            return smartEquipment.setStateInactive(LocalDateTime.now(clock));
 
         }
     }

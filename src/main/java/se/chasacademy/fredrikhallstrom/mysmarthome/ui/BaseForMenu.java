@@ -1,6 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuBuildErrorException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceNumberNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceMustBeANumberException;
 
 import java.util.Map;
@@ -29,20 +29,27 @@ public abstract class BaseForMenu implements Menu {
                 }
 
             }
-            IO.println(String.format("%d. Avsluta/Återgå", menuItemsMap.size()));
+            IO.println(String.format("%d. Exit/Return", menuItemsMap.size()));
 
-            running = menuChoiceHelper();
+            try {
+                running = menuChoiceHelper();
+            } catch (MenuChoiceMustBeANumberException | MenuChoiceNumberNotFoundException error) {
+                IO.println(error.getMessage() + "\n");
+            }
 
         }
     }
 
-    private boolean menuChoiceHelper() throws MenuChoiceMustBeANumberException, MenuBuildErrorException {
+    private boolean menuChoiceHelper() throws MenuChoiceMustBeANumberException, MenuChoiceNumberNotFoundException {
         // return boolean controls exit/return to previous menu
 
         String choiceString = IO.readln("\nMake a menu choice: ");
+        IO.println("");
+
         int choiceInt;
 
-        if (choiceString.isBlank()) {
+        if (choiceString == null || choiceString.isBlank()) {
+            IO.println("Can't be blank! Try again!\n");
             return true;
         }
 
@@ -66,6 +73,6 @@ public abstract class BaseForMenu implements Menu {
             }
         }
 
-        throw new MenuBuildErrorException(menuItemsMap.toString());
+        throw new MenuChoiceNumberNotFoundException();
     }
 }

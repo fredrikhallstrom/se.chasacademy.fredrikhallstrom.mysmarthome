@@ -6,6 +6,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyAc
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +16,7 @@ public class SmartEquipmentTest {
 
     public static void setUpForSubclassInstance() {
         Clock clock = Clock.systemUTC();
-        instancedSubClass = new Lamp("fakeLamp", clock);
+        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock));
     }
 
     @Test
@@ -24,11 +25,11 @@ public class SmartEquipmentTest {
         setUpForSubclassInstance();
 
         if (instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateInactive();
+            instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
         }
 
         // Act
-        instancedSubClass.setStateActive();
+        instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
 
         // Assert
         assertTrue(instancedSubClass.isStateActive());
@@ -40,11 +41,11 @@ public class SmartEquipmentTest {
         setUpForSubclassInstance();
 
         if (instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateInactive();
+            instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
         }
 
         // Act
-        String returnedString = instancedSubClass.setStateActive();
+        String returnedString = instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
 
         // Assert
         assertEquals(instancedSubClass.lightOn(), returnedString);
@@ -57,11 +58,11 @@ public class SmartEquipmentTest {
         setUpForSubclassInstance();
 
         if (!instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateActive();
+            instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
         }
 
         // Act
-        String returnedString = instancedSubClass.setStateInactive();
+        String returnedString = instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
 
         // Assert
         assertEquals(instancedSubClass.lightOff(), returnedString);
@@ -73,11 +74,11 @@ public class SmartEquipmentTest {
         setUpForSubclassInstance();
 
         if (!instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateActive();
+            instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
         }
 
         // Act
-        Executable throwAct = () -> instancedSubClass.setStateActive();
+        Executable throwAct = () -> instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
 
         // Assert
         assertThrows(CantActiveAlreadyActivatedEquipmentException.class, throwAct);
@@ -89,11 +90,11 @@ public class SmartEquipmentTest {
         setUpForSubclassInstance();
 
         if (!instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateActive();
+            instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
         }
 
         // Act
-        instancedSubClass.setStateInactive();
+        instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
 
         // Assert
         assertFalse(instancedSubClass.isStateActive());
@@ -105,11 +106,11 @@ public class SmartEquipmentTest {
         setUpForSubclassInstance();
 
         if (instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateInactive();
+            instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
         }
 
         // Act
-        Executable throwAct = () -> instancedSubClass.setStateInactive();
+        Executable throwAct = () -> instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
 
         // Assert
         assertThrows(CantDeactivateAlreadyDeactivatedEquipmentException.class, throwAct);

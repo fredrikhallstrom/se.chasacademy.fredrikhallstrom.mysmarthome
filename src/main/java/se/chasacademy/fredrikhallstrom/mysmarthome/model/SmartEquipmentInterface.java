@@ -2,7 +2,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.LocalDateTime;
 
-public interface SmartEquipmentInterface {
+interface SmartEquipmentInterface {
     String getName();
 
     String getStateString();
@@ -19,9 +19,9 @@ public interface SmartEquipmentInterface {
 
     void setId(int assignedId);
 
-    String setStateActive();
+    String setStateActive(LocalDateTime activationTime);
 
-    String setStateInactive();
+    String setStateInactive(LocalDateTime deactivationTime);
 
     String toString();
 }

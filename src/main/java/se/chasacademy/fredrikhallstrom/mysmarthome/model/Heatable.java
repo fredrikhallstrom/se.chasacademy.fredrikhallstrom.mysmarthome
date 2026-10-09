@@ -1,6 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-public interface Heatable {
+interface Heatable {
 
     String getName();
 

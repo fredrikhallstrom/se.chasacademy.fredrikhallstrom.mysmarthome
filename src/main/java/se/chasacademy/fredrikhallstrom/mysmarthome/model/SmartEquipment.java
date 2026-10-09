@@ -3,8 +3,8 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -15,14 +15,12 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
     protected LocalDateTime lastActivationTime;
     protected LocalDateTime lastDeactivationTime;
     protected boolean isStateActive = false;
-    private final Clock clock;
 
-    SmartEquipment(String name,Clock clock) {
+    SmartEquipment(String name, LocalDateTime installationTime) {
         this.name = name;
-        this.installationTime = LocalDateTime.now(clock);
-        this.lastActivationTime = LocalDateTime.now(clock);
-        this.lastDeactivationTime  = LocalDateTime.now(clock);
-        this.clock = clock;
+        this.installationTime = installationTime;
+        this.lastActivationTime = installationTime;
+        this.lastDeactivationTime  = installationTime;
     }
 
     public String getName() {
@@ -57,24 +55,24 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         }
     }
 
-    public String setStateActive() {
+    public String setStateActive(LocalDateTime activationTime) {
         if (isStateActive) {
             throw new CantActiveAlreadyActivatedEquipmentException();
         }
 
         isStateActive = true;
-        this.lastActivationTime = LocalDateTime.now(clock);
+        this.lastActivationTime = activationTime;
 
         return "";
     }
 
-    public String setStateInactive() {
+    public String setStateInactive(LocalDateTime deactivationTime) {
         if (!isStateActive) {
             throw new CantDeactivateAlreadyDeactivatedEquipmentException();
         }
 
         isStateActive = false;
-        this.lastDeactivationTime = LocalDateTime.now(clock);
+        this.lastDeactivationTime = deactivationTime;
 
         return "";
     }
@@ -103,20 +101,24 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
 
                 nonMainState.append(splitStatusMessageStringAsList.get(i));
             }
-            return String.format("%s(Installed: %s) - Current state: %s @ %s , Other state/-s: %s",
+            return String.format("Type: %s, ID: %d, %s(Installed: %s) - Current state: %s @ %s , Other state/-s: %s",
+                    getClass().getSimpleName(),
+                    getId(),
                     getName(),
-                    getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
-                    splitStatusMessageStringAsList.getFirst(),
-                    lastStateChangeTime.format(SWEDISH_DATE_TIME_FORMAT),
+                    getInstallationTime().atZone(ZoneId.systemDefault()).format(SWEDISH_DATE_TIME_FORMAT),
+                    splitStatusMessageStringAsList.getFirst().split(", ",2)[1],
+                    lastStateChangeTime.atZone(ZoneId.systemDefault()).format(SWEDISH_DATE_TIME_FORMAT),
                     nonMainState
 
             );
 
         } else {
-            return String.format("%s(Installed: %s) - Current state: %s @ %s",
+            return String.format("Type: %s, ID: %d, %s(Installed: %s) - Current state: %s @ %s",
+                    getClass().getSimpleName(),
+                    getId(),
                     getName(),
                     getInstallationTime().format(SWEDISH_DATE_TIME_FORMAT),
-                    statusMessageString,
+                    statusMessageString.split(", ",2)[1],
                     lastStateChangeTime.format(SWEDISH_DATE_TIME_FORMAT)
             );
         }

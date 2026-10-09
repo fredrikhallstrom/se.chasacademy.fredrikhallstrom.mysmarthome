@@ -8,6 +8,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,13 +17,14 @@ public class SmartEquipmentHandlerServiceTest {
     public void shouldCallMethodSetStateActiveOfSmartEquipmentWhenTurnStateOnIsTrue() {
         // Arrange
         Clock clock = Clock.systemUTC();
-        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
+
+        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(clock);
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
         fakeLamp.setId(fakeId);
         if (fakeLamp.isStateActive()) {
-            fakeLamp.setStateInactive();
+            fakeLamp.setStateInactive(LocalDateTime.now(clock));
         }
         
         // Act
@@ -36,13 +38,14 @@ public class SmartEquipmentHandlerServiceTest {
     public void shouldCallMethodSetStateInactiveOfSmartEquipmentWhenTurnStateOnIsFalse() {
         // Arrange
         Clock clock = Clock.systemUTC();
-        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
+
+        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(clock);
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
         fakeLamp.setId(fakeId);
         if (!fakeLamp.isStateActive()) {
-            fakeLamp.setStateActive();
+            fakeLamp.setStateActive(LocalDateTime.now(clock));
         }
 
         // Act
@@ -56,13 +59,14 @@ public class SmartEquipmentHandlerServiceTest {
     public void shouldThrowCantActiveAlreadyActivatedEquipmentExceptionIfAlreadySmartEquipmentActivated() {
         // Arrange
         Clock clock = Clock.systemUTC();
-        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
+
+        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(clock);
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
         fakeLamp.setId(fakeId);
         if (!fakeLamp.isStateActive()) {
-            fakeLamp.setStateActive();
+            fakeLamp.setStateActive(LocalDateTime.now(clock));
         }
     
         // Act
@@ -78,13 +82,13 @@ public class SmartEquipmentHandlerServiceTest {
     public void shouldThrowCantDeactivateAlreadyDeactivatedEquipmentExceptionIfAlreadySmartEquipmentDeactivated() {
         // Arrange
         Clock clock = Clock.systemUTC();
-        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
+        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(clock);
         int fakeId = 1;
 
-        Lamp fakeLamp = new Lamp("fakeLamp", clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(clock));
         fakeLamp.setId(fakeId);
         if (fakeLamp.isStateActive()) {
-            fakeLamp.setStateInactive();
+            fakeLamp.setStateInactive(LocalDateTime.now(clock));
         }
 
         // Act

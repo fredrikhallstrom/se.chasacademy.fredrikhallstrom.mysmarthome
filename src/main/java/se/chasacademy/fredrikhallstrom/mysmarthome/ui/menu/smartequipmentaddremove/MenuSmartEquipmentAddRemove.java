@@ -6,26 +6,27 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
 import java.util.LinkedHashMap;
 
 public class MenuSmartEquipmentAddRemove extends BaseForMenu {
-    SmartEquipmentService smartEquipmentService;
-    OptionRemoveSmartEquipment optionRemoveSmartEquipment;
-    OptionAddSmartEquipment optionAddSmartEquipment;
+    private final OptionRemoveSmartEquipment optionRemoveSmartEquipment;
+    private final OptionAddSmartEquipment optionAddSmartEquipment;
 
     public MenuSmartEquipmentAddRemove(SmartEquipmentService smartEquipmentService) {
-        this.smartEquipmentService = smartEquipmentService;
         this.optionRemoveSmartEquipment = new OptionRemoveSmartEquipment(smartEquipmentService);
         this.optionAddSmartEquipment = new OptionAddSmartEquipment(smartEquipmentService);
 
     }
 
+    @Override
     public void menu() {
         menuItemsMap = new LinkedHashMap<>();
+            menuItemsMap.put("SmartEquipment Add/Remove Menu", () -> {});
 
             menuItemsMap.put("Add Smart Equipment",
-                    () -> optionAddSmartEquipment.addSmartEquipment()
+                    optionAddSmartEquipment::addSmartEquipment
             );
             menuItemsMap.put("Remove Smart Equipment",
-                    () -> optionRemoveSmartEquipment.removeSmartEquipment()
+                    optionRemoveSmartEquipment::removeSmartEquipment
             );
-    }
 
+        super.menu(menuItemsMap);
+    }
 }

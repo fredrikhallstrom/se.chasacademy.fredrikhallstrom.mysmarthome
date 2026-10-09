@@ -1,6 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-public interface Lightable {
+interface Lightable {
 
     String getName();
 

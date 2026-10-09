@@ -8,6 +8,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -57,9 +58,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -89,9 +90,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
 
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
@@ -126,9 +127,9 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -165,15 +166,15 @@ public class SmartEquipmentSearchServiceTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(clock));
         fakeLamp1.setId(fakeIdStart);
         fakeIdStart++;
 
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(clock));
         fakeLamp2.setId(fakeIdStart);
         fakeIdStart++;
 
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(clock));
         fakeLamp3.setId(fakeIdStart);
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
@@ -185,10 +186,10 @@ public class SmartEquipmentSearchServiceTest {
         when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
 
         // Act
-        SmartEquipment gettedSmartEquipmentById = smartEquipmentSearchService.searchSmartEquipmentById(1);
+        SmartEquipment smartEquipmentByIdFromSearchService = smartEquipmentSearchService.searchSmartEquipmentById(1);
 
         // Assert
-        assertEquals(fakeLamp1, gettedSmartEquipmentById);
+        assertEquals(fakeLamp1, smartEquipmentByIdFromSearchService);
 
     }
 }

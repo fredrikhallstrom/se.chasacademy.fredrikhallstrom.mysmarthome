@@ -9,6 +9,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SmartEquipment
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.*;
 
+import java.time.Clock;
 import java.util.Arrays;
 
 import static se.chasacademy.fredrikhallstrom.mysmarthome.ui.ascii.WelcomeLogo.welcomeLogo;
@@ -16,9 +17,10 @@ import static se.chasacademy.fredrikhallstrom.mysmarthome.ui.ascii.WelcomeLogo.w
 public class Main {
     void main(String[] args) {
         SmartEquipmentRepository smartEquipmentRepository = new InMemoryRepository();
+        Clock clock = Clock.systemUTC();
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
-        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService();
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(clock);
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(
                 smartEquipmentService
         );

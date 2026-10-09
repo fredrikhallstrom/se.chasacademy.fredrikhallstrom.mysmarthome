@@ -2,14 +2,14 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstates
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 
-public class MenuSmartEquipmentStateChange {
+class OptionSmartEquipmentStateChange {
     private final SmartEquipmentHandlerService smartEquipmentHandlerService;
 
-    public MenuSmartEquipmentStateChange(SmartEquipmentHandlerService smartEquipmentHandlerService) {
+    OptionSmartEquipmentStateChange(SmartEquipmentHandlerService smartEquipmentHandlerService) {
         this.smartEquipmentHandlerService = smartEquipmentHandlerService;
     }
 
-    public void menu() {
+    void changeSmartEquipmentState() {
 
     }
 }

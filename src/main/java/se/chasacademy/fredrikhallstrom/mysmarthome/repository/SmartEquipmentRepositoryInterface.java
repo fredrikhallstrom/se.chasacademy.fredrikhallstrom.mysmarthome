@@ -10,9 +10,7 @@ sealed interface SmartEquipmentRepositoryInterface permits SmartEquipmentReposit
 
     int insertSmartEquipment(SmartEquipment smartEquipment);
 
-    void removeSmartEquipment(SmartEquipment smartEquipment);
-
-    int getSmartEquipmentId(SmartEquipment smartEquipment);
+    boolean removeSmartEquipment(int smartEquipmentIdToRemove);
 
     int getAndIncrementUniqueCounter();
 

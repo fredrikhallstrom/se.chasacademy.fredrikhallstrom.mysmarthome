@@ -2,6 +2,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service.search;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
@@ -16,8 +17,12 @@ public class SmartEquipmentSearchService {
         this.smartEquipmentService = smartEquipmentService;
     }
 
-    public List<SmartEquipment> searchSmartEquipmentByName(String searchTerm, SearchSortingType sortingType, SmartEquipmentService smartEquipmentService)
-            throws SearchFoundNoSmartEquipmentsByNameException {
+    public List<SmartEquipment> searchSmartEquipmentByName(
+            String searchTerm,
+            SearchSortingType sortingType)
+            throws
+            SearchFoundNoSmartEquipmentsByNameException,
+            SmartEquipmentInRepositoryNotFoundException {
 
         List<SmartEquipment> smartEquipments = smartEquipmentService.AllSmartEquipmentAsList();
         List<SmartEquipment> foundSmartEquipment = new ArrayList<>();
@@ -46,7 +51,10 @@ public class SmartEquipmentSearchService {
 
     }
 
-    public SmartEquipment searchSmartEquipmentById(int id) throws SearchFoundNoSmartEquipmentByIdException {
+    public SmartEquipment searchSmartEquipmentById(int id) throws
+            SearchFoundNoSmartEquipmentByIdException,
+            SmartEquipmentInRepositoryNotFoundException {
+
         for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
             if (smartEquipment.getId() == id) {
                 return smartEquipment;

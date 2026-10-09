@@ -19,7 +19,7 @@ public class SmartEquipmentService {
         this.clock = clock;
     }
 
-    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) throws CreationOfSmartEquipmentDidFailSomewhereException, SmartEquipmentIdCantBeNegative {
+    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) throws CreationOfSmartEquipmentDidFailSomewhereException, SmartEquipmentIdCantBeNegativeException {
         int assignedId = smartEquipmentRepository.insertSmartEquipment(smartEquipment);
         smartEquipment.setId(assignedId);
         if  (smartEquipment.getId() == assignedId) {
@@ -39,8 +39,15 @@ public class SmartEquipmentService {
         return smartEquipmentRepository.removeSmartEquipment(smartEquipmentIdToRemove);
     }
 
-    public SmartEquipment createSmartEquipment(String name, SmartEquipmentType type) throws SmartEquipmentIdCantBeNegative {
-         validateSmartEquipmentName(name, type);
+    public SmartEquipment createSmartEquipment(
+            String name,
+            SmartEquipmentType type)
+            throws
+            SmartEquipmentIdCantBeNegativeException,
+            InvalidSmartEquipmentNameException,
+            CreationOfSmartEquipmentDidFailSomewhereException {
+
+        validateSmartEquipmentName(name, type);
 
          SmartEquipment smartEquipment = type.getCreator()
                 .create(name, getCurrentLocalDateTime());
@@ -61,7 +68,12 @@ public class SmartEquipmentService {
         return LocalDateTime.now(clock);
     }
 
-   public void validateSmartEquipmentName(String smartEquipmentName, SmartEquipmentType typeChoice) {
+   public void validateSmartEquipmentName(
+           String smartEquipmentName,
+           SmartEquipmentType typeChoice)
+           throws
+           InvalidSmartEquipmentNameException {
+
         boolean evaluatedExpressionOfNameEqualsType;
         try {
              evaluatedExpressionOfNameEqualsType = AllSmartEquipmentAsList().stream().anyMatch(

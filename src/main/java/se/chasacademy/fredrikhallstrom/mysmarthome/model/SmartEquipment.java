@@ -2,7 +2,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegative;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.util.TimeFormatter;
 
 import java.time.LocalDateTime;
@@ -49,15 +49,19 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         return isStateActive;
     }
 
-    public void setId(int assignedId) {
+    public void setId(int assignedId) throws
+            SmartEquipmentIdCantBeNegativeException {
+
         if (assignedId < 0) {
-            throw new SmartEquipmentIdCantBeNegative(assignedId);
+            throw new SmartEquipmentIdCantBeNegativeException(assignedId);
         } else if (id == -1) {
             this.id = assignedId;
         }
     }
 
-    public String setStateActive(LocalDateTime activationTime) {
+    public String setStateActive(LocalDateTime activationTime) throws
+            CantActiveAlreadyActivatedEquipmentException {
+
         if (isStateActive) {
             throw new CantActiveAlreadyActivatedEquipmentException();
         }
@@ -68,7 +72,9 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         return "";
     }
 
-    public String setStateInactive(LocalDateTime deactivationTime) {
+    public String setStateInactive(LocalDateTime deactivationTime) throws
+            CantDeactivateAlreadyDeactivatedEquipmentException {
+
         if (!isStateActive) {
             throw new CantDeactivateAlreadyDeactivatedEquipmentException();
         }

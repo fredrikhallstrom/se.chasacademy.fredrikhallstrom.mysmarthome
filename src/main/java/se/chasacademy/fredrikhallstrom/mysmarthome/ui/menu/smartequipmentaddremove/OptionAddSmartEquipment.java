@@ -3,8 +3,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentaddrem
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegative;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceMustBeANumberException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
@@ -16,7 +15,7 @@ class OptionAddSmartEquipment {
         this.smartEquipmentService = smartEquipmentService;
     }
 
-    void addSmartEquipment() throws MustBeANumberException {
+    void addSmartEquipment() {
         try {
             String optionString = "Add SmartEquipment";
             IO.println(optionString);
@@ -80,9 +79,8 @@ class OptionAddSmartEquipment {
             }
 
         } catch (CreationOfSmartEquipmentDidFailSomewhereException |
-                 MenuChoiceMustBeANumberException |
                  MustBeANumberException |
-                 SmartEquipmentIdCantBeNegative error) {
+                 SmartEquipmentIdCantBeNegativeException error) {
 
             IO.println(error.getMessage());
 

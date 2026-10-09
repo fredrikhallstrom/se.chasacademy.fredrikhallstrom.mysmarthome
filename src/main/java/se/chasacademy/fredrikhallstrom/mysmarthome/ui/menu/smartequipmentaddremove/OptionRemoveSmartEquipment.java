@@ -1,6 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentaddremove;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
 class OptionRemoveSmartEquipment {
@@ -29,6 +30,9 @@ class OptionRemoveSmartEquipment {
 
             } catch (MustBeANumberException error) {
                 IO.println(error.getMessage());
+            } catch (RemoveOfSmartEquipmentDidFailSomewhereException error) {
+                IO.println(error.getMessage());
+                break;
             }
         }
 

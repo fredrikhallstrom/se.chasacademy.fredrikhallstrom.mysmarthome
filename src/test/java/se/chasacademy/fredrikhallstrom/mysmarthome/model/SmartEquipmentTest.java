@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -184,7 +185,7 @@ public class SmartEquipmentTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenIdIsNegativeTest() {
+    public void shouldThrowSmartEquipmentIdCantBeNegativeExceptionWhenIdIsNegativeTest() {
         // Arrange
         setUpForSubclassInstanceWithFixedClock();
         int negativeId = -5;
@@ -193,7 +194,7 @@ public class SmartEquipmentTest {
         Executable throwAct = () -> instancedSubClass.setId(negativeId);
 
         // Assert
-        assertThrows(IllegalArgumentException.class, throwAct);
+        assertThrows(SmartEquipmentIdCantBeNegativeException.class, throwAct);
     }
 
 

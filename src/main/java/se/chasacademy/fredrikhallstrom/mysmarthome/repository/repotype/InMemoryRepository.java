@@ -29,7 +29,9 @@ public class InMemoryRepository extends SmartEquipmentRepository {
     }
 
     @Override
-    public boolean removeSmartEquipment(int smartEquipmentIdToRemove) {
+    public boolean removeSmartEquipment(int smartEquipmentIdToRemove) throws
+            RemoveOfSmartEquipmentDidFailSomewhereException {
+
         if (smartEquipmentRepositoryMap.keySet().stream().noneMatch(
                 smartEquipment -> smartEquipment.getId() == smartEquipmentIdToRemove)
                 ||

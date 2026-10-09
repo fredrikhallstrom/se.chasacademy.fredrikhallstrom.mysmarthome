@@ -42,7 +42,7 @@ public class SmartEquipmentSearchServiceTest {
 
         // Act
         List<SmartEquipment> foundSmartEquipmentList = smartEquipmentSearchService.searchSmartEquipmentByName(
-                "fake", SearchSortingType.NONE, smartEquipmentService
+                "fake", SearchSortingType.NONE
         );
 
         // Assert
@@ -73,7 +73,7 @@ public class SmartEquipmentSearchServiceTest {
         // Act
         Executable throwAct = () ->
                 smartEquipmentSearchService.searchSmartEquipmentByName(
-                        "notInMap", SearchSortingType.NONE, smartEquipmentService
+                        "notInMap", SearchSortingType.NONE
                 );
 
 
@@ -113,7 +113,7 @@ public class SmartEquipmentSearchServiceTest {
         // Act
         List<SmartEquipment> foundSmartEquipmentSorted = smartEquipmentSearchService.searchSmartEquipmentByName(
                 "fake",
-                SearchSortingType.ASCENDING, smartEquipmentService);
+                SearchSortingType.ASCENDING);
 
         // Assert
         assertEquals(referenceList, foundSmartEquipmentSorted);
@@ -149,7 +149,7 @@ public class SmartEquipmentSearchServiceTest {
         // Act
         List<SmartEquipment> foundSmartEquipmentSorted = smartEquipmentSearchService.searchSmartEquipmentByName(
                 "fake",
-                SearchSortingType.DESCENDING, smartEquipmentService
+                SearchSortingType.DESCENDING
         );
 
         // Assert

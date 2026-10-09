@@ -19,7 +19,9 @@ public class SmartEquipmentService {
         this.clock = clock;
     }
 
-    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) throws CreationOfSmartEquipmentDidFailSomewhereException, SmartEquipmentIdCantBeNegativeException {
+    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment)
+            throws CreationOfSmartEquipmentDidFailSomewhereException, SmartEquipmentIdCantBeNegativeException {
+
         int assignedId = smartEquipmentRepository.insertSmartEquipment(smartEquipment);
         smartEquipment.setId(assignedId);
         if  (smartEquipment.getId() == assignedId) {
@@ -28,22 +30,18 @@ public class SmartEquipmentService {
         throw new CreationOfSmartEquipmentDidFailSomewhereException();
     }
 
-    public boolean removeSmartEquipment(String smartEquipmentIdStringToRemove) throws MustBeANumberException, RemoveOfSmartEquipmentDidFailSomewhereException {
-        int smartEquipmentIdToRemove;
-        try {
-            smartEquipmentIdToRemove = Integer.parseInt(String.valueOf(smartEquipmentIdStringToRemove));
-        } catch (NumberFormatException e) {
-            throw new MustBeANumberException();
-        }
+    public boolean removeSmartEquipment(String smartEquipmentIdStringToRemove)
+            throws MustBeANumberException, RemoveOfSmartEquipmentDidFailSomewhereException {
 
+        int smartEquipmentIdToRemove = validateSmartEquipmentId(smartEquipmentIdStringToRemove);
         return smartEquipmentRepository.removeSmartEquipment(smartEquipmentIdToRemove);
+
     }
 
     public SmartEquipment createSmartEquipment(
             String name,
             SmartEquipmentType type)
-            throws
-            SmartEquipmentIdCantBeNegativeException,
+            throws SmartEquipmentIdCantBeNegativeException,
             InvalidSmartEquipmentNameException,
             CreationOfSmartEquipmentDidFailSomewhereException {
 
@@ -71,8 +69,7 @@ public class SmartEquipmentService {
    public void validateSmartEquipmentName(
            String smartEquipmentName,
            SmartEquipmentType typeChoice)
-           throws
-           InvalidSmartEquipmentNameException {
+           throws InvalidSmartEquipmentNameException {
 
         boolean evaluatedExpressionOfNameEqualsType;
         try {
@@ -92,12 +89,13 @@ public class SmartEquipmentService {
         }
    }
 
-   public boolean validateSmartEquipmentId(String smartEquipmentIdString) {
+   public int validateSmartEquipmentId(String smartEquipmentIdString)
+           throws MustBeANumberException {
+
         try {
-            Integer.parseInt(smartEquipmentIdString);
-            return true;
+            return Integer.parseInt(smartEquipmentIdString);
         } catch (NumberFormatException e) {
-            return false;
+            throw new MustBeANumberException();
         }
    }
 }

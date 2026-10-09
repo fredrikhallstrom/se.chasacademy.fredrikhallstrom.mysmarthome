@@ -19,7 +19,7 @@ public class SmartEquipmentService {
         this.clock = clock;
     }
 
-    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) throws CreationOfSmartEquipmentDidFailSomewhereException {
+    public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment) throws CreationOfSmartEquipmentDidFailSomewhereException, SmartEquipmentIdCantBeNegative {
         int assignedId = smartEquipmentRepository.insertSmartEquipment(smartEquipment);
         smartEquipment.setId(assignedId);
         if  (smartEquipment.getId() == assignedId) {
@@ -39,7 +39,7 @@ public class SmartEquipmentService {
         return smartEquipmentRepository.removeSmartEquipment(smartEquipmentIdToRemove);
     }
 
-    public SmartEquipment createSmartEquipment(String name, SmartEquipmentType type) {
+    public SmartEquipment createSmartEquipment(String name, SmartEquipmentType type) throws SmartEquipmentIdCantBeNegative {
          validateSmartEquipmentName(name, type);
 
          SmartEquipment smartEquipment = type.getCreator()

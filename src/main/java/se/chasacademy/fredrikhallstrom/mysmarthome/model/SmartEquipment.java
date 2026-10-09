@@ -2,6 +2,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegative;
 import se.chasacademy.fredrikhallstrom.mysmarthome.util.TimeFormatter;
 
 import java.time.LocalDateTime;
@@ -49,7 +50,9 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
     }
 
     public void setId(int assignedId) {
-        if (id == -1) {
+        if (assignedId < 0) {
+            throw new SmartEquipmentIdCantBeNegative(assignedId);
+        } else if (id == -1) {
             this.id = assignedId;
         }
     }

@@ -3,6 +3,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentaddrem
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegative;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceMustBeANumberException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
@@ -80,7 +81,8 @@ class OptionAddSmartEquipment {
 
         } catch (CreationOfSmartEquipmentDidFailSomewhereException |
                  MenuChoiceMustBeANumberException |
-                 MustBeANumberException error) {
+                 MustBeANumberException |
+                 SmartEquipmentIdCantBeNegative error) {
 
             IO.println(error.getMessage());
 

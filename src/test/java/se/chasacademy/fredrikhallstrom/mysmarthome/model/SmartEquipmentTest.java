@@ -6,30 +6,32 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyAc
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SmartEquipmentTest {
     // Setup using subclass because of abstract class test
     static Lamp instancedSubClass;
+    static final Clock FIXED_CLOCK = Clock.fixed(Instant.parse("2023-01-01T00:00:00Z"), ZoneOffset.UTC);
 
-    public static void setUpForSubclassInstance() {
-        Clock clock = Clock.systemUTC();
-        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(clock));
+    public static void setUpForSubclassInstanceWithFixedClock() {
+        instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
     }
 
     @Test
     public void shouldSetStateActiveTest() {
         // Arrange
-        setUpForSubclassInstance();
+        setUpForSubclassInstanceWithFixedClock();
 
         if (instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
+            instancedSubClass.setStateInactive(LocalDateTime.now(FIXED_CLOCK));
         }
 
         // Act
-        instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
+        instancedSubClass.setStateActive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
         assertTrue(instancedSubClass.isStateActive());
@@ -38,14 +40,14 @@ public class SmartEquipmentTest {
     @Test
     public void shouldReturnStringFromMethodLightOnInLightableInterfaceTest() {
         // Arrange
-        setUpForSubclassInstance();
+        setUpForSubclassInstanceWithFixedClock();
 
         if (instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
+            instancedSubClass.setStateInactive(LocalDateTime.now(FIXED_CLOCK));
         }
 
         // Act
-        String returnedString = instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
+        String returnedString = instancedSubClass.setStateActive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
         assertEquals(instancedSubClass.lightOn(), returnedString);
@@ -55,14 +57,14 @@ public class SmartEquipmentTest {
     @Test
     public void shouldReturnStringFromMethodLightOffInLightableInterfaceTest() {
         // Arrange
-        setUpForSubclassInstance();
+        setUpForSubclassInstanceWithFixedClock();
 
         if (!instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
+            instancedSubClass.setStateActive(LocalDateTime.now(FIXED_CLOCK));
         }
 
         // Act
-        String returnedString = instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
+        String returnedString = instancedSubClass.setStateInactive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
         assertEquals(instancedSubClass.lightOff(), returnedString);
@@ -71,14 +73,14 @@ public class SmartEquipmentTest {
     @Test
     public void shouldThrowCantActiveAlreadyActivatedEquipmentTest() {
         // Arrange
-        setUpForSubclassInstance();
+        setUpForSubclassInstanceWithFixedClock();
 
         if (!instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
+            instancedSubClass.setStateActive(LocalDateTime.now(FIXED_CLOCK));
         }
 
         // Act
-        Executable throwAct = () -> instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
+        Executable throwAct = () -> instancedSubClass.setStateActive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
         assertThrows(CantActiveAlreadyActivatedEquipmentException.class, throwAct);
@@ -87,14 +89,14 @@ public class SmartEquipmentTest {
     @Test
     public void shouldSetStateInactiveTest() {
         // Arrange
-        setUpForSubclassInstance();
+        setUpForSubclassInstanceWithFixedClock();
 
         if (!instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateActive(LocalDateTime.now(Clock.systemUTC()));
+            instancedSubClass.setStateActive(LocalDateTime.now(FIXED_CLOCK));
         }
 
         // Act
-        instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
+        instancedSubClass.setStateInactive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
         assertFalse(instancedSubClass.isStateActive());
@@ -103,14 +105,14 @@ public class SmartEquipmentTest {
     @Test
     public void shouldThrowCantDeactivateAlreadyDeactivatedEquipmentTest() {
         // Arrange
-        setUpForSubclassInstance();
+        setUpForSubclassInstanceWithFixedClock();
 
         if (instancedSubClass.isStateActive()) {
-            instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
+            instancedSubClass.setStateInactive(LocalDateTime.now(FIXED_CLOCK));
         }
 
         // Act
-        Executable throwAct = () -> instancedSubClass.setStateInactive(LocalDateTime.now(Clock.systemUTC()));
+        Executable throwAct = () -> instancedSubClass.setStateInactive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
         assertThrows(CantDeactivateAlreadyDeactivatedEquipmentException.class, throwAct);

@@ -38,7 +38,7 @@ public class SmartEquipmentSearchServiceTest {
 
         List<SmartEquipment> referenceList = new ArrayList<>(List.copyOf(fakeRepoList));
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         List<SmartEquipment> foundSmartEquipmentList = smartEquipmentSearchService.searchSmartEquipmentByName(
@@ -68,7 +68,7 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp3)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         Executable throwAct = () ->
@@ -107,7 +107,7 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp3)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
 
         // Act
@@ -143,7 +143,7 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp1)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
 
         // Act
@@ -183,7 +183,7 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp3)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         SmartEquipment smartEquipmentByIdFromSearchService = smartEquipmentSearchService.searchSmartEquipmentById(1);

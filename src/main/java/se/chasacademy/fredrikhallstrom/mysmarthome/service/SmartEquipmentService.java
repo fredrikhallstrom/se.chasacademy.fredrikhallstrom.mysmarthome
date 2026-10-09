@@ -40,7 +40,7 @@ public class SmartEquipmentService {
 
     }
 
-    public List<SmartEquipment> listAllSmartEquipment() throws SmartEquipmentInRepositoryNotFoundException {
+    public List<SmartEquipment> AllSmartEquipmentAsList() throws SmartEquipmentInRepositoryNotFoundException {
         List<SmartEquipment> listOfSmartEquipment = new ArrayList<>(smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet());
 
         if (listOfSmartEquipment.isEmpty()) {

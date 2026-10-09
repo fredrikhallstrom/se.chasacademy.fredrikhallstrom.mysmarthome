@@ -19,7 +19,7 @@ public class SmartEquipmentSearchService {
     public List<SmartEquipment> searchSmartEquipmentByName(String searchTerm, SearchSortingType sortingType, SmartEquipmentService smartEquipmentService)
             throws SearchFoundNoSmartEquipmentsByNameException {
 
-        List<SmartEquipment> smartEquipments = smartEquipmentService.listAllSmartEquipment();
+        List<SmartEquipment> smartEquipments = smartEquipmentService.AllSmartEquipmentAsList();
         List<SmartEquipment> foundSmartEquipment = new ArrayList<>();
 
         for (SmartEquipment smartEquipment : smartEquipments) {
@@ -47,7 +47,7 @@ public class SmartEquipmentSearchService {
     }
 
     public SmartEquipment searchSmartEquipmentById(int id) throws SearchFoundNoSmartEquipmentByIdException {
-        for (SmartEquipment smartEquipment : smartEquipmentService.listAllSmartEquipment()) {
+        for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
             if (smartEquipment.getId() == id) {
                 return smartEquipment;
             }

@@ -121,7 +121,7 @@ public class SmartEquipmentServiceTest {
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
         // Act
-        List<SmartEquipment> smartEquipmentList = smartEquipmentService.listAllSmartEquipment();
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.AllSmartEquipmentAsList();
 
         // Assert
         assertEquals(referenceList, smartEquipmentList);
@@ -141,7 +141,7 @@ public class SmartEquipmentServiceTest {
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
         // Act
-        Executable throwAct = smartEquipmentService::listAllSmartEquipment;
+        Executable throwAct = smartEquipmentService::AllSmartEquipmentAsList;
 
         // Assert
         assertThrows(SmartEquipmentInRepositoryNotFoundException.class, throwAct);

@@ -23,7 +23,7 @@ public class MenuSmartEquipmentList extends BaseForMenu {
     }
 
     private void listSmartEquipmentByState() {
-        for (SmartEquipment smartEquipment : smartEquipmentService.listAllSmartEquipment()) {
+        for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
             IO.println(smartEquipment);
         }
     }

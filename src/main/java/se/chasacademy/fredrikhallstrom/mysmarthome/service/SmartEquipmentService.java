@@ -2,6 +2,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
+import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
 import java.time.Clock;
@@ -36,8 +37,14 @@ public class SmartEquipmentService {
         }
 
         return smartEquipmentRepository.removeSmartEquipment(smartEquipmentIdToRemove);
+    }
 
+    public SmartEquipment createSmartEquipment(String name, SmartEquipmentType type) {
+         validateSmartEquipmentName(name, type);
 
+         SmartEquipment smartEquipment = type.getCreator()
+                .create(name, getCurrentLocalDateTime());
+        return addSmartEquipment(smartEquipment);
     }
 
     public List<SmartEquipment> AllSmartEquipmentAsList() throws SmartEquipmentInRepositoryNotFoundException {
@@ -50,7 +57,35 @@ public class SmartEquipmentService {
         return listOfSmartEquipment;
     }
 
-    public LocalDateTime getCurrentLocalDateTime() {
+    private LocalDateTime getCurrentLocalDateTime() {
         return LocalDateTime.now(clock);
     }
+
+   public void validateSmartEquipmentName(String smartEquipmentName, SmartEquipmentType typeChoice) {
+        boolean evaluatedExpressionOfNameEqualsType;
+        try {
+             evaluatedExpressionOfNameEqualsType = AllSmartEquipmentAsList().stream().anyMatch(
+                    smartEquipment -> smartEquipment.getName()
+                           .equalsIgnoreCase(smartEquipmentName));
+        } catch (SmartEquipmentInRepositoryNotFoundException e) {
+            evaluatedExpressionOfNameEqualsType = false;
+        }
+
+        if (smartEquipmentName == null
+                || !smartEquipmentName.matches("[a-zA-Z][a-zA-Z0-9 ]*")
+                || evaluatedExpressionOfNameEqualsType
+                || smartEquipmentName.equalsIgnoreCase(typeChoice.getDisplayName())
+        ) {
+            throw new InvalidSmartEquipmentNameException();
+        }
+   }
+
+   public boolean validateSmartEquipmentId(String smartEquipmentIdString) {
+        try {
+            Integer.parseInt(smartEquipmentIdString);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+   }
 }

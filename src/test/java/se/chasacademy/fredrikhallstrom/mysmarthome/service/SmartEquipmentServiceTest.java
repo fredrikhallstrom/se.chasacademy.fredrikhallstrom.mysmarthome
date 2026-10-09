@@ -2,19 +2,33 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.internal.util.Supplier;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class SmartEquipmentServiceTest {
+    static final Clock FIXED_CLOCK = Clock.fixed(Instant.parse("2026-01-01T12:00:00Z"), ZoneOffset.UTC);
+
+    private SmartEquipmentService createServiceWithFixedClock() {
+        return new SmartEquipmentService(new InMemoryRepository(), FIXED_CLOCK);
+    }
+
     @Test
     public void InsertsSmartEquipmentInInMemoryRepositoryTest() {
         // Arrange
@@ -148,5 +162,109 @@ public class SmartEquipmentServiceTest {
     }
 
 
+    // AI generated Tests - BEGIN
+    // ---------- createSmartEquipment: normal cases ----------
 
+    @Test
+    public void shouldCreateSmartEquipmentWithNameAndInstallationTimeFromClockTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        SmartEquipment created = smartEquipmentService.createSmartEquipment("Kitchen lamp", SmartEquipmentType.LAMP);
+
+        // Assert
+        assertInstanceOf(Lamp.class, created);
+        assertEquals("Kitchen lamp", created.getName());
+        assertEquals(LocalDateTime.now(FIXED_CLOCK), created.getInstallationTime());
+    }
+
+    @ParameterizedTest
+    @EnumSource(SmartEquipmentType.class)
+    public void shouldCreateCorrectTypeAndStoreItInRepositoryTest(SmartEquipmentType type) {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        SmartEquipment created = smartEquipmentService.createSmartEquipment("Hallway", type);
+
+        // Assert
+        assertEquals(type.getDisplayName(), created.getClass().getSimpleName());
+        assertTrue(smartEquipmentService.AllSmartEquipmentAsList().contains(created));
+    }
+
+    // ---------- createSmartEquipment: boundary cases ----------
+
+    @Test
+    public void shouldAcceptSingleLetterNameTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        SmartEquipment created = smartEquipmentService.createSmartEquipment("a", SmartEquipmentType.LAMP);
+
+        // Assert
+        assertEquals("a", created.getName());
+    }
+
+    @Test
+    public void shouldAcceptNameThatOnlyDiffersByOneCharacterFromExistingTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        SmartEquipment first = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        SmartEquipment second = smartEquipmentService.createSmartEquipment("Kitchen2", SmartEquipmentType.LAMP);
+
+        // Assert
+        assertEquals("Kitchen2", second.getName());
+        assertNotEquals(first.getId(), second.getId());
+    }
+
+    // ---------- createSmartEquipment: error-handling cases ----------
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "2lamp", "lamp!", "Kök"})
+    public void shouldThrowInvalidSmartEquipmentNameExceptionWhenNameHasInvalidFormatTest(String invalidName) {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.createSmartEquipment(invalidName, SmartEquipmentType.LAMP);
+
+        // Assert
+        assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
+        assertThrows(SmartEquipmentInRepositoryNotFoundException.class, smartEquipmentService::AllSmartEquipmentAsList);
+    }
+
+    @Test
+    public void shouldThrowInvalidSmartEquipmentNameExceptionWhenNameAlreadyExistsIgnoringCaseTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.createSmartEquipment("KITCHEN", SmartEquipmentType.RADIATOR);
+
+        // Assert
+        assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
+        assertEquals(1, smartEquipmentService.AllSmartEquipmentAsList().size());
+    }
+
+    @ParameterizedTest
+    @EnumSource(SmartEquipmentType.class)
+    public void shouldThrowInvalidSmartEquipmentNameExceptionWhenNameEqualsTypeTest(SmartEquipmentType type) {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        String nameSameAsType = type.getDisplayName().toLowerCase();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.createSmartEquipment(nameSameAsType, type);
+
+        // Assert
+        assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
+    }
+
+    // AI generated Tests - STOP
 }

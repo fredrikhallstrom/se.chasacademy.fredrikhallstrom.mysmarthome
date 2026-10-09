@@ -1,8 +1,8 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentaddremove;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceMustBeANumberException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
@@ -60,49 +60,21 @@ class OptionAddSmartEquipment {
             IO.println(String.format("What name do you want on your %s?", typeChoice.getDisplayName()));
 
 
-            boolean emptyName = true;
-            while (emptyName) {
-                String choiceName = IO.readln("Name?: ");
-
-                boolean evaluatedExpressionOfNameEqualsType;
+            while (true) {
+                String choiceName;
                 try {
-                    evaluatedExpressionOfNameEqualsType = smartEquipmentService.AllSmartEquipmentAsList().stream().anyMatch(
-                            smartEquipment -> smartEquipment.getName()
-                                    .equalsIgnoreCase(choiceName));
-                } catch (SmartEquipmentInRepositoryNotFoundException e) {
-                    evaluatedExpressionOfNameEqualsType = false;
-                }
+                    choiceName = IO.readln("Name?: ");
+                    if (choiceName == null) {
+                        return;
+                    }
 
-                if (choiceName == null
-                        || !choiceName.matches("[a-zA-Z][a-zA-Z0-9 ]*")
-                        || evaluatedExpressionOfNameEqualsType
-                        || choiceName.equalsIgnoreCase(typeChoice.getDisplayName())
-                ) {
-                    IO.println("""
-                            
-                            Name ->
-                            \tCan't start with a number
-                            \tCan't have same name as another SmartEquipment
-                            \tCan't have same name as type
-                            \tCan only: contain letters, numbers and spaces
-                            \tMust not be blank
-                            
-                            Try Again!
-                            """);
-                } else {
-                    emptyName = false;
-                    SmartEquipment createdSmartEquipment =
-                            smartEquipmentService
-                                    .addSmartEquipment(typeChoice.getCreator()
-                                            .create(choiceName, smartEquipmentService
-                                                    .getCurrentLocalDateTime()));
-                    IO.println(
-                            "\n" +
-                                    "SmartEquipment was created:\n\n" +
-                                    createdSmartEquipment +
-                                    "\n"
+                    SmartEquipment createdSmartEquipment = smartEquipmentService.createSmartEquipment(choiceName, typeChoice);
 
-                    );
+                    IO.println("\nSmartEquipment was created:\n\n" + createdSmartEquipment + "\n");
+                    return;
+
+                } catch (InvalidSmartEquipmentNameException error) {
+                    IO.println(error.getMessage());
                 }
             }
 

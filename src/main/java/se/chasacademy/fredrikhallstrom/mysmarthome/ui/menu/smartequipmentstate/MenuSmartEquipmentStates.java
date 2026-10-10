@@ -1,4 +1,4 @@
-package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstates;
+package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstate;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
@@ -10,8 +10,18 @@ public class MenuSmartEquipmentStates extends BaseForMenu {
     private final OptionSmartEquipmentStateChange optionSmartEquipmentStateChange;
 
     public MenuSmartEquipmentStates(SmartEquipmentHandlerService smartEquipmentHandlerService) {
-        this.optionSmartEquipmentShowState = new OptionSmartEquipmentShowState(smartEquipmentHandlerService);
-        this.optionSmartEquipmentStateChange = new OptionSmartEquipmentStateChange(smartEquipmentHandlerService);
+        OptionSmartEquipmentStatesHelper optionSmartEquipmentStatesHelper = new OptionSmartEquipmentStatesHelper(
+                smartEquipmentHandlerService
+        );
+        this.optionSmartEquipmentShowState = new OptionSmartEquipmentShowState(
+                smartEquipmentHandlerService,
+                optionSmartEquipmentStatesHelper
+        );
+        this.optionSmartEquipmentStateChange = new OptionSmartEquipmentStateChange(
+                smartEquipmentHandlerService,
+                optionSmartEquipmentStatesHelper
+        );
+
     }
 
     @Override
@@ -28,8 +38,8 @@ public class MenuSmartEquipmentStates extends BaseForMenu {
         );
 
         super.menu(menuItemsMap);
-
-
     }
+
+
 }
 

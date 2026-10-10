@@ -20,13 +20,25 @@ public class Main {
         Clock clock = Clock.systemUTC();
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
-        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(clock);
+        SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(smartEquipmentService, clock);
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(
                 smartEquipmentService
         );
 
         if (Arrays.toString(args).contains("demo")) {
             DemoMySmartHome.menu();
+        } else if (Arrays.toString(args).contains("with_fake_repo")) {
+            FakeRepoInit.init(smartEquipmentService, smartEquipmentHandlerService);
+
+            BaseForMenu menuMain = new MenuMain(
+                    smartEquipmentService,
+                    smartEquipmentHandlerService,
+                    smartEquipmentSearchService
+            );
+
+            IO.println(welcomeLogo);
+            menuMain.menu();
+
         } else {
             BaseForMenu menuMain = new MenuMain(
                     smartEquipmentService,

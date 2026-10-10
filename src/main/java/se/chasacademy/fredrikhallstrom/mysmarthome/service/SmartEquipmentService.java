@@ -4,13 +4,14 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
+import se.chasacademy.fredrikhallstrom.mysmarthome.util.InputValidate;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class SmartEquipmentService {
+public class SmartEquipmentService implements InputValidate {
     private final SmartEquipmentRepositoryInterface smartEquipmentRepository;
     private final Clock clock;
 
@@ -33,7 +34,7 @@ public class SmartEquipmentService {
     public boolean removeSmartEquipment(String smartEquipmentIdStringToRemove)
             throws MustBeANumberException, RemoveOfSmartEquipmentDidFailSomewhereException {
 
-        int smartEquipmentIdToRemove = validateSmartEquipmentId(smartEquipmentIdStringToRemove);
+        int smartEquipmentIdToRemove = validateInputStringToInt(smartEquipmentIdStringToRemove);
         return smartEquipmentRepository.removeSmartEquipment(smartEquipmentIdToRemove);
 
     }
@@ -91,13 +92,25 @@ public class SmartEquipmentService {
         }
     }
 
-    public int validateSmartEquipmentId(String smartEquipmentIdString)
-            throws MustBeANumberException {
+    public SortedMap<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
+            throws SmartEquipmentInRepositoryNotFoundException {
 
-        try {
-            return Integer.parseInt(smartEquipmentIdString);
-        } catch (NumberFormatException e) {
-            throw new MustBeANumberException();
+        Map<SmartEquipment, Integer> repoMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
+        return new TreeMap<>(repoMap
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Map.Entry::getValue, Map.Entry::getKey))
+        );
+    }
+
+    public SmartEquipment getSmartEquipmentById(int smartEquipmentId)
+            throws SearchFoundNoSmartEquipmentByIdException {
+        SmartEquipment smartEquipment = getAvailableSmartEquipmentsSortedMapById().get(smartEquipmentId);
+        if (smartEquipment == null) {
+            throw new SearchFoundNoSmartEquipmentByIdException(smartEquipmentId);
         }
+        return smartEquipment;
     }
 }

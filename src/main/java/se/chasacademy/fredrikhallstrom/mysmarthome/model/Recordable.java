@@ -2,14 +2,12 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 interface Recordable {
 
-    String getName();
-
     default String recordOn() {
-        return String.format("Camera, %s is recording", getName());
+        return "recording is on";
     }
 
     default String recordOff() {
-        return String.format("Camera, %s is not recording", getName());
+        return "recording is off";
     }
 
 }

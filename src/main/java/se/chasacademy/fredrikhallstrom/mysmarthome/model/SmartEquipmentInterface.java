@@ -1,11 +1,12 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 interface SmartEquipmentInterface {
     String getName();
 
-    String getStateString();
+    List<String> getStateMessages();
 
     LocalDateTime getInstallationTime();
 

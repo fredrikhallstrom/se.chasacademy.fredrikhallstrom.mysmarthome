@@ -1,6 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Lamp extends SmartEquipment implements Lightable {
     public Lamp(
@@ -10,11 +11,11 @@ public class Lamp extends SmartEquipment implements Lightable {
     }
 
     @Override
-    public String getStateString() {
+    public List<String> getStateMessages() {
         if (isStateActive) {
-            return lightOn();
+            return List.of(lightOn());
         } else {
-            return lightOff();
+            return List.of(lightOff());
         }
     }
 

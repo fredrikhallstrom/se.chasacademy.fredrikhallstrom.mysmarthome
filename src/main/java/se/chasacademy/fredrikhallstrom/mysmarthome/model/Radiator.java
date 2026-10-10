@@ -1,6 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Radiator extends SmartEquipment implements Heatable {
     public Radiator(
@@ -10,11 +11,11 @@ public class Radiator extends SmartEquipment implements Heatable {
     }
 
     @Override
-    public String getStateString() {
+    public List<String> getStateMessages() {
         if (isStateActive) {
-            return heatOn();
+            return List.of(heatOn());
         } else {
-            return heatOff();
+            return List.of(heatOff());
         }
     }
 

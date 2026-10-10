@@ -1,7 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceNumberNotFoundException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.ui.MenuChoiceMustBeANumberException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.menu.MenuChoiceNumberNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.menu.MenuChoiceMustBeANumberException;
 
 import java.util.List;
 import java.util.Map;

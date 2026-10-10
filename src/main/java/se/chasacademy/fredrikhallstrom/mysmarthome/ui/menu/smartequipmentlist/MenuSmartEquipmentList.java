@@ -31,6 +31,7 @@ public class MenuSmartEquipmentList extends BaseForMenu {
             for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
                 IO.println(smartEquipment);
             }
+            IO.println("");
         } catch (SmartEquipmentInRepositoryNotFoundException e) {
             IO.println(e.getMessage());
         }

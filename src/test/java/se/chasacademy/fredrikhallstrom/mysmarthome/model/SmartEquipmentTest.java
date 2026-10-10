@@ -4,20 +4,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedStateException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedStateException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.testutils.FixedClockForTest;
+import se.chasacademy.fredrikhallstrom.mysmarthome.util.TimeFormat;
 
-import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SmartEquipmentTest {
+public class SmartEquipmentTest implements FixedClockForTest {
     // Setup using subclass because of abstract class test
     static Lamp instancedSubClass;
-    static final Clock FIXED_CLOCK = Clock.fixed(Instant.parse("2023-01-01T00:00:00Z"), ZoneOffset.UTC);
 
     public static void setUpForSubclassInstanceWithFixedClock() {
         instancedSubClass = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
@@ -85,7 +83,7 @@ public class SmartEquipmentTest {
         Executable throwAct = () -> instancedSubClass.setStateActive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
-        assertThrows(CantActiveAlreadyActivatedEquipmentException.class, throwAct);
+        assertThrows(CantActiveAlreadyActivatedStateException.class, throwAct);
     }
 
     @Test
@@ -117,7 +115,7 @@ public class SmartEquipmentTest {
         Executable throwAct = () -> instancedSubClass.setStateInactive(LocalDateTime.now(FIXED_CLOCK));
 
         // Assert
-        assertThrows(CantDeactivateAlreadyDeactivatedEquipmentException.class, throwAct);
+        assertThrows(CantDeactivateAlreadyDeactivatedStateException.class, throwAct);
 
     }
 
@@ -197,5 +195,109 @@ public class SmartEquipmentTest {
         assertThrows(SmartEquipmentIdCantBeNegativeException.class, throwAct);
     }
 
+    @Test
+    public void shouldSetLastActivationTimeToGivenTimeTest() {
+        // Arrange
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+        LocalDateTime activationTime = LocalDateTime.now(FIXED_CLOCK).plusHours(1);
 
+        // Act
+        lamp.setStateActive(activationTime);
+
+        // Assert
+        assertEquals(activationTime, lamp.getLastActivationTime());
+    }
+
+    @Test
+    public void shouldSetLastDeactivationTimeToGivenTimeTest() {
+        // Arrange
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+        lamp.setStateActive(LocalDateTime.now(FIXED_CLOCK).plusHours(1));
+        LocalDateTime deactivationTime = LocalDateTime.now(FIXED_CLOCK).plusHours(2);
+
+        // Act
+        lamp.setStateInactive(deactivationTime);
+
+        // Assert
+        assertEquals(deactivationTime, lamp.getLastDeactivationTime());
+    }
+
+    @Test
+    public void shouldBeActiveWithLatestTimeAfterOnOffOnCycleTest() {
+        // Arrange
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+        lamp.setStateActive(LocalDateTime.now(FIXED_CLOCK).plusHours(1));
+        lamp.setStateInactive(LocalDateTime.now(FIXED_CLOCK).plusHours(2));
+        LocalDateTime secondActivationTime = LocalDateTime.now(FIXED_CLOCK).plusHours(3);
+
+        // Act
+        lamp.setStateActive(secondActivationTime);
+
+        // Assert
+        assertTrue(lamp.isStateActive());
+        assertEquals(secondActivationTime, lamp.getLastActivationTime());
+    }
+
+    @Test
+    public void shouldReturnOneLineStringForLampTest() {
+        // Arrange
+        TimeFormat timeFormat = new TimeFormat() {};
+        LocalDateTime installationTime = LocalDateTime.now(FIXED_CLOCK);
+        Lamp lamp = new Lamp("Kitchen", installationTime);
+        lamp.setId(1000);
+        String formattedTime = timeFormat.formatLocalDateTimeAndTimeZoneForSystemDefault(installationTime);
+
+        // Act
+        String result = lamp.toString();
+
+        // Assert
+        assertEquals("Type: Lamp, ID: 1000, Kitchen(Installed: " + formattedTime
+                + ") - Current state: lamp is off @ " + formattedTime, result);
+    }
+
+    @Test
+    public void shouldReturnOtherStatesOnSecondLineForCameraTest() {
+        // Arrange
+        TimeFormat timeFormat = new TimeFormat() {};
+        LocalDateTime installationTime = LocalDateTime.now(FIXED_CLOCK);
+        Camera camera = new Camera("Entrance", installationTime);
+        camera.setId(1001);
+        String formattedTime = timeFormat.formatLocalDateTimeAndTimeZoneForSystemDefault(installationTime);
+
+        // Act
+        String result = camera.toString();
+
+        // Assert
+        assertEquals("Type: Camera, ID: 1001, Entrance(Installed: " + formattedTime
+                + ") - Current state: recording is off @ " + formattedTime
+                + "\n\tOther state/-s: lamp is off", result);
+    }
+
+    @Test
+    public void shouldShowDeactivationTimeWhenActivationAndDeactivationTimeAreEqualTest() {
+        // Arrange
+        TimeFormat timeFormat = new TimeFormat() {};
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+        LocalDateTime sameTime = LocalDateTime.now(FIXED_CLOCK).plusHours(1);
+        lamp.setStateActive(sameTime);
+        lamp.setStateInactive(sameTime);
+
+        // Act
+        String result = lamp.toString();
+
+        // Assert
+        assertTrue(result.endsWith("lamp is off @ " + timeFormat.formatLocalDateTimeAndTimeZoneForSystemDefault(sameTime)));
+    }
+
+    @Test
+    public void shouldShowIdMinusOneBeforeSavedInRepositoryTest() {
+        // Arrange
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+
+        // Act
+        String result = lamp.toString();
+
+        // Assert
+        assertTrue(result.startsWith("Type: Lamp, ID: -1, Kitchen"));
+    }
 }

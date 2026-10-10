@@ -1,5 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.repository;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InsertOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 
 import java.util.HashMap;
@@ -11,4 +13,8 @@ public abstract class SmartEquipmentRepository implements SmartEquipmentReposito
     public Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap() {
         return Map.copyOf(smartEquipmentRepositoryMap);
     }
+
+    public abstract boolean removeSmartEquipment(int smartEquipmentIdToRemove) throws RemoveOfSmartEquipmentDidFailSomewhereException;
+
+    public abstract int insertSmartEquipment(SmartEquipment smartEquipment) throws InsertOfSmartEquipmentDidFailSomewhereException;
 }

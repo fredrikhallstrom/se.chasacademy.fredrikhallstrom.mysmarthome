@@ -8,7 +8,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.demonstration.MenuDem
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentaddremove.MenuSmartEquipmentAddRemove;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentlist.MenuSmartEquipmentList;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentsearch.MenuSmartEquipmentSearch;
-import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstates.MenuSmartEquipmentStates;
+import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstate.MenuSmartEquipmentStates;
 
 import java.util.LinkedHashMap;
 

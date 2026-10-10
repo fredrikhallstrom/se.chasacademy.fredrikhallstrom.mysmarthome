@@ -1,5 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InsertOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
@@ -18,8 +19,13 @@ public class InMemoryRepository extends SmartEquipmentRepository {
     }
 
     @Override
-    public int insertSmartEquipment(SmartEquipment smartEquipment) {
+    public int insertSmartEquipment(SmartEquipment smartEquipment) throws InsertOfSmartEquipmentDidFailSomewhereException {
+        if (smartEquipment == null) {
+            throw new InsertOfSmartEquipmentDidFailSomewhereException();
+        }
+
         int assignedId = getAndIncrementUniqueCounter();
+
         smartEquipmentRepositoryMap.put(smartEquipment, assignedId);
         return assignedId;
     }

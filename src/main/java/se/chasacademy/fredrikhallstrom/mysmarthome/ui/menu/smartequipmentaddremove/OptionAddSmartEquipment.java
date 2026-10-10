@@ -7,8 +7,9 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCan
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.util.InputValidate;
 
-class OptionAddSmartEquipment {
+class OptionAddSmartEquipment implements InputValidate {
     private final SmartEquipmentService smartEquipmentService;
 
     OptionAddSmartEquipment(SmartEquipmentService smartEquipmentService) {
@@ -29,14 +30,8 @@ class OptionAddSmartEquipment {
             }
             IO.println((SmartEquipmentType.values().length + 1) + ". Abort");
 
-            String choiceString = IO.readln("\nChoice: ");
+            int choiceInt = validateInputStringToInt(IO.readln("\nChoice: "));
             IO.println("");
-            int choiceInt;
-            try {
-                choiceInt = Integer.parseInt(choiceString);
-            } catch (NumberFormatException e) {
-                throw new MustBeANumberException();
-            }
 
             if (choiceInt == SmartEquipmentType.values().length + 1) {
                 return;

@@ -1,8 +1,13 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-import java.time.LocalDateTime;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedStateException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedStateException;
 
-public class Camera extends SmartEquipment implements Recordable, Lightable {
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Camera extends SmartEquipment implements Recordable, Lightable, ExtraStateControllable {
     private boolean cameraLightState;
 
     public Camera(
@@ -12,23 +17,22 @@ public class Camera extends SmartEquipment implements Recordable, Lightable {
     }
 
     @Override
-    public String getStateString() {
-        String statusMessageString;
+    public List<String> getStateMessages() {
+        List<String> states = new ArrayList<>();
+
         if (isStateActive) {
-            statusMessageString = recordOn();
+            states.add(recordOn());
         } else {
-            statusMessageString = recordOff();
+            states.add(recordOff());
         }
 
-        statusMessageString += ";";
-
-        if (getCameraLightState()) {
-            statusMessageString += lightOn();
+        if (cameraLightState) {
+            states.add(lightOn());
         } else {
-            statusMessageString += lightOff();
+            states.add(lightOff());
         }
 
-        return statusMessageString;
+        return states;
     }
 
     @Override
@@ -43,25 +47,32 @@ public class Camera extends SmartEquipment implements Recordable, Lightable {
         return recordOff();
     }
 
-    public String setCameraLightOn() {
+    @Override
+    public String setExtraStateOn() throws CantActiveAlreadyActivatedStateException {
+        if (cameraLightState) {
+            throw new CantActiveAlreadyActivatedStateException();
+        }
+
         cameraLightState = true;
         return lightOn();
     }
 
-    public String setCameraLightOff() {
+    @Override
+    public String setExtraStateOff() throws CantDeactivateAlreadyDeactivatedStateException {
+        if (!cameraLightState) {
+            throw new CantDeactivateAlreadyDeactivatedStateException();
+        }
+
         cameraLightState = false;
         return lightOff();
     }
 
-    public String getCameraLightStateString() {
+    @Override
+    public String getExtraStateString() {
         if (cameraLightState) {
             return lightOn();
         } else {
             return lightOff();
         }
-    }
-
-    public boolean getCameraLightState() {
-        return cameraLightState;
     }
 }

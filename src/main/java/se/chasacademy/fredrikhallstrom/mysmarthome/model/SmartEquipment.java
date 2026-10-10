@@ -1,14 +1,14 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedEquipmentException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedEquipmentException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedStateException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedStateException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.util.TimeFormatter;
+import se.chasacademy.fredrikhallstrom.mysmarthome.util.TimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public abstract class SmartEquipment implements SmartEquipmentInterface {
+public abstract class SmartEquipment implements SmartEquipmentInterface, TimeFormat {
     protected int id = -1;
     protected String name;
     protected LocalDateTime installationTime;
@@ -27,7 +27,7 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
         return name;
     }
 
-    public abstract String getStateString();
+    public abstract List<String> getStateMessages();
 
     public LocalDateTime getInstallationTime() {
         return installationTime;
@@ -60,10 +60,10 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
     }
 
     public String setStateActive(LocalDateTime activationTime)
-            throws CantActiveAlreadyActivatedEquipmentException {
+            throws CantActiveAlreadyActivatedStateException {
 
         if (isStateActive) {
-            throw new CantActiveAlreadyActivatedEquipmentException();
+            throw new CantActiveAlreadyActivatedStateException();
         }
 
         isStateActive = true;
@@ -73,10 +73,10 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
     }
 
     public String setStateInactive(LocalDateTime deactivationTime)
-            throws CantDeactivateAlreadyDeactivatedEquipmentException {
+            throws CantDeactivateAlreadyDeactivatedStateException {
 
         if (!isStateActive) {
-            throw new CantDeactivateAlreadyDeactivatedEquipmentException();
+            throw new CantDeactivateAlreadyDeactivatedStateException();
         }
 
         isStateActive = false;
@@ -86,8 +86,7 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
     }
 
     public String toString() {
-        String statusMessageString = getStateString();
-        List<String> splitStatusMessageStringAsList = List.of(statusMessageString.split(";"));
+        List<String> states = getStateMessages();
         LocalDateTime lastStateChangeTime;
 
         if (getLastActivationTime().isAfter(getLastDeactivationTime())) {
@@ -96,42 +95,21 @@ public abstract class SmartEquipment implements SmartEquipmentInterface {
             lastStateChangeTime = getLastDeactivationTime();
         }
 
-        if (splitStatusMessageStringAsList.size() > 1) {
-            StringBuilder nonMainState = new StringBuilder();
-            for (int i = 0; i < splitStatusMessageStringAsList.size(); i++) {
-                if (i == 0) {
-                    continue;
-                }
-                if (i != 1) {
-                    nonMainState.append(", ");
-                }
+        String mainState = String.format("Type: %s, ID: %d, %s(Installed: %s) - Current state: %s @ %s",
+                getClass().getSimpleName(),
+                getId(),
+                getName(),
+                formatLocalDateTimeAndTimeZoneForSystemDefault(getInstallationTime()),
+                states.getFirst(),
+                formatLocalDateTimeAndTimeZoneForSystemDefault(lastStateChangeTime)
+        );
 
-                nonMainState.append(splitStatusMessageStringAsList.get(i));
-            }
-            return String.format("Type: %s, ID: %d, %s(Installed: %s) - Current state: %s @ %s , Other state/-s: %s",
-                    getClass().getSimpleName(),
-                    getId(),
-                    getName(),
-                    TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(getInstallationTime()),
-                    splitStatusMessageStringAsList
-                            .getFirst()
-                            .split(", ", 2)[1],
-                    TimeFormatter
-                            .formatLocalDateTimeAndTimeZoneForSystemDefault(lastStateChangeTime),
-                    nonMainState
-
-            );
-
-        } else {
-            return String.format("Type: %s, ID: %d, %s(Installed: %s) - Current state: %s @ %s",
-                    getClass().getSimpleName(),
-                    getId(),
-                    getName(),
-                    TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(getInstallationTime()),
-                    statusMessageString.split(", ", 2)[1],
-                    TimeFormatter.formatLocalDateTimeAndTimeZoneForSystemDefault(lastStateChangeTime)
-            );
+        if (states.size() > 1) {
+            String otherStates = String.join(", ", states.subList(1, states.size()));
+            return mainState + "\n\tOther state/-s: " + otherStates;
         }
+
+        return mainState;
     }
 
 }

@@ -10,6 +10,12 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
 configurations {
     mockitoAgent
 }
@@ -34,10 +40,10 @@ test {
     outputs.upToDateWhen { false }
 }
 
-tasks.named('jar') {
+tasks.named('jar', Jar) {
     dependsOn 'test'
     manifest {
-        attributes'Main-class': 'main'
+        attributes('Main-Class': 'se.chasacademy.fredrikhallstrom.mysmarthome.Main')
     }
 
     doFirst {
@@ -45,7 +51,7 @@ tasks.named('jar') {
     }
 }
 
-tasks.named("run") {
+tasks.named("run", JavaExec) {
     dependsOn('test')
     standardInput = System.in
 

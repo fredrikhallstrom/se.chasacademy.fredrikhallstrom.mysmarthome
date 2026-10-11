@@ -6,8 +6,8 @@ public enum SmartEquipmentType {
     CAMERA("Camera", Camera::new),
     ;
 
-    final String name;
-    final SmartEquipmentCreate creator;
+    private final String name;
+    private final SmartEquipmentCreate creator;
 
     SmartEquipmentType(String name, SmartEquipmentCreate creator) {
         this.name = name;

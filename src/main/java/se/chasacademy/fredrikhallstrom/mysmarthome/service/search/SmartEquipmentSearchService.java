@@ -22,7 +22,12 @@ public class SmartEquipmentSearchService {
             SearchSortingType sortingType)
             throws
             SearchFoundNoSmartEquipmentsByNameException,
-            SmartEquipmentInRepositoryNotFoundException {
+            SmartEquipmentInRepositoryNotFoundException,
+            SearchSortingTypeCantBeNullException {
+
+        if (sortingType == null) {
+            throw new SearchSortingTypeCantBeNullException();
+        }
 
         List<SmartEquipment> smartEquipments = smartEquipmentService.AllSmartEquipmentAsList();
         List<SmartEquipment> foundSmartEquipment = new ArrayList<>();

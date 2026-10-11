@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
@@ -336,5 +337,43 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         // Assert
         assertThrows(SmartEquipmentInRepositoryNotFoundException.class, throwAct);
+    }
+
+    @Test
+    public void shouldKeepOriginalOrderWhenSortingTypeIsNoneTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp3, fakeLamp1, fakeLamp2));
+
+        // Act
+        List<SmartEquipment> foundSmartEquipment = smartEquipmentSearchService.searchSmartEquipmentByName("fake", SearchSortingType.NONE);
+
+        // Assert
+        assertEquals(List.of(fakeLamp3, fakeLamp1, fakeLamp2), foundSmartEquipment);
+    }
+
+    @Test
+    public void shouldThrowSearchSortingTypeCantBeNullExceptionWhenSortingTypeIsNullTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1));
+
+        // Act
+        Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("fake", null);
+
+        // Assert
+        assertThrows(SearchSortingTypeCantBeNullException.class, throwAct);
     }
 }

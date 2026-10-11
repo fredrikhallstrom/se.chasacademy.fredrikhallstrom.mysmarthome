@@ -1,15 +1,13 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-public interface Lightable {
-
-    String getName();
+interface Lightable {
 
     default String lightOn() {
-        return String.format("%s, lamp is on", getName());
+        return "lamp is on";
     }
 
     default String lightOff() {
-        return String.format("%s, lamp is off", getName());
+        return "lamp is off";
     }
 
 }

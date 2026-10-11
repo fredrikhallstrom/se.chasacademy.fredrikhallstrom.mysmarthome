@@ -1,67 +1,78 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-import java.time.Clock;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedStateException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedStateException;
 
-public class Camera extends SmartEquipment implements Recordable, Lightable {
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Camera extends SmartEquipment implements Recordable, Lightable, ExtraStateControllable {
     private boolean cameraLightState;
 
-      public Camera(
+    public Camera(
             String name,
-            Clock clock) {
-        super(name, clock);
+            LocalDateTime installationTime) {
+        super(name, installationTime);
     }
 
     @Override
-    public String getStateString() {
-          String statusMessageString;
-          if (isStateActive) {
-              statusMessageString = recordOn();
-          } else {
-              statusMessageString = recordOff();
-          }
+    public List<String> getStateMessages() {
+        List<String> states = new ArrayList<>();
 
-          statusMessageString += ";";
+        if (isStateActive) {
+            states.add(recordOn());
+        } else {
+            states.add(recordOff());
+        }
 
-          if (getCameraLightState()) {
-              statusMessageString += lightOn();
-          } else {
-              statusMessageString += lightOff();
-          }
+        if (cameraLightState) {
+            states.add(lightOn());
+        } else {
+            states.add(lightOff());
+        }
 
-          return statusMessageString;
+        return states;
     }
 
     @Override
-    public String setStateActive() {
-        super.setStateActive();
+    public String setStateActive(LocalDateTime activationTime) {
+        super.setStateActive(activationTime);
         return recordOn();
     }
 
     @Override
-    public String setStateInactive() {
-        super.setStateInactive();
+    public String setStateInactive(LocalDateTime deactivationTime) {
+        super.setStateInactive(deactivationTime);
         return recordOff();
     }
 
-    public String setCameraLightOn() {
-          cameraLightState = true;
-          return lightOn();
+    @Override
+    public String setExtraStateOn() throws CantActiveAlreadyActivatedStateException {
+        if (cameraLightState) {
+            throw new CantActiveAlreadyActivatedStateException();
+        }
+
+        cameraLightState = true;
+        return lightOn();
     }
 
-    public String setCameraLightOff() {
-          cameraLightState = false;
-          return lightOff();
+    @Override
+    public String setExtraStateOff() throws CantDeactivateAlreadyDeactivatedStateException {
+        if (!cameraLightState) {
+            throw new CantDeactivateAlreadyDeactivatedStateException();
+        }
+
+        cameraLightState = false;
+        return lightOff();
     }
 
-    public String getCameraLightStateString() {
-          if (cameraLightState) {
-              return lightOn();
-          } else {
-              return lightOff();
-          }
-    }
-
-    public boolean getCameraLightState() {
-          return cameraLightState;
+    @Override
+    public String getExtraStateString() {
+        if (cameraLightState) {
+            return lightOn();
+        } else {
+            return lightOff();
+        }
     }
 }

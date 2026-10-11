@@ -2,12 +2,16 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service.search;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.testutils.FixedClockForTest;
 
-import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,18 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SmartEquipmentSearchServiceTest {
+public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnListOfFoundEquipments() {
         // Arrange
         SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
-        Clock clock = Clock.systemUTC();
 
-        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
-
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -37,11 +38,13 @@ public class SmartEquipmentSearchServiceTest {
 
         List<SmartEquipment> referenceList = new ArrayList<>(List.copyOf(fakeRepoList));
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         List<SmartEquipment> foundSmartEquipmentList = smartEquipmentSearchService.searchSmartEquipmentByName(
-                "fake", SearchSortingType.NONE, smartEquipmentService
+                "fake", SearchSortingType.NONE
         );
 
         // Assert
@@ -53,13 +56,10 @@ public class SmartEquipmentSearchServiceTest {
     public void shouldThrowSearchFoundNoSmartEquipmentsExceptionIfNoSmartEquipmentIsFound() {
         // Arrange
         SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
-        Clock clock = Clock.systemUTC();
 
-        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
-
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -67,17 +67,19 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp3)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         Executable throwAct = () ->
                 smartEquipmentSearchService.searchSmartEquipmentByName(
-                        "notInMap", SearchSortingType.NONE, smartEquipmentService
+                        "notInMap", SearchSortingType.NONE
                 );
 
 
         // Assert
-        assertThrows(SearchFoundNoSmartEquipmentsByNameException.class, throwAct);
+        assertThrows(FoundNoSmartEquipmentsByNameException.class, throwAct);
 
     }
 
@@ -85,14 +87,10 @@ public class SmartEquipmentSearchServiceTest {
     public void shouldSortSearchListInAscendingOrder() {
         // Arrange
         SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
-        Clock clock = Clock.systemUTC();
 
-        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
-
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
-
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -106,13 +104,14 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp3)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         List<SmartEquipment> foundSmartEquipmentSorted = smartEquipmentSearchService.searchSmartEquipmentByName(
                 "fake",
-                SearchSortingType.ASCENDING, smartEquipmentService);
+                SearchSortingType.ASCENDING);
 
         // Assert
         assertEquals(referenceList, foundSmartEquipmentSorted);
@@ -122,13 +121,10 @@ public class SmartEquipmentSearchServiceTest {
     public void shouldSortSearchListInDescendingOrder() {
         // Arrange
         SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
-        Clock clock = Clock.systemUTC();
 
-        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
-
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
                 fakeLamp1,
@@ -142,13 +138,14 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp1)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         List<SmartEquipment> foundSmartEquipmentSorted = smartEquipmentSearchService.searchSmartEquipmentByName(
                 "fake",
-                SearchSortingType.DESCENDING, smartEquipmentService
+                SearchSortingType.DESCENDING
         );
 
         // Assert
@@ -159,21 +156,18 @@ public class SmartEquipmentSearchServiceTest {
     public void shouldReturnSmartEquipmentWhenCorrectIdInSearchId() {
         // Arrange
         SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
-        Clock clock = Clock.systemUTC();
 
         int fakeIdStart = 1;
 
-        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
-
-        Lamp fakeLamp1 = new Lamp("fakeLamp1", clock);
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         fakeLamp1.setId(fakeIdStart);
         fakeIdStart++;
 
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
         fakeLamp2.setId(fakeIdStart);
         fakeIdStart++;
 
-        Lamp fakeLamp3 = new Lamp("fakeLamp3", clock);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
         fakeLamp3.setId(fakeIdStart);
 
         List<SmartEquipment> fakeRepoList = new ArrayList<>(List.of(
@@ -182,13 +176,204 @@ public class SmartEquipmentSearchServiceTest {
                 fakeLamp3)
         );
 
-        when(smartEquipmentService.listAllSmartEquipment()).thenReturn(fakeRepoList);
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
-        SmartEquipment gettedSmartEquipmentById = smartEquipmentSearchService.searchSmartEquipmentById(1);
+        SmartEquipment smartEquipmentByIdFromSearchService = smartEquipmentSearchService.searchSmartEquipmentById(1);
 
         // Assert
-        assertEquals(fakeLamp1, gettedSmartEquipmentById);
+        assertEquals(fakeLamp1, smartEquipmentByIdFromSearchService);
 
+    }
+
+    @Test
+    public void shouldReturnSecondSmartEquipmentWhenSearchingItsIdTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp1.setId(1);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp2.setId(2);
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2));
+
+        // Act
+        SmartEquipment found = smartEquipmentSearchService.searchSmartEquipmentById(2);
+
+        // Assert
+        assertEquals(fakeLamp2, found);
+    }
+
+    @Test
+    public void shouldReturnLastSmartEquipmentWhenSearchingLastIdTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp1.setId(1);
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp2.setId(2);
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp3.setId(3);
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2, fakeLamp3));
+
+        // Act
+        SmartEquipment found = smartEquipmentSearchService.searchSmartEquipmentById(3);
+
+        // Assert
+        assertEquals(fakeLamp3, found);
+    }
+
+    @Test
+    public void shouldReturnOnlySmartEquipmentWhenListHasOneElementTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp.setId(1);
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
+
+        // Act
+        SmartEquipment found = smartEquipmentSearchService.searchSmartEquipmentById(1);
+
+        // Assert
+        assertEquals(fakeLamp, found);
+    }
+
+    @Test
+    public void shouldThrowSearchFoundNoSmartEquipmentByIdExceptionWhenIdIsUnknownTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp.setId(1);
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
+
+        // Act
+        Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentById(999);
+
+        // Assert
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowSmartEquipmentInRepositoryNotFoundExceptionWhenSearchingIdInEmptyRepositoryTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundInRepositoryException());
+
+        // Act
+        Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentById(1);
+
+        // Assert
+        assertThrows(SmartEquipmentNotFoundInRepositoryException.class, throwAct);
+    }
+
+    @Test
+    public void shouldReturnAllSmartEquipmentWhenSearchTermIsEmptyTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("otherLamp", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2));
+
+        // Act
+        List<SmartEquipment> found = smartEquipmentSearchService.searchSmartEquipmentByName("", SearchSortingType.NONE);
+
+        // Assert
+        assertEquals(List.of(fakeLamp1, fakeLamp2), found);
+    }
+
+    @Test
+    public void shouldThrowSearchFoundNoSmartEquipmentsByNameExceptionWhenOnlyCaseDiffersTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
+
+        // Act
+        Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("FAKE", SearchSortingType.NONE);
+
+        // Assert
+        assertThrows(FoundNoSmartEquipmentsByNameException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowSmartEquipmentNotFoundExceptionWhenSearchingNameInEmptyRepositoryTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundInRepositoryException());
+
+        // Act
+        Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("fake", SearchSortingType.NONE);
+
+        // Assert
+        assertThrows(SmartEquipmentNotFoundInRepositoryException.class, throwAct);
+    }
+
+    @Test
+    public void shouldKeepOriginalOrderWhenSortingTypeIsNoneTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp3 = new Lamp("fakeLamp3", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp3, fakeLamp1, fakeLamp2));
+
+        // Act
+        List<SmartEquipment> foundSmartEquipment = smartEquipmentSearchService.searchSmartEquipmentByName("fake", SearchSortingType.NONE);
+
+        // Assert
+        assertEquals(List.of(fakeLamp3, fakeLamp1, fakeLamp2), foundSmartEquipment);
+    }
+
+    @Test
+    public void shouldThrowSearchSortingTypeCantBeNullExceptionWhenSortingTypeIsNullTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+
+        Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
+
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1));
+
+        // Act
+        Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("fake", null);
+
+        // Assert
+        assertThrows(SearchSortingTypeCantBeNullException.class, throwAct);
     }
 }

@@ -1,32 +1,33 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.model;
 
-import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class Radiator extends SmartEquipment implements Heatable {
     public Radiator(
             String name,
-            Clock clock) {
-        super(name, clock);
+            LocalDateTime installationTime) {
+        super(name, installationTime);
     }
 
     @Override
-    public String getStateString() {
+    public List<String> getStateMessages() {
         if (isStateActive) {
-            return heatOn();
+            return List.of(heatOn());
         } else {
-            return heatOff();
+            return List.of(heatOff());
         }
     }
 
     @Override
-    public String setStateActive() {
-        super.setStateActive();
+    public String setStateActive(LocalDateTime activationTime) {
+        super.setStateActive(activationTime);
         return heatOn();
     }
 
     @Override
-    public String setStateInactive() {
-        super.setStateInactive();
+    public String setStateInactive(LocalDateTime deactivationTime) {
+        super.setStateInactive(deactivationTime);
         return heatOff();
     }
 

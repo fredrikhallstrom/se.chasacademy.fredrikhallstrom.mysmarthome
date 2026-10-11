@@ -1,39 +1,51 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InsertOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
 
 public class InMemoryRepository extends SmartEquipmentRepository {
-    private static int uniqueCounterId = 1000;
+    private int uniqueCounterId = 1000;
 
     public InMemoryRepository() {
         super();
     }
 
-    public int getAndIncrementUniqueCounter() {
-        int uniqueCounterIdToReturn = getCurrentUniqueCounter();
+    private int getAndIncrementUniqueCounter() {
+        int uniqueCounterIdToReturn = uniqueCounterId;
         uniqueCounterId++;
         return uniqueCounterIdToReturn;
     }
 
-    public int getCurrentUniqueCounter() {
-        return uniqueCounterId;
-    }
-
     @Override
-    public int insertSmartEquipment(SmartEquipment smartEquipment) {
+    public int insertSmartEquipment(SmartEquipment smartEquipment) throws InsertOfSmartEquipmentDidFailSomewhereException {
+        if (smartEquipment == null) {
+            throw new InsertOfSmartEquipmentDidFailSomewhereException();
+        }
+
         int assignedId = getAndIncrementUniqueCounter();
+
         smartEquipmentRepositoryMap.put(smartEquipment, assignedId);
         return assignedId;
     }
 
     @Override
-    public void removeSmartEquipment(SmartEquipment smartEquipment) {
-        smartEquipmentRepositoryMap.remove(smartEquipment);
+    public boolean removeSmartEquipment(int smartEquipmentIdToRemove)
+            throws RemoveOfSmartEquipmentDidFailSomewhereException {
+
+        if (smartEquipmentRepositoryMap.keySet().stream().noneMatch(
+                smartEquipment -> smartEquipment.getId() == smartEquipmentIdToRemove)
+                ||
+                smartEquipmentRepositoryMap.isEmpty()) {
+            throw new RemoveOfSmartEquipmentDidFailSomewhereException();
+        }
+
+        smartEquipmentRepositoryMap.keySet().removeIf(
+                smartEquipment -> smartEquipment.getId() == smartEquipmentIdToRemove
+        );
+
+        return true;
     }
 
-    @Override
-    public int getSmartEquipmentId(SmartEquipment wantedSmartEquipmentId) {
-        return smartEquipmentRepositoryMap.get(wantedSmartEquipmentId);
-    }
 }

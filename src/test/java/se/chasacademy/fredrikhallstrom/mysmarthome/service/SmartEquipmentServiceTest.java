@@ -2,29 +2,41 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.internal.util.Supplier;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.model.Camera;
-import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
-import se.chasacademy.fredrikhallstrom.mysmarthome.model.Radiator;
-import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepository;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.model.*;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
+import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
+import se.chasacademy.fredrikhallstrom.mysmarthome.testutils.FixedClockForTest;
 
-import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class SmartEquipmentServiceTest {
+public class SmartEquipmentServiceTest implements FixedClockForTest {
+
+    private SmartEquipmentService createServiceWithFixedClock() {
+        return new SmartEquipmentService(new InMemoryRepository(), FIXED_CLOCK);
+    }
+
     @Test
     public void InsertsSmartEquipmentInInMemoryRepositoryTest() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
         SmartEquipment smartEquipment = mock(SmartEquipment.class);
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         // Act
         smartEquipmentService.addSmartEquipment(smartEquipment);
@@ -37,14 +49,14 @@ public class SmartEquipmentServiceTest {
     @Test
     public void SetsIdInSmartEquipmentWhenInsertedIntoInMemoryRepositoryTest() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
-        Clock clock = Clock.systemUTC();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
 
-        SmartEquipment fakeLamp = new Lamp("fakeLamp", clock);
+        SmartEquipment fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
 
         int fakeId = 1;
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         when(smartEquipmentRepository.insertSmartEquipment(fakeLamp)).thenReturn(fakeId);
 
         // Act
@@ -52,69 +64,44 @@ public class SmartEquipmentServiceTest {
 
         // Assert
         assertEquals(fakeId, fakeLamp.getId());
-
-
     }
 
     @Test
     public void shouldRemoveSmartEquipmentTest() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
-        Clock clock = Clock.systemUTC();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
-
-        Lamp fakeLamp = new Lamp("fakeLamp", clock);
         Integer fakeLampId = 1;
+
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
+        fakeLamp.setId(fakeLampId);
 
         Map<SmartEquipment, Integer> fakeEquipmentRepoMap = new HashMap<>();
         fakeEquipmentRepoMap.put(fakeLamp, fakeLampId);
 
-        when(smartEquipmentRepository.getCurrentUniqueCounter()).thenReturn(fakeLampId);
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(Map.of(fakeLamp, fakeLampId));
 
-        doAnswer(testCommand -> {
-
-            SmartEquipment removedSmartEquipment = testCommand.getArgument(0);
-            fakeEquipmentRepoMap.remove(removedSmartEquipment);
-            return null;
-        }).when(smartEquipmentRepository).removeSmartEquipment(fakeLamp);
+        doAnswer(_ -> {
+            fakeEquipmentRepoMap.remove(fakeLamp);
+            return true;
+        }).when(smartEquipmentRepository).removeSmartEquipment(fakeLamp.getId());
 
         // Act
-        smartEquipmentService.removeSmartEquipment(fakeLamp);
+        smartEquipmentService.removeSmartEquipment(Integer.toString(fakeLamp.getId()));
 
         // Assert
-        verify(smartEquipmentRepository).removeSmartEquipment(fakeLamp);
+        verify(smartEquipmentRepository).removeSmartEquipment(fakeLamp.getId());
         assertFalse(fakeEquipmentRepoMap.containsKey(fakeLamp));
 
     }
 
     @Test
-    public void shouldThrowRemoveOfSmartEquipmentDidFailSomewhereExceptionWhenRemoveFailed() {
-        // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
-        Clock clock = Clock.systemUTC();
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
-
-        Lamp nonExistentSmartEquipmentInRepo = new Lamp("notInRepo", clock);
-
-
-        // Act
-        Executable throwAct = () ->
-                smartEquipmentService.removeSmartEquipment(nonExistentSmartEquipmentInRepo);
-
-        // Assert
-        assertThrows(RemoveOfSmartEquipmentDidFailSomewhereException.class, throwAct);
-
-    }
-
-
-
-    @Test
     public void shouldReturnListOfAllSmartEquipment() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
-        Clock clock = Clock.systemUTC();
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
+
         final int[] fakeIdArray = {1};
 
         Supplier<Integer> getFakeId = () -> {
@@ -123,12 +110,10 @@ public class SmartEquipmentServiceTest {
             return fakeStartIdReturn;
         };
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
-
-        Lamp fakeLamp = new Lamp("fakeLamp", clock);
-        Radiator fakeRadiator = new Radiator("fakeRadiator", clock);
-        Camera fakeCamera = new Camera("fakeCamera", clock);
-        Lamp fakeLamp2 = new Lamp("fakeLamp2", clock);
+        Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
+        Radiator fakeRadiator = new Radiator("fakeRadiator", LocalDateTime.now(FIXED_CLOCK));
+        Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
+        Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
 
         List<SmartEquipment> referenceList = List.of(fakeLamp, fakeRadiator, fakeCamera, fakeLamp2);
 
@@ -137,10 +122,12 @@ public class SmartEquipmentServiceTest {
             fakeRepositoryMap.put(smartEquipment, getFakeId.get());
         }
 
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
         // Act
-        List<SmartEquipment> smartEquipmentList = smartEquipmentService.listAllSmartEquipment();
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.getAllSmartEquipmentAsList();
 
         // Assert
         assertEquals(referenceList, smartEquipmentList);
@@ -150,22 +137,377 @@ public class SmartEquipmentServiceTest {
     @Test
     public void shouldThrowSmartEquipmentInRepositoryNotFoundExceptionWhenMapIsEmpty() {
         // Arrange
-        SmartEquipmentRepository smartEquipmentRepository = mock(SmartEquipmentRepository.class);
-
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository);
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
 
         Map<SmartEquipment, Integer> fakeRepositoryMap = new HashMap<>();
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
         // Act
-        Executable throwAct = smartEquipmentService::listAllSmartEquipment;
+        Executable throwAct = smartEquipmentService::getAllSmartEquipmentAsList;
 
         // Assert
-        assertThrows(SmartEquipmentInRepositoryNotFoundException.class, throwAct);
+        assertThrows(SmartEquipmentNotFoundInRepositoryException.class, throwAct);
 
     }
 
+    @Test
+    public void shouldReturnSortedMapOfIdAndSmartEquipmentByIdTest() {
+        // Arrange
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
 
+        int fakeIdStart = 1;
 
+        Lamp lamp = new Lamp("Lamp", LocalDateTime.now(FIXED_CLOCK));
+        lamp.setId(fakeIdStart);
+
+        Radiator radiator = new Radiator("Radiator", LocalDateTime.now(FIXED_CLOCK));
+        radiator.setId(fakeIdStart + 2);
+
+        Camera camera = new Camera("Camera", LocalDateTime.now(FIXED_CLOCK));
+        camera.setId(fakeIdStart + 1);
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
+        when(smartEquipmentRepository.getSmartEquipmentRepositoryMap())
+                .thenReturn(Map.of(lamp, lamp.getId(), radiator, radiator.getId(), camera, camera.getId()));
+
+        // Act
+        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAllSmartEquipmentsSortedMapById();
+
+        // Assert
+        assertEquals(Map.of( // Asserts content
+                fakeIdStart, lamp,
+                fakeIdStart + 2, radiator,
+                fakeIdStart + 1, camera),
+                mapFromMethod);
+
+        assertEquals(List.of( // Asserts order
+                        fakeIdStart,
+                        fakeIdStart + 1,
+                        fakeIdStart + 2),
+                List.copyOf(mapFromMethod
+                        .keySet()));
+    }
+
+    // AI generated Tests - NOT_EDITED_FOR_REFERENCE - BEGIN
+    // ---------- createSmartEquipment: normal cases ----------
+
+    @Test
+    public void shouldCreateSmartEquipmentWithNameAndInstallationTimeFromClockTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        SmartEquipment created = smartEquipmentService.createSmartEquipment("Kitchen lamp", SmartEquipmentType.LAMP);
+
+        // Assert
+        assertInstanceOf(Lamp.class, created);
+        assertEquals("Kitchen lamp", created.getName());
+        assertEquals(LocalDateTime.now(FIXED_CLOCK), created.getInstallationTime());
+    }
+
+    @ParameterizedTest
+    @EnumSource(SmartEquipmentType.class)
+    public void shouldCreateCorrectTypeAndStoreItInRepositoryTest(SmartEquipmentType type) {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        SmartEquipment created = smartEquipmentService.createSmartEquipment("Hallway", type);
+
+        // Assert
+        assertEquals(type.getDisplayName(), created.getClass().getSimpleName());
+        assertTrue(smartEquipmentService.getAllSmartEquipmentAsList().contains(created));
+    }
+
+    // ---------- createSmartEquipment: boundary cases ----------
+
+    @Test
+    public void shouldAcceptSingleLetterNameTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        SmartEquipment created = smartEquipmentService.createSmartEquipment("a", SmartEquipmentType.LAMP);
+
+        // Assert
+        assertEquals("a", created.getName());
+    }
+
+    @Test
+    public void shouldAcceptNameThatOnlyDiffersByOneCharacterFromExistingTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        SmartEquipment first = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        SmartEquipment second = smartEquipmentService.createSmartEquipment("Kitchen2", SmartEquipmentType.LAMP);
+
+        // Assert
+        assertEquals("Kitchen2", second.getName());
+        assertNotEquals(first.getId(), second.getId());
+    }
+
+    // ---------- createSmartEquipment: error-handling cases ----------
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "2lamp", "lamp!", "Kök"})
+    public void shouldThrowInvalidSmartEquipmentNameExceptionWhenNameHasInvalidFormatTest(String invalidName) {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.createSmartEquipment(invalidName, SmartEquipmentType.LAMP);
+
+        // Assert
+        assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
+        assertThrows(SmartEquipmentNotFoundInRepositoryException.class, smartEquipmentService::getAllSmartEquipmentAsList);
+    }
+
+    @Test
+    public void shouldThrowInvalidSmartEquipmentNameExceptionWhenNameAlreadyExistsIgnoringCaseTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.createSmartEquipment("KITCHEN", SmartEquipmentType.RADIATOR);
+
+        // Assert
+        assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
+        assertEquals(1, smartEquipmentService.getAllSmartEquipmentAsList().size());
+    }
+
+    @ParameterizedTest
+    @EnumSource(SmartEquipmentType.class)
+    public void shouldThrowInvalidSmartEquipmentNameExceptionWhenNameEqualsTypeTest(SmartEquipmentType type) {
+        // Arrange
+        String nameSameAsType = type.getDisplayName().toLowerCase();
+
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.createSmartEquipment(nameSameAsType, type);
+
+        // Assert
+        assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
+    }
+
+    @Test
+    public void shouldAcceptIdZeroFromRepositoryTest() {
+        // Arrange
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
+
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
+        when(smartEquipmentRepository.insertSmartEquipment(lamp)).thenReturn(0);
+
+        // Act
+        SmartEquipment added = smartEquipmentService.addSmartEquipment(lamp);
+
+        // Assert
+        assertEquals(0, added.getId());
+    }
+
+    @Test
+    public void shouldThrowSmartEquipmentIdCantBeNegativeExceptionWhenRepositoryGivesNegativeIdTest() {
+        // Arrange
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
+
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
+        when(smartEquipmentRepository.insertSmartEquipment(lamp)).thenReturn(-5);
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.addSmartEquipment(lamp);
+
+        // Assert
+        assertThrows(SmartEquipmentIdCantBeNegativeException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowCreationOfSmartEquipmentDidFailSomewhereExceptionWhenIdAlreadySetTest() {
+        // Arrange
+        SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
+
+        Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+        lamp.setId(5);
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
+        when(smartEquipmentRepository.insertSmartEquipment(lamp)).thenReturn(7);
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.addSmartEquipment(lamp);
+
+        // Assert
+        assertThrows(CreationOfSmartEquipmentDidFailSomewhereException.class, throwAct);
+    }
+
+    @Test
+    public void shouldRemoveOnlyGivenSmartEquipmentTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        SmartEquipment kitchen = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+        SmartEquipment hallway = smartEquipmentService.createSmartEquipment("Hallway", SmartEquipmentType.LAMP);
+
+        // Act
+        boolean removed = smartEquipmentService.removeSmartEquipment(Integer.toString(hallway.getId()));
+
+        // Assert
+        assertTrue(removed);
+        assertEquals(List.of(kitchen), smartEquipmentService.getAllSmartEquipmentAsList());
+    }
+
+    @Test
+    public void shouldThrowMustBeANumberExceptionWhenRemoveIdIsLettersTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.removeSmartEquipment("abc");
+
+        // Assert
+        assertThrows(MustBeANumberException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowMustBeANumberExceptionWhenRemoveIdIsNullTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.removeSmartEquipment(null);
+
+        // Assert
+        assertThrows(MustBeANumberException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowFoundNoSmartEquipmentByIdExceptionWhenRemoveIdIsUnknownTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.removeSmartEquipment("999");
+
+        // Assert
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowSmartEquipmentIdCantBeNegativeExceptionWhenRemoveIdIsNegativeTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.removeSmartEquipment("-1");
+
+        // Assert
+        assertThrows(SmartEquipmentIdCantBeNegativeException.class, throwAct);
+    }
+
+    @Test
+    public void shouldReturnAllCreatedSmartEquipmentTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        SmartEquipment kitchen = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+        SmartEquipment hallway = smartEquipmentService.createSmartEquipment("Hallway", SmartEquipmentType.RADIATOR);
+
+        // Act
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.getAllSmartEquipmentAsList();
+
+        // Assert
+        assertEquals(2, smartEquipmentList.size());
+        assertTrue(smartEquipmentList.containsAll(List.of(kitchen, hallway)));
+    }
+
+    @Test
+    public void shouldReturnListWithOneElementWhenOneSmartEquipmentExistsTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        SmartEquipment kitchen = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.getAllSmartEquipmentAsList();
+
+        // Assert
+        assertEquals(List.of(kitchen), smartEquipmentList);
+    }
+
+    @Test
+    public void shouldReturnEmptyMapWhenRepositoryIsEmptyTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAllSmartEquipmentsSortedMapById();
+
+        // Assert
+        assertTrue(mapFromMethod.isEmpty());
+    }
+
+    @Test
+    public void shouldReturnMapWithOneEntryWhenOneSmartEquipmentExistsTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        SmartEquipment kitchen = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAllSmartEquipmentsSortedMapById();
+
+        // Assert
+        assertEquals(Map.of(kitchen.getId(), kitchen), mapFromMethod);
+    }
+
+    @Test
+    public void shouldReturnSmartEquipmentWithGivenIdTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+        SmartEquipment hallway = smartEquipmentService.createSmartEquipment("Hallway", SmartEquipmentType.RADIATOR);
+        smartEquipmentService.createSmartEquipment("Garage", SmartEquipmentType.CAMERA);
+
+        // Act
+        SmartEquipment found = smartEquipmentService.getSmartEquipmentById(hallway.getId());
+
+        // Assert
+        assertEquals(hallway, found);
+    }
+
+    @Test
+    public void shouldThrowSearchFoundNoSmartEquipmentByIdExceptionWhenIdIsUnknownTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+        smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.getSmartEquipmentById(999);
+
+        // Assert
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowSearchFoundNoSmartEquipmentByIdExceptionWhenRepositoryIsEmptyTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.getSmartEquipmentById(1000);
+
+        // Assert
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
+    }
+
+    // AI generated Tests - STOP
 }

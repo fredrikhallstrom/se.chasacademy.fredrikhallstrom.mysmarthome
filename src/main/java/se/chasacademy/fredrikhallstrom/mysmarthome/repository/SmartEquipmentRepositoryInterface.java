@@ -1,21 +1,18 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.repository;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InsertOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 
 import java.util.Map;
 
-sealed interface SmartEquipmentRepositoryInterface permits SmartEquipmentRepository {
+public interface SmartEquipmentRepositoryInterface {
 
-    Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap();
+    Map<SmartEquipment, Integer> getSmartEquipmentRepositoryMap() throws SmartEquipmentNotFoundInRepositoryException;
 
-    int insertSmartEquipment(SmartEquipment smartEquipment);
+    int insertSmartEquipment(SmartEquipment smartEquipment) throws InsertOfSmartEquipmentDidFailSomewhereException;
 
-    void removeSmartEquipment(SmartEquipment smartEquipment);
-
-    int getSmartEquipmentId(SmartEquipment smartEquipment);
-
-    int getAndIncrementUniqueCounter();
-
-    int getCurrentUniqueCounter();
+    boolean removeSmartEquipment(int smartEquipmentIdToRemove) throws RemoveOfSmartEquipmentDidFailSomewhereException;
 
 }

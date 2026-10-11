@@ -2,11 +2,13 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service.search;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -67,5 +69,9 @@ public class SmartEquipmentSearchService {
         }
 
         throw new SearchFoundNoSmartEquipmentByIdException(id);
+    }
+
+    public List<SearchSortingType> getSortTypes() {
+        return Arrays.stream(SearchSortingType.values()).toList();
     }
 }

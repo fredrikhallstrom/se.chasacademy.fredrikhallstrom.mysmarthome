@@ -1,6 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentlist;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
@@ -8,10 +8,10 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
 import java.util.LinkedHashMap;
 
 public class MenuSmartEquipmentList extends BaseForMenu {
-    SmartEquipmentService smartEquipmentService;
+    private final OptionListSmartEquipment optionListSmartEquipment;
 
     public MenuSmartEquipmentList(SmartEquipmentService smartEquipmentService) {
-        this.smartEquipmentService = smartEquipmentService;
+        this.optionListSmartEquipment = new OptionListSmartEquipment(smartEquipmentService);
     }
 
     public void menu() {
@@ -20,21 +20,13 @@ public class MenuSmartEquipmentList extends BaseForMenu {
         menuItemsMap.put("List All SmartEquipment Menu", () -> {
         });
 
-        menuItemsMap.put("List All SmartEquipment in order of Current State", this::listSmartEquipmentByState);
+        menuItemsMap.put("List All SmartEquipment in order of Current State",
+                optionListSmartEquipment::listSmartEquipmentByState);
 
         super.menu(menuItemsMap);
 
     }
 
-    private void listSmartEquipmentByState() {
-        try {
-            for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
-                IO.println(smartEquipment);
-            }
-            IO.println("");
-        } catch (SmartEquipmentInRepositoryNotFoundException e) {
-            IO.println(e.getMessage());
-        }
-    }
+
 
 }

@@ -2,7 +2,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstate;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.util.InputValidate;
@@ -18,7 +18,7 @@ class OptionSmartEquipmentStatesHelper implements InputValidate {
     }
 
     SmartEquipment findSmartEquipmentByIdHelper(String messageForQuery)
-            throws SmartEquipmentInRepositoryNotFoundException,
+            throws SmartEquipmentNotFoundException,
             MustBeANumberException,
             SearchFoundNoSmartEquipmentByIdException {
 
@@ -26,7 +26,7 @@ class OptionSmartEquipmentStatesHelper implements InputValidate {
                 smartEquipmentHandlerService.getAvailableSmartEquipmentsSortedMapById();
 
         if (availableSmartEquipments.isEmpty()) {
-            throw new SmartEquipmentInRepositoryNotFoundException();
+            throw new SmartEquipmentNotFoundException();
         }
 
         IO.print(messageForQuery + "\n\n");

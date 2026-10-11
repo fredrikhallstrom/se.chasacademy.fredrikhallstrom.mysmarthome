@@ -5,7 +5,7 @@ import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
@@ -277,13 +277,13 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenThrow(new SmartEquipmentInRepositoryNotFoundException());
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundException());
 
         // Act
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentById(1);
 
         // Assert
-        assertThrows(SmartEquipmentInRepositoryNotFoundException.class, throwAct);
+        assertThrows(SmartEquipmentNotFoundException.class, throwAct);
     }
 
     @Test
@@ -324,19 +324,19 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     }
 
     @Test
-    public void shouldThrowSmartEquipmentInRepositoryNotFoundExceptionWhenSearchingNameInEmptyRepositoryTest() {
+    public void shouldThrowSmartEquipmentNotFoundExceptionWhenSearchingNameInEmptyRepositoryTest() {
         // Arrange
         SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenThrow(new SmartEquipmentInRepositoryNotFoundException());
+        when(smartEquipmentService.AllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundException());
 
         // Act
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("fake", SearchSortingType.NONE);
 
         // Assert
-        assertThrows(SmartEquipmentInRepositoryNotFoundException.class, throwAct);
+        assertThrows(SmartEquipmentNotFoundException.class, throwAct);
     }
 
     @Test

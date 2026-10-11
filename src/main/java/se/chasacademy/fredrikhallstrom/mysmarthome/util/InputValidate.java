@@ -1,7 +1,9 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.util;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortTypeIdNotValidException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SearchSortingType;
 
 public interface InputValidate {
     default int validateInputStringToInt(String stringToValidateAsInt)
@@ -21,5 +23,15 @@ public interface InputValidate {
             throw new StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException();
         }
         return stringToValidate.trim();
+    }
+
+
+    default SearchSortingType validateInputSortType(int searchSortTypeId)
+            throws SearchSortTypeIdNotValidException {
+
+        if (searchSortTypeId < 1 || searchSortTypeId > SearchSortingType.values().length) {
+            throw new SearchSortTypeIdNotValidException();
+        }
+        return SearchSortingType.values()[searchSortTypeId - 1];
     }
 }

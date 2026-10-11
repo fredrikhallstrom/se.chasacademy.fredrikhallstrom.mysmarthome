@@ -13,7 +13,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberExcept
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
@@ -150,7 +150,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         Executable throwAct = smartEquipmentService::AllSmartEquipmentAsList;
 
         // Assert
-        assertThrows(SmartEquipmentInRepositoryNotFoundException.class, throwAct);
+        assertThrows(SmartEquipmentNotFoundException.class, throwAct);
 
     }
 
@@ -266,7 +266,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
 
         // Assert
         assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
-        assertThrows(SmartEquipmentInRepositoryNotFoundException.class, smartEquipmentService::AllSmartEquipmentAsList);
+        assertThrows(SmartEquipmentNotFoundException.class, smartEquipmentService::AllSmartEquipmentAsList);
     }
 
     @Test

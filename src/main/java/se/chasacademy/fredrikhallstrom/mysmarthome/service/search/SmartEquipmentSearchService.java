@@ -3,9 +3,9 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service.search;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentInRepositoryNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,9 +13,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SmartEquipmentSearchService {
-    private final SmartEquipmentService smartEquipmentService;
+    private final SmartEquipmentServiceInterface smartEquipmentService;
 
-    public SmartEquipmentSearchService(SmartEquipmentService smartEquipmentService) {
+    public SmartEquipmentSearchService(SmartEquipmentServiceInterface smartEquipmentService) {
         this.smartEquipmentService = smartEquipmentService;
     }
 
@@ -24,7 +24,7 @@ public class SmartEquipmentSearchService {
             SearchSortingType sortingType)
             throws
             SearchFoundNoSmartEquipmentsByNameException,
-            SmartEquipmentInRepositoryNotFoundException,
+            SmartEquipmentNotFoundException,
             SearchSortingTypeCantBeNullException {
 
         if (sortingType == null) {
@@ -60,7 +60,7 @@ public class SmartEquipmentSearchService {
 
     public SmartEquipment searchSmartEquipmentById(int id)
             throws SearchFoundNoSmartEquipmentByIdException,
-            SmartEquipmentInRepositoryNotFoundException {
+            SmartEquipmentNotFoundException {
 
         for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
             if (smartEquipment.getId() == id) {
@@ -73,5 +73,14 @@ public class SmartEquipmentSearchService {
 
     public List<SearchSortingType> getSortTypes() {
         return Arrays.stream(SearchSortingType.values()).toList();
+    }
+
+    public String getSmartEquipmentToString(SmartEquipment smartEquipment)
+    throws SmartEquipmentNotFoundException {
+        if (smartEquipment == null) {
+            throw new SmartEquipmentNotFoundException();
+        }
+
+        return smartEquipment.toString();
     }
 }

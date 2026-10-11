@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SmartEquipmentService implements InputValidate {
+public class SmartEquipmentService implements SmartEquipmentServiceInterface, InputValidate {
     private final SmartEquipmentRepositoryInterface smartEquipmentRepository;
     private final Clock clock;
 
@@ -20,6 +20,7 @@ public class SmartEquipmentService implements InputValidate {
         this.clock = clock;
     }
 
+    @Override
     public SmartEquipment addSmartEquipment(SmartEquipment smartEquipment)
             throws CreationOfSmartEquipmentDidFailSomewhereException, SmartEquipmentIdCantBeNegativeException {
 
@@ -31,6 +32,7 @@ public class SmartEquipmentService implements InputValidate {
         throw new CreationOfSmartEquipmentDidFailSomewhereException();
     }
 
+    @Override
     public boolean removeSmartEquipment(String smartEquipmentIdStringToRemove)
             throws MustBeANumberException, RemoveOfSmartEquipmentDidFailSomewhereException {
 
@@ -39,6 +41,7 @@ public class SmartEquipmentService implements InputValidate {
 
     }
 
+    @Override
     public SmartEquipment createSmartEquipment(
             String name,
             SmartEquipmentType type)
@@ -53,22 +56,25 @@ public class SmartEquipmentService implements InputValidate {
         return addSmartEquipment(smartEquipment);
     }
 
+    @Override
     public List<SmartEquipment> AllSmartEquipmentAsList()
-            throws SmartEquipmentInRepositoryNotFoundException {
+            throws SmartEquipmentNotFoundException {
 
         List<SmartEquipment> listOfSmartEquipment = new ArrayList<>(smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet());
 
         if (listOfSmartEquipment.isEmpty()) {
-            throw new SmartEquipmentInRepositoryNotFoundException();
+            throw new SmartEquipmentNotFoundException();
         }
 
         return listOfSmartEquipment;
     }
 
-    private LocalDateTime getCurrentLocalDateTime() {
+    @Override
+    public LocalDateTime getCurrentLocalDateTime() {
         return LocalDateTime.now(clock);
     }
 
+    @Override
     public void validateSmartEquipmentName(
             String smartEquipmentName,
             SmartEquipmentType typeChoice)
@@ -79,7 +85,7 @@ public class SmartEquipmentService implements InputValidate {
             evaluatedExpressionOfNameEqualsType = AllSmartEquipmentAsList().stream().anyMatch(
                     smartEquipment -> smartEquipment.getName()
                             .equalsIgnoreCase(smartEquipmentName));
-        } catch (SmartEquipmentInRepositoryNotFoundException e) {
+        } catch (SmartEquipmentNotFoundException e) {
             evaluatedExpressionOfNameEqualsType = false;
         }
 
@@ -92,8 +98,9 @@ public class SmartEquipmentService implements InputValidate {
         }
     }
 
+    @Override
     public SortedMap<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
-            throws SmartEquipmentInRepositoryNotFoundException {
+            throws SmartEquipmentNotFoundException {
 
         Map<SmartEquipment, Integer> repoMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
         return new TreeMap<>(repoMap
@@ -105,6 +112,7 @@ public class SmartEquipmentService implements InputValidate {
         );
     }
 
+    @Override
     public SmartEquipment getSmartEquipmentById(int smartEquipmentId)
             throws SearchFoundNoSmartEquipmentByIdException {
         SmartEquipment smartEquipment = getAvailableSmartEquipmentsSortedMapById().get(smartEquipmentId);
@@ -113,4 +121,5 @@ public class SmartEquipmentService implements InputValidate {
         }
         return smartEquipment;
     }
+
 }

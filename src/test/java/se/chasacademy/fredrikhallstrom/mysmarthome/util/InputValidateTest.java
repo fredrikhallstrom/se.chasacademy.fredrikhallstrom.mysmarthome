@@ -3,6 +3,8 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.util;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortTypeIdNotValidException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SearchSortingType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -92,6 +94,66 @@ public class InputValidateTest {
         // Assert
         assertEquals(input, validatedInput);
 
+    }
+
+    @Test
+    public void shouldReturnAscendingWhenSortTypeIdIsOneTest() {
+        // Arrange
+        int sortTypeId = 1;
+
+        // Act
+        SearchSortingType sortingType = inputValidate.validateInputSortType(sortTypeId);
+
+        // Assert
+        assertEquals(SearchSortingType.ASCENDING, sortingType);
+    }
+
+    @Test
+    public void shouldReturnDescendingWhenSortTypeIdIsTwoTest() {
+        // Arrange
+        int sortTypeId = 2;
+
+        // Act
+        SearchSortingType sortingType = inputValidate.validateInputSortType(sortTypeId);
+
+        // Assert
+        assertEquals(SearchSortingType.DESCENDING, sortingType);
+    }
+
+    @Test
+    public void shouldReturnNoneWhenSortTypeIdIsHighestValidTest() {
+        // Arrange
+        int sortTypeId = SearchSortingType.values().length;
+
+        // Act
+        SearchSortingType sortingType = inputValidate.validateInputSortType(sortTypeId);
+
+        // Assert
+        assertEquals(SearchSortingType.NONE, sortingType);
+    }
+
+    @Test
+    public void shouldThrowSearchSortTypeIdNotValidExceptionWhenSortTypeIdIsZeroTest() {
+        // Arrange
+        int sortTypeId = 0;
+
+        // Act
+        Executable throwAct = () -> inputValidate.validateInputSortType(sortTypeId);
+
+        // Assert
+        assertThrows(SearchSortTypeIdNotValidException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowSearchSortTypeIdNotValidExceptionWhenSortTypeIdIsAboveHighestTest() {
+        // Arrange
+        int sortTypeId = SearchSortingType.values().length + 1;
+
+        // Act
+        Executable throwAct = () -> inputValidate.validateInputSortType(sortTypeId);
+
+        // Assert
+        assertThrows(SearchSortTypeIdNotValidException.class, throwAct);
     }
 
 }

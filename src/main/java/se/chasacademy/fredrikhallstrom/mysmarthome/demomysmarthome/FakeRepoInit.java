@@ -13,12 +13,12 @@ public class FakeRepoInit {
     public static void init(SmartEquipmentService smartEquipmentService, SmartEquipmentHandlerService smartEquipmentHandlerService) {
         LocalDateTime timeRightNow = smartEquipmentService.getCurrentLocalDateTime();
         
-        Lamp lamp = new Lamp("Living room 1", timeRightNow.minusDays(7));
-        Lamp lamp2 = new Lamp("Living room 2", timeRightNow.minusDays(5));
-        Camera camera = new Camera("Hallway 1", timeRightNow.minusDays(3));
-        Radiator radiator = new Radiator("Bed room 1", timeRightNow.minusDays(1));
-        Camera camera2 = new Camera("Front door", timeRightNow.minusDays(2));
-        Radiator radiator2 = new Radiator("Bed room 2", timeRightNow);
+        Lamp lamp = new Lamp("Living room Lamp 1", timeRightNow.minusDays(7));
+        Lamp lamp2 = new Lamp("Living room Lamp 2", timeRightNow.minusDays(5));
+        Camera camera = new Camera("Hallway Camera", timeRightNow.minusDays(3));
+        Radiator radiator = new Radiator("Bed room Radiator 1", timeRightNow.minusDays(1));
+        Camera camera2 = new Camera("Front door Camera", timeRightNow.minusDays(2));
+        Radiator radiator2 = new Radiator("Bed room Radiator 2", timeRightNow);
 
         smartEquipmentService.addSmartEquipment(lamp);
         smartEquipmentService.addSmartEquipment(lamp2);

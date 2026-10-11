@@ -1,5 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentsearch;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SmartEquipmentSearchService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.util.InputValidate;
 
@@ -11,12 +12,17 @@ public class OptionSearch implements InputValidate {
     }
 
     public void searchByName() {
-        IO.print("Search by name");
+        try {
+            IO.print("Search by name");
 
-        IO.print("Enter name: ");
-        String name = IO.readln();
-        IO.print("Search results:");
-        IO.print("No results found");
+            IO.print("Enter name to Search for: ");
+            String validatedName = validateInputStringNoSpecialChars(IO.readln());
+            IO.print("Search results:");
+            IO.print("No results found");
+
+        } catch (StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException error) {
+            IO.println(error.getMessage());
+        }
     }
 
     public void searchByType() {

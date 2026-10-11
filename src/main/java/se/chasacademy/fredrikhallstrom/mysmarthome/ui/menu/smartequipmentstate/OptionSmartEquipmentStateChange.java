@@ -3,7 +3,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstate;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantActiveAlreadyActivatedStateException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlreadyDeactivatedStateException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentHasNoExtraStateException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.ExtraStateControllable;
@@ -50,7 +50,7 @@ class OptionSmartEquipmentStateChange implements InputValidate {
 
         } catch (SmartEquipmentNotFoundInRepositoryException |
                  MustBeANumberException |
-                 SearchFoundNoSmartEquipmentByIdException |
+                 FoundNoSmartEquipmentByIdException |
                  CantActiveAlreadyActivatedStateException |
                  CantDeactivateAlreadyDeactivatedStateException |
                  SmartEquipmentHasNoExtraStateException error) {

@@ -1,7 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.service.search;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
@@ -23,8 +23,7 @@ public class SmartEquipmentSearchService {
             String searchTerm,
             SearchSortingType sortingType)
             throws
-            SearchFoundNoSmartEquipmentsByNameException,
-            SmartEquipmentNotFoundException,
+            FoundNoSmartEquipmentsByNameException,
             SmartEquipmentNotFoundInRepositoryException,
             SearchSortingTypeCantBeNullException {
 
@@ -32,7 +31,7 @@ public class SmartEquipmentSearchService {
             throw new SearchSortingTypeCantBeNullException();
         }
 
-        List<SmartEquipment> smartEquipments = smartEquipmentService.AllSmartEquipmentAsList();
+        List<SmartEquipment> smartEquipments = smartEquipmentService.getAllSmartEquipmentAsList();
         List<SmartEquipment> foundSmartEquipment = new ArrayList<>();
 
         for (SmartEquipment smartEquipment : smartEquipments) {
@@ -42,7 +41,7 @@ public class SmartEquipmentSearchService {
         }
 
         if (foundSmartEquipment.isEmpty())
-            throw new SearchFoundNoSmartEquipmentsByNameException(searchTerm);
+            throw new FoundNoSmartEquipmentsByNameException(searchTerm);
 
         if (sortingType == SearchSortingType.ASCENDING) {
             return foundSmartEquipment.stream()
@@ -60,17 +59,16 @@ public class SmartEquipmentSearchService {
     }
 
     public SmartEquipment searchSmartEquipmentById(int id)
-            throws SearchFoundNoSmartEquipmentByIdException,
-            SmartEquipmentNotFoundException {
+            throws FoundNoSmartEquipmentByIdException,
             SmartEquipmentNotFoundInRepositoryException {
 
-        for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
+        for (SmartEquipment smartEquipment : smartEquipmentService.getAllSmartEquipmentAsList()) {
             if (smartEquipment.getId() == id) {
                 return smartEquipment;
             }
         }
 
-        throw new SearchFoundNoSmartEquipmentByIdException(id);
+        throw new FoundNoSmartEquipmentByIdException(id);
     }
 
     public List<SearchSortingType> getSortTypes() {

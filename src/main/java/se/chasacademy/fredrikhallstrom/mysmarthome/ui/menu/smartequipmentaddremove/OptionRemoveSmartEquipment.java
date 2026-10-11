@@ -1,7 +1,9 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentaddremove;
 
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
 class OptionRemoveSmartEquipment {
@@ -27,14 +29,11 @@ class OptionRemoveSmartEquipment {
                 boolean removed = smartEquipmentService.removeSmartEquipment(smartEquipmentIdString);
                 if (removed) {
                     IO.println("SmartEquipment removed successfully.");
-                } else {
-                    IO.println("SmartEquipment not found.");
+                    break;
                 }
-                break;
-
-            } catch (MustBeANumberException error) {
+            } catch (MustBeANumberException | SmartEquipmentIdCantBeNegativeException error) {
                 IO.println(error.getMessage());
-            } catch (RemoveOfSmartEquipmentDidFailSomewhereException error) {
+            } catch (RemoveOfSmartEquipmentDidFailSomewhereException | FoundNoSmartEquipmentByIdException error) {
                 IO.println(error.getMessage());
                 break;
             }

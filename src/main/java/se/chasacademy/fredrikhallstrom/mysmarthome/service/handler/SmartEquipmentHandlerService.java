@@ -46,7 +46,7 @@ public class SmartEquipmentHandlerService {
     }
 
     public SmartEquipment getSmartEquipmentById(int smartEquipmentId)
-            throws SearchFoundNoSmartEquipmentByIdException {
+            throws FoundNoSmartEquipmentByIdException {
 
         return smartEquipmentService.getSmartEquipmentById(smartEquipmentId);
     }
@@ -54,7 +54,7 @@ public class SmartEquipmentHandlerService {
     public Map<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
             throws SmartEquipmentNotFoundInRepositoryException {
 
-        return smartEquipmentService.getAvailableSmartEquipmentsSortedMapById();
+        return smartEquipmentService.getAllSmartEquipmentsSortedMapById();
     }
 
     public String getSmartEquipmentExtraStateString(SmartEquipment smartEquipment)

@@ -1,6 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.demomysmarthome.DemoMySmartHome;
+import se.chasacademy.fredrikhallstrom.mysmarthome.demomysmarthome.FakeRepoInit;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;

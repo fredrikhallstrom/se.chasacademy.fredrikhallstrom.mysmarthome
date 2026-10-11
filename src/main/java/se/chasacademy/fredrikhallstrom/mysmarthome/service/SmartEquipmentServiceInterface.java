@@ -4,7 +4,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEqui
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
@@ -29,7 +29,7 @@ public interface SmartEquipmentServiceInterface {
             InvalidSmartEquipmentNameException,
             CreationOfSmartEquipmentDidFailSomewhereException;
 
-    List<SmartEquipment> AllSmartEquipmentAsList();
+    List<SmartEquipment> getAllSmartEquipmentAsList();
 
     LocalDateTime getCurrentLocalDateTime();
 
@@ -38,11 +38,10 @@ public interface SmartEquipmentServiceInterface {
             SmartEquipmentType typeChoice)
             throws InvalidSmartEquipmentNameException;
 
-    SortedMap<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
-            throws SmartEquipmentNotFoundException;
+    SortedMap<Integer, SmartEquipment> getAllSmartEquipmentsSortedMapById()
             throws SmartEquipmentNotFoundInRepositoryException;
 
     SmartEquipment getSmartEquipmentById(int smartEquipmentId)
-            throws SearchFoundNoSmartEquipmentByIdException;
+            throws FoundNoSmartEquipmentByIdException;
 
 }

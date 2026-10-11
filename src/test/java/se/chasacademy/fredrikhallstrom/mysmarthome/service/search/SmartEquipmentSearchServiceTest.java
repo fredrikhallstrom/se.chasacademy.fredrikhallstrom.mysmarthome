@@ -2,8 +2,8 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service.search;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
@@ -40,7 +40,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         List<SmartEquipment> foundSmartEquipmentList = smartEquipmentSearchService.searchSmartEquipmentByName(
@@ -69,7 +69,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         Executable throwAct = () ->
@@ -79,7 +79,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
 
         // Assert
-        assertThrows(SearchFoundNoSmartEquipmentsByNameException.class, throwAct);
+        assertThrows(FoundNoSmartEquipmentsByNameException.class, throwAct);
 
     }
 
@@ -106,7 +106,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         List<SmartEquipment> foundSmartEquipmentSorted = smartEquipmentSearchService.searchSmartEquipmentByName(
@@ -140,7 +140,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         List<SmartEquipment> foundSmartEquipmentSorted = smartEquipmentSearchService.searchSmartEquipmentByName(
@@ -178,7 +178,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(fakeRepoList);
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(fakeRepoList);
 
         // Act
         SmartEquipment smartEquipmentByIdFromSearchService = smartEquipmentSearchService.searchSmartEquipmentById(1);
@@ -200,7 +200,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2));
 
         // Act
         SmartEquipment found = smartEquipmentSearchService.searchSmartEquipmentById(2);
@@ -223,7 +223,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2, fakeLamp3));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2, fakeLamp3));
 
         // Act
         SmartEquipment found = smartEquipmentSearchService.searchSmartEquipmentById(3);
@@ -242,7 +242,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
 
         // Act
         SmartEquipment found = smartEquipmentSearchService.searchSmartEquipmentById(1);
@@ -261,13 +261,13 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
 
         // Act
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentById(999);
 
         // Assert
-        assertThrows(SearchFoundNoSmartEquipmentByIdException.class, throwAct);
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
     }
 
     @Test
@@ -277,7 +277,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundException());
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundInRepositoryException());
 
         // Act
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentById(1);
@@ -296,7 +296,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1, fakeLamp2));
 
         // Act
         List<SmartEquipment> found = smartEquipmentSearchService.searchSmartEquipmentByName("", SearchSortingType.NONE);
@@ -314,13 +314,13 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp));
 
         // Act
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("FAKE", SearchSortingType.NONE);
 
         // Assert
-        assertThrows(SearchFoundNoSmartEquipmentsByNameException.class, throwAct);
+        assertThrows(FoundNoSmartEquipmentsByNameException.class, throwAct);
     }
 
     @Test
@@ -330,7 +330,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundException());
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenThrow(new SmartEquipmentNotFoundInRepositoryException());
 
         // Act
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("fake", SearchSortingType.NONE);
@@ -350,7 +350,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp3, fakeLamp1, fakeLamp2));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp3, fakeLamp1, fakeLamp2));
 
         // Act
         List<SmartEquipment> foundSmartEquipment = smartEquipmentSearchService.searchSmartEquipmentByName("fake", SearchSortingType.NONE);
@@ -368,7 +368,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
-        when(smartEquipmentService.AllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1));
+        when(smartEquipmentService.getAllSmartEquipmentAsList()).thenReturn(List.of(fakeLamp1));
 
         // Act
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("fake", null);

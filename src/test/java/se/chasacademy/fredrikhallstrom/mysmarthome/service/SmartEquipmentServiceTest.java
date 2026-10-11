@@ -10,8 +10,7 @@ import org.mockito.internal.util.Supplier;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CreationOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.InvalidSmartEquipmentNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.*;
@@ -128,7 +127,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
         // Act
-        List<SmartEquipment> smartEquipmentList = smartEquipmentService.AllSmartEquipmentAsList();
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.getAllSmartEquipmentAsList();
 
         // Assert
         assertEquals(referenceList, smartEquipmentList);
@@ -147,7 +146,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
         // Act
-        Executable throwAct = smartEquipmentService::AllSmartEquipmentAsList;
+        Executable throwAct = smartEquipmentService::getAllSmartEquipmentAsList;
 
         // Assert
         assertThrows(SmartEquipmentNotFoundInRepositoryException.class, throwAct);
@@ -176,7 +175,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
                 .thenReturn(Map.of(lamp, lamp.getId(), radiator, radiator.getId(), camera, camera.getId()));
 
         // Act
-        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAvailableSmartEquipmentsSortedMapById();
+        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAllSmartEquipmentsSortedMapById();
 
         // Assert
         assertEquals(Map.of( // Asserts content
@@ -221,7 +220,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
 
         // Assert
         assertEquals(type.getDisplayName(), created.getClass().getSimpleName());
-        assertTrue(smartEquipmentService.AllSmartEquipmentAsList().contains(created));
+        assertTrue(smartEquipmentService.getAllSmartEquipmentAsList().contains(created));
     }
 
     // ---------- createSmartEquipment: boundary cases ----------
@@ -280,7 +279,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
 
         // Assert
         assertThrows(InvalidSmartEquipmentNameException.class, throwAct);
-        assertEquals(1, smartEquipmentService.AllSmartEquipmentAsList().size());
+        assertEquals(1, smartEquipmentService.getAllSmartEquipmentAsList().size());
     }
 
     @ParameterizedTest
@@ -365,7 +364,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
 
         // Assert
         assertTrue(removed);
-        assertEquals(List.of(kitchen), smartEquipmentService.AllSmartEquipmentAsList());
+        assertEquals(List.of(kitchen), smartEquipmentService.getAllSmartEquipmentAsList());
     }
 
     @Test
@@ -393,7 +392,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
     }
 
     @Test
-    public void shouldThrowRemoveOfSmartEquipmentDidFailSomewhereExceptionWhenIdIsUnknownTest() {
+    public void shouldThrowFoundNoSmartEquipmentByIdExceptionWhenRemoveIdIsUnknownTest() {
         // Arrange
         SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
         smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
@@ -402,7 +401,19 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         Executable throwAct = () -> smartEquipmentService.removeSmartEquipment("999");
 
         // Assert
-        assertThrows(RemoveOfSmartEquipmentDidFailSomewhereException.class, throwAct);
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
+    }
+
+    @Test
+    public void shouldThrowSmartEquipmentIdCantBeNegativeExceptionWhenRemoveIdIsNegativeTest() {
+        // Arrange
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
+
+        // Act
+        Executable throwAct = () -> smartEquipmentService.removeSmartEquipment("-1");
+
+        // Assert
+        assertThrows(SmartEquipmentIdCantBeNegativeException.class, throwAct);
     }
 
     @Test
@@ -413,7 +424,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         SmartEquipment hallway = smartEquipmentService.createSmartEquipment("Hallway", SmartEquipmentType.RADIATOR);
 
         // Act
-        List<SmartEquipment> smartEquipmentList = smartEquipmentService.AllSmartEquipmentAsList();
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.getAllSmartEquipmentAsList();
 
         // Assert
         assertEquals(2, smartEquipmentList.size());
@@ -427,7 +438,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         SmartEquipment kitchen = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
 
         // Act
-        List<SmartEquipment> smartEquipmentList = smartEquipmentService.AllSmartEquipmentAsList();
+        List<SmartEquipment> smartEquipmentList = smartEquipmentService.getAllSmartEquipmentAsList();
 
         // Assert
         assertEquals(List.of(kitchen), smartEquipmentList);
@@ -439,7 +450,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
 
         // Act
-        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAvailableSmartEquipmentsSortedMapById();
+        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAllSmartEquipmentsSortedMapById();
 
         // Assert
         assertTrue(mapFromMethod.isEmpty());
@@ -452,7 +463,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         SmartEquipment kitchen = smartEquipmentService.createSmartEquipment("Kitchen", SmartEquipmentType.LAMP);
 
         // Act
-        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAvailableSmartEquipmentsSortedMapById();
+        SortedMap<Integer, SmartEquipment> mapFromMethod = smartEquipmentService.getAllSmartEquipmentsSortedMapById();
 
         // Assert
         assertEquals(Map.of(kitchen.getId(), kitchen), mapFromMethod);
@@ -483,7 +494,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         Executable throwAct = () -> smartEquipmentService.getSmartEquipmentById(999);
 
         // Assert
-        assertThrows(SearchFoundNoSmartEquipmentByIdException.class, throwAct);
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
     }
 
     @Test
@@ -495,7 +506,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         Executable throwAct = () -> smartEquipmentService.getSmartEquipmentById(1000);
 
         // Assert
-        assertThrows(SearchFoundNoSmartEquipmentByIdException.class, throwAct);
+        assertThrows(FoundNoSmartEquipmentByIdException.class, throwAct);
     }
 
     // AI generated Tests - STOP

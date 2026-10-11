@@ -34,9 +34,24 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
 
     @Override
     public boolean removeSmartEquipment(String smartEquipmentIdStringToRemove)
-            throws MustBeANumberException, RemoveOfSmartEquipmentDidFailSomewhereException {
+            throws MustBeANumberException,
+            RemoveOfSmartEquipmentDidFailSomewhereException,
+            FoundNoSmartEquipmentByIdException,
+            SmartEquipmentIdCantBeNegativeException {
 
         int smartEquipmentIdToRemove = validateInputStringToInt(smartEquipmentIdStringToRemove);
+
+        if (smartEquipmentIdToRemove < 0) {
+            throw new SmartEquipmentIdCantBeNegativeException(smartEquipmentIdToRemove);
+        }
+
+        if (smartEquipmentRepository.getSmartEquipmentRepositoryMap()
+                .keySet()
+                .stream()
+                .noneMatch(smartEquipment -> smartEquipment.getId() == smartEquipmentIdToRemove)) {
+            throw new FoundNoSmartEquipmentByIdException(smartEquipmentIdToRemove);
+        }
+
         return smartEquipmentRepository.removeSmartEquipment(smartEquipmentIdToRemove);
 
     }
@@ -57,11 +72,12 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
     }
 
     @Override
-    public List<SmartEquipment> AllSmartEquipmentAsList()
-            throws SmartEquipmentNotFoundException {
+    public List<SmartEquipment> getAllSmartEquipmentAsList()
             throws SmartEquipmentNotFoundInRepositoryException {
 
-        List<SmartEquipment> listOfSmartEquipment = new ArrayList<>(smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet());
+        List<SmartEquipment> listOfSmartEquipment = new ArrayList<>(
+                smartEquipmentRepository.getSmartEquipmentRepositoryMap()
+                        .keySet());
 
         if (listOfSmartEquipment.isEmpty()) {
             throw new SmartEquipmentNotFoundInRepositoryException();
@@ -83,7 +99,7 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
 
         boolean evaluatedExpressionOfNameEqualsType;
         try {
-            evaluatedExpressionOfNameEqualsType = AllSmartEquipmentAsList().stream().anyMatch(
+            evaluatedExpressionOfNameEqualsType = this.getAllSmartEquipmentAsList().stream().anyMatch(
                     smartEquipment -> smartEquipment.getName()
                             .equalsIgnoreCase(smartEquipmentName));
         } catch (SmartEquipmentNotFoundInRepositoryException e) {
@@ -100,8 +116,7 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
     }
 
     @Override
-    public SortedMap<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
-            throws SmartEquipmentNotFoundException {
+    public SortedMap<Integer, SmartEquipment> getAllSmartEquipmentsSortedMapById()
             throws SmartEquipmentNotFoundInRepositoryException {
 
         Map<SmartEquipment, Integer> repoMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
@@ -116,10 +131,10 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
 
     @Override
     public SmartEquipment getSmartEquipmentById(int smartEquipmentId)
-            throws SearchFoundNoSmartEquipmentByIdException {
-        SmartEquipment smartEquipment = getAvailableSmartEquipmentsSortedMapById().get(smartEquipmentId);
+            throws FoundNoSmartEquipmentByIdException {
+        SmartEquipment smartEquipment = this.getAllSmartEquipmentsSortedMapById().get(smartEquipmentId);
         if (smartEquipment == null) {
-            throw new SearchFoundNoSmartEquipmentByIdException(smartEquipmentId);
+            throw new FoundNoSmartEquipmentByIdException(smartEquipmentId);
         }
         return smartEquipment;
     }

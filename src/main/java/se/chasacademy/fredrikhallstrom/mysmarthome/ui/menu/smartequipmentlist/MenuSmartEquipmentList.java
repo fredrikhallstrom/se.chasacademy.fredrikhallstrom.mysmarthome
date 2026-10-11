@@ -1,7 +1,5 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentlist;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
 
@@ -20,8 +18,8 @@ public class MenuSmartEquipmentList extends BaseForMenu {
         menuItemsMap.put("List All SmartEquipment Menu", () -> {
         });
 
-        menuItemsMap.put("List All SmartEquipment in order of Current State",
-                optionListSmartEquipment::listSmartEquipmentByState);
+        menuItemsMap.put("List All SmartEquipment in order Id",
+                optionListSmartEquipment::listSmartEquipmentSortedById);
 
         super.menu(menuItemsMap);
 

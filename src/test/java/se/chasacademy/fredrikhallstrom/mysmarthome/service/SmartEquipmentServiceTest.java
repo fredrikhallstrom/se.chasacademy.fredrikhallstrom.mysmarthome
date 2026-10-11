@@ -57,6 +57,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         int fakeId = 1;
 
         SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         when(smartEquipmentRepository.insertSmartEquipment(fakeLamp)).thenReturn(fakeId);
 
         // Act
@@ -71,7 +72,6 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         // Arrange
         SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
         Integer fakeLampId = 1;
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
@@ -79,6 +79,8 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
 
         Map<SmartEquipment, Integer> fakeEquipmentRepoMap = new HashMap<>();
         fakeEquipmentRepoMap.put(fakeLamp, fakeLampId);
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(Map.of(fakeLamp, fakeLampId));
 
@@ -100,6 +102,7 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
     public void shouldReturnListOfAllSmartEquipment() {
         // Arrange
         SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
+
         final int[] fakeIdArray = {1};
 
         Supplier<Integer> getFakeId = () -> {
@@ -107,8 +110,6 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
             fakeIdArray[0]++;
             return fakeStartIdReturn;
         };
-
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
         Radiator fakeRadiator = new Radiator("fakeRadiator", LocalDateTime.now(FIXED_CLOCK));
@@ -121,6 +122,8 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         for (SmartEquipment smartEquipment : referenceList) {
             fakeRepositoryMap.put(smartEquipment, getFakeId.get());
         }
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
@@ -137,9 +140,9 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         // Arrange
         SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
-
         Map<SmartEquipment, Integer> fakeRepositoryMap = new HashMap<>();
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap()).thenReturn(fakeRepositoryMap);
 
@@ -157,7 +160,6 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
         SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
 
         int fakeIdStart = 1;
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         Lamp lamp = new Lamp("Lamp", LocalDateTime.now(FIXED_CLOCK));
         lamp.setId(fakeIdStart);
@@ -167,6 +169,8 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
 
         Camera camera = new Camera("Camera", LocalDateTime.now(FIXED_CLOCK));
         camera.setId(fakeIdStart + 1);
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
 
         when(smartEquipmentRepository.getSmartEquipmentRepositoryMap())
                 .thenReturn(Map.of(lamp, lamp.getId(), radiator, radiator.getId(), camera, camera.getId()));
@@ -283,8 +287,9 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
     @EnumSource(SmartEquipmentType.class)
     public void shouldThrowInvalidSmartEquipmentNameExceptionWhenNameEqualsTypeTest(SmartEquipmentType type) {
         // Arrange
-        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
         String nameSameAsType = type.getDisplayName().toLowerCase();
+
+        SmartEquipmentService smartEquipmentService = createServiceWithFixedClock();
 
         // Act
         Executable throwAct = () -> smartEquipmentService.createSmartEquipment(nameSameAsType, type);
@@ -297,8 +302,11 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
     public void shouldAcceptIdZeroFromRepositoryTest() {
         // Arrange
         SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         when(smartEquipmentRepository.insertSmartEquipment(lamp)).thenReturn(0);
 
         // Act
@@ -312,8 +320,11 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
     public void shouldThrowSmartEquipmentIdCantBeNegativeExceptionWhenRepositoryGivesNegativeIdTest() {
         // Arrange
         SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         when(smartEquipmentRepository.insertSmartEquipment(lamp)).thenReturn(-5);
 
         // Act
@@ -327,9 +338,12 @@ public class SmartEquipmentServiceTest implements FixedClockForTest {
     public void shouldThrowCreationOfSmartEquipmentDidFailSomewhereExceptionWhenIdAlreadySetTest() {
         // Arrange
         SmartEquipmentRepositoryInterface smartEquipmentRepository = mock(SmartEquipmentRepositoryInterface.class);
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         Lamp lamp = new Lamp("Kitchen", LocalDateTime.now(FIXED_CLOCK));
         lamp.setId(5);
+
+        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, FIXED_CLOCK);
+
         when(smartEquipmentRepository.insertSmartEquipment(lamp)).thenReturn(7);
 
         // Act

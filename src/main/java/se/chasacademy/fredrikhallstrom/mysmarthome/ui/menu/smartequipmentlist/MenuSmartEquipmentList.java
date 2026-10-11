@@ -18,7 +18,7 @@ public class MenuSmartEquipmentList extends BaseForMenu {
         menuItemsMap.put("List All SmartEquipment Menu", () -> {
         });
 
-        menuItemsMap.put("List All SmartEquipment in order Id",
+        menuItemsMap.put("List All SmartEquipment in order by Id",
                 optionListSmartEquipment::listSmartEquipmentSortedById);
 
         super.menu(menuItemsMap);

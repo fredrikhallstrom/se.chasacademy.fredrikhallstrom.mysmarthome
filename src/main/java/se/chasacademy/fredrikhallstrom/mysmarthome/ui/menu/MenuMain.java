@@ -16,7 +16,7 @@ public class MenuMain extends BaseForMenu {
     private final MenuSmartEquipmentAddRemove menuSmartEquipmentAddRemove;
     private final MenuSmartEquipmentList menuSmartEquipmentList;
     private final MenuSmartEquipmentSearch menuSmartEquipmentSearch;
-    private final MenuDemonstration menuDemonstration = new MenuDemonstration();
+    private final MenuDemonstration menuDemonstration;
     private final MenuSmartEquipmentStates menuSmartEquipmentStates;
 
     public MenuMain(
@@ -28,7 +28,7 @@ public class MenuMain extends BaseForMenu {
         this.menuSmartEquipmentList = new MenuSmartEquipmentList(smartEquipmentService);
         this.menuSmartEquipmentStates = new MenuSmartEquipmentStates(smartEquipmentHandlerService);
         this.menuSmartEquipmentSearch = new MenuSmartEquipmentSearch(smartEquipmentSearchService);
-
+        this.menuDemonstration = new MenuDemonstration();
         super();
     }
 

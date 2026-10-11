@@ -14,7 +14,9 @@ public interface InputValidate {
         }
     }
 
-    default String validateInputStringNoSpecialChars(String stringToValidate) throws StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException {
+    default String validateInputStringNoSpecialChars(String stringToValidate)
+            throws StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException {
+
         if (!stringToValidate.matches("[a-zA-Z0-9 ]*")) {
             throw new StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException();
         }

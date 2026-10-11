@@ -1,8 +1,15 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentsearch;
 
-public class OptionSearch {
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SmartEquipmentSearchService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.util.InputValidate;
 
-    public static void searchByName() {
+public class OptionSearch implements InputValidate {
+    private final SmartEquipmentSearchService smartEquipmentSearchService;
+
+    public OptionSearch(SmartEquipmentSearchService smartEquipmentSearchService) {
+        this.smartEquipmentSearchService = smartEquipmentSearchService;
+    }
+
     public void searchByName() {
         IO.print("Search by name");
 

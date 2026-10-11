@@ -6,10 +6,10 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
 import java.util.HashMap;
 
 public class MenuSmartEquipmentSearch extends BaseForMenu {
-    private final SmartEquipmentSearchService smartEquipmentSearchService;
+    private final OptionSearch optionSearch;
 
     public MenuSmartEquipmentSearch(SmartEquipmentSearchService smartEquipmentSearchService) {
-        this.smartEquipmentSearchService = smartEquipmentSearchService;
+        this.optionSearch = new OptionSearch(smartEquipmentSearchService);
     }
 
     @Override
@@ -17,8 +17,8 @@ public class MenuSmartEquipmentSearch extends BaseForMenu {
         menuItemsMap = new HashMap<>();
 
         menuItemsMap.put("Search for smart equipment menu", () -> {});
-        menuItemsMap.put("By name", OptionSearch::searchByName);
-        menuItemsMap.put("By type", OptionSearch::searchByType);
+        menuItemsMap.put("By name", optionSearch::searchByName);
+        menuItemsMap.put("By type", optionSearch::searchByType);
 
         super.menu(menuItemsMap);
     }

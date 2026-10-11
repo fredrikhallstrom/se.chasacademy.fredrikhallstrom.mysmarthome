@@ -111,7 +111,7 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
                 || evaluatedExpressionOfNameEqualsType
                 || smartEquipmentName.equalsIgnoreCase(typeChoice.getDisplayName())
         ) {
-            throw new InvalidSmartEquipmentNameException();
+            throw new InvalidSmartEquipmentNameException(smartEquipmentName);
         }
     }
 

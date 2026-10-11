@@ -69,7 +69,8 @@ class OptionAddSmartEquipment implements InputValidate {
                     return;
 
                 } catch (InvalidSmartEquipmentNameException error) {
-                    IO.println(error.getMessage());
+                    IO.println(String.format("\n%s",error.getMessage()));
+                    IO.println("Try Again!\n");
                 }
             }
 

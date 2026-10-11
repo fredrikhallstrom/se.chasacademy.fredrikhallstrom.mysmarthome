@@ -3,6 +3,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstate;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 
@@ -35,7 +36,7 @@ class OptionSmartEquipmentShowState {
                     .forEach(IO::println);
 
             IO.println("");
-        } catch (SmartEquipmentNotFoundException |
+        } catch (SmartEquipmentNotFoundInRepositoryException |
                  MustBeANumberException |
                  SearchFoundNoSmartEquipmentByIdException error) {
 

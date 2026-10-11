@@ -1,6 +1,6 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentlist;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 
@@ -11,14 +11,15 @@ public class OptionListSmartEquipment {
         this.smartEquipmentService = smartEquipmentService;
     }
 
-    void listSmartEquipmentByState() {
+    void listSmartEquipmentSortedById() {
         try {
-            for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
+            for (SmartEquipment smartEquipment : smartEquipmentService.getAllSmartEquipmentsSortedMapById().values()) {
                 IO.println(smartEquipment);
             }
             IO.println("");
-        } catch (SmartEquipmentNotFoundException e) {
+        } catch (SmartEquipmentNotFoundInRepositoryException e) {
             IO.println(e.getMessage());
         }
     }
+
 }

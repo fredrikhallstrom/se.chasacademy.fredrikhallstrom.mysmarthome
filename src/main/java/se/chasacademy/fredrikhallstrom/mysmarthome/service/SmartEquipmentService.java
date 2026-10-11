@@ -59,11 +59,12 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
     @Override
     public List<SmartEquipment> AllSmartEquipmentAsList()
             throws SmartEquipmentNotFoundException {
+            throws SmartEquipmentNotFoundInRepositoryException {
 
         List<SmartEquipment> listOfSmartEquipment = new ArrayList<>(smartEquipmentRepository.getSmartEquipmentRepositoryMap().keySet());
 
         if (listOfSmartEquipment.isEmpty()) {
-            throw new SmartEquipmentNotFoundException();
+            throw new SmartEquipmentNotFoundInRepositoryException();
         }
 
         return listOfSmartEquipment;
@@ -85,7 +86,7 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
             evaluatedExpressionOfNameEqualsType = AllSmartEquipmentAsList().stream().anyMatch(
                     smartEquipment -> smartEquipment.getName()
                             .equalsIgnoreCase(smartEquipmentName));
-        } catch (SmartEquipmentNotFoundException e) {
+        } catch (SmartEquipmentNotFoundInRepositoryException e) {
             evaluatedExpressionOfNameEqualsType = false;
         }
 
@@ -101,6 +102,7 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
     @Override
     public SortedMap<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
             throws SmartEquipmentNotFoundException {
+            throws SmartEquipmentNotFoundInRepositoryException {
 
         Map<SmartEquipment, Integer> repoMap = smartEquipmentRepository.getSmartEquipmentRepositoryMap();
         return new TreeMap<>(repoMap

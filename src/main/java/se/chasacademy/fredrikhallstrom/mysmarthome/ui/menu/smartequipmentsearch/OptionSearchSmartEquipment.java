@@ -4,7 +4,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberExcept
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortTypeIdNotValidException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SearchSortingType;
@@ -41,7 +41,7 @@ public class OptionSearchSmartEquipment implements InputValidate {
 
         } catch (SearchFoundNoSmartEquipmentsByNameException |
                  StringCantHaveSpecialCharsOnlyLettersNumbersSpacesException |
-                 SmartEquipmentNotFoundException |
+                 SmartEquipmentNotFoundInRepositoryException |
                  MustBeANumberException |
                  SearchSortTypeIdNotValidException error) {
 
@@ -65,6 +65,7 @@ public class OptionSearchSmartEquipment implements InputValidate {
         } catch (MustBeANumberException |
                  SearchFoundNoSmartEquipmentByIdException |
                  SmartEquipmentNotFoundException error) {
+                 SmartEquipmentNotFoundInRepositoryException error) {
 
             IO.println(error.getMessage());
         }

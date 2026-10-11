@@ -5,7 +5,7 @@ import org.junit.jupiter.api.function.Executable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
@@ -283,7 +283,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentById(1);
 
         // Assert
-        assertThrows(SmartEquipmentNotFoundException.class, throwAct);
+        assertThrows(SmartEquipmentNotFoundInRepositoryException.class, throwAct);
     }
 
     @Test
@@ -336,7 +336,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
         Executable throwAct = () -> smartEquipmentSearchService.searchSmartEquipmentByName("fake", SearchSortingType.NONE);
 
         // Assert
-        assertThrows(SmartEquipmentNotFoundException.class, throwAct);
+        assertThrows(SmartEquipmentNotFoundInRepositoryException.class, throwAct);
     }
 
     @Test

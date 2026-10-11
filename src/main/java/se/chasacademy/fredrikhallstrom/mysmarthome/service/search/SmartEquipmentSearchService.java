@@ -3,7 +3,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service.search;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentsByNameException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCantBeNullException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 
@@ -25,6 +25,7 @@ public class SmartEquipmentSearchService {
             throws
             SearchFoundNoSmartEquipmentsByNameException,
             SmartEquipmentNotFoundException,
+            SmartEquipmentNotFoundInRepositoryException,
             SearchSortingTypeCantBeNullException {
 
         if (sortingType == null) {
@@ -61,6 +62,7 @@ public class SmartEquipmentSearchService {
     public SmartEquipment searchSmartEquipmentById(int id)
             throws SearchFoundNoSmartEquipmentByIdException,
             SmartEquipmentNotFoundException {
+            SmartEquipmentNotFoundInRepositoryException {
 
         for (SmartEquipment smartEquipment : smartEquipmentService.AllSmartEquipmentAsList()) {
             if (smartEquipment.getId() == id) {
@@ -76,9 +78,9 @@ public class SmartEquipmentSearchService {
     }
 
     public String getSmartEquipmentToString(SmartEquipment smartEquipment)
-    throws SmartEquipmentNotFoundException {
+    throws SmartEquipmentNotFoundInRepositoryException {
         if (smartEquipment == null) {
-            throw new SmartEquipmentNotFoundException();
+            throw new SmartEquipmentNotFoundInRepositoryException();
         }
 
         return smartEquipment.toString();

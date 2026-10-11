@@ -6,7 +6,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberExcept
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchFoundNoSmartEquipmentByIdException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundException;
+import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
 
@@ -40,6 +40,7 @@ public interface SmartEquipmentServiceInterface {
 
     SortedMap<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
             throws SmartEquipmentNotFoundException;
+            throws SmartEquipmentNotFoundInRepositoryException;
 
     SmartEquipment getSmartEquipmentById(int smartEquipmentId)
             throws SearchFoundNoSmartEquipmentByIdException;

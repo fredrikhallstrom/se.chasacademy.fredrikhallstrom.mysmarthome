@@ -52,7 +52,7 @@ public class SmartEquipmentHandlerService {
     }
 
     public Map<Integer, SmartEquipment> getAvailableSmartEquipmentsSortedMapById()
-            throws SmartEquipmentNotFoundException {
+            throws SmartEquipmentNotFoundInRepositoryException {
 
         return smartEquipmentService.getAvailableSmartEquipmentsSortedMapById();
     }

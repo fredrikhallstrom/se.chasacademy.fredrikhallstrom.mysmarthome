@@ -3,7 +3,7 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.demomysmarthome;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Camera;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Radiator;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class FakeRepoInit {
 
     public static void init(
-            SmartEquipmentService smartEquipmentService,
+            SmartEquipmentServiceInterface smartEquipmentService,
             SmartEquipmentHandlerService smartEquipmentHandlerService) {
 
         LocalDateTime timeRightNow = smartEquipmentService.getCurrentLocalDateTime();

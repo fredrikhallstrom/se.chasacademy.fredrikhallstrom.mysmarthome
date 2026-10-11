@@ -5,6 +5,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.demomysmarthome.FakeRepoInit;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.SmartEquipmentRepositoryInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SmartEquipmentSearchService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
@@ -20,7 +21,7 @@ public class Main {
         SmartEquipmentRepositoryInterface smartEquipmentRepository = new InMemoryRepository();
         Clock clock = Clock.systemUTC();
 
-        SmartEquipmentService smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
+        SmartEquipmentServiceInterface smartEquipmentService = new SmartEquipmentService(smartEquipmentRepository, clock);
         SmartEquipmentHandlerService smartEquipmentHandlerService = new SmartEquipmentHandlerService(smartEquipmentService, clock);
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(
                 smartEquipmentService

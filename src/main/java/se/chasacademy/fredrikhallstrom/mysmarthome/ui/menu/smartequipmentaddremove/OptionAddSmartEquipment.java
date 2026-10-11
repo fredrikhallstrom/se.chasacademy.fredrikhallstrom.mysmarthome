@@ -6,13 +6,13 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberExcept
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.util.InputValidate;
 
 class OptionAddSmartEquipment implements InputValidate {
-    private final SmartEquipmentService smartEquipmentService;
+    private final SmartEquipmentServiceInterface smartEquipmentService;
 
-    OptionAddSmartEquipment(SmartEquipmentService smartEquipmentService) {
+    OptionAddSmartEquipment(SmartEquipmentServiceInterface smartEquipmentService) {
         this.smartEquipmentService = smartEquipmentService;
     }
 

@@ -7,6 +7,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipmentType;
 import se.chasacademy.fredrikhallstrom.mysmarthome.repository.repotype.InMemoryRepository;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SearchSortingType;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SmartEquipmentSearchService;
@@ -21,7 +22,7 @@ public class DemoMySmartHome {
     }
 
     public void run() {
-        SmartEquipmentService smartEquipmentService =
+        SmartEquipmentServiceInterface smartEquipmentService =
                 new SmartEquipmentService(new InMemoryRepository(), clock);
 
         SmartEquipmentHandlerService smartEquipmentHandlerService =

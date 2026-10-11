@@ -4,6 +4,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.ExtraStateControllable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -12,9 +13,9 @@ import java.util.Map;
 
 public class SmartEquipmentHandlerService {
     private final Clock clock;
-    private final SmartEquipmentService smartEquipmentService;
+    private final SmartEquipmentServiceInterface smartEquipmentService;
 
-    public SmartEquipmentHandlerService(SmartEquipmentService smartEquipmentService, Clock clock) {
+    public SmartEquipmentHandlerService(SmartEquipmentServiceInterface smartEquipmentService, Clock clock) {
         this.clock = clock;
         this.smartEquipmentService = smartEquipmentService;
     }

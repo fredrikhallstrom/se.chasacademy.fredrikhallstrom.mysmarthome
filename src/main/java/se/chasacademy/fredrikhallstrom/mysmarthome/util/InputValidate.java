@@ -12,4 +12,8 @@ public interface InputValidate {
             throw new MustBeANumberException();
         }
     }
+
+    default String validateInputStringNoSpecialChars(String stringToValidate) {
+        return null;
+    }
 }

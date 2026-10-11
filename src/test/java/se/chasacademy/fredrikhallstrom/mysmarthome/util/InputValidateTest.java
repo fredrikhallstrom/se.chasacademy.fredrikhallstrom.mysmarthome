@@ -80,4 +80,18 @@ public class InputValidateTest {
         // Assert
         assertThrows(MustBeANumberException.class, throwAct);
     }
+
+    @Test
+    public void shouldReturnStringFromInputValidateAsString() {
+        // Arrange
+        String input = "abc";
+
+        // Act
+        String validatedInput = inputValidate.validateInputStringNoSpecialChars(input);
+
+        // Assert
+        assertEquals(input, validatedInput);
+
+    }
+
 }

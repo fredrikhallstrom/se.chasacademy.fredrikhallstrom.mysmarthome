@@ -1,8 +1,17 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.demonstration;
 
-public class MenuDemonstration {
-    public void menu() {
+import se.chasacademy.fredrikhallstrom.mysmarthome.demomysmarthome.DemoMySmartHome;
 
+import java.time.Clock;
+
+public class MenuDemonstration {
+    private final Clock clock;
+
+    public MenuDemonstration(Clock clock) {
+        this.clock = clock;
+    }
+
+    public void menu() {
         IO.println("""
                 Welcome to the demonstration menu!
                 This menu will demonstrate the functionality your MySmartHome.
@@ -10,9 +19,10 @@ public class MenuDemonstration {
 
         String confirmDemo = IO.readln("> ");
 
-        if (confirmDemo.equals("YES")) {
+        if ("YES".equals(confirmDemo)) {
             IO.println("\nStarting demonstration...\n");
-
+            DemoMySmartHome demoMySmartHome = new DemoMySmartHome(clock);
+            demoMySmartHome.run();
 
         } else {
             IO.println("\nAborting demonstration...\n");

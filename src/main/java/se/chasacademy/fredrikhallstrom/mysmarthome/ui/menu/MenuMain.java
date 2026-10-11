@@ -10,6 +10,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentlist.Me
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentsearch.MenuSmartEquipmentSearch;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentstate.MenuSmartEquipmentStates;
 
+import java.time.Clock;
 import java.util.LinkedHashMap;
 
 public class MenuMain extends BaseForMenu {
@@ -22,13 +23,14 @@ public class MenuMain extends BaseForMenu {
     public MenuMain(
             SmartEquipmentService smartEquipmentService,
             SmartEquipmentHandlerService smartEquipmentHandlerService,
-            SmartEquipmentSearchService smartEquipmentSearchService
+            SmartEquipmentSearchService smartEquipmentSearchService,
+            Clock clock
     ) {
         this.menuSmartEquipmentAddRemove = new MenuSmartEquipmentAddRemove(smartEquipmentService);
         this.menuSmartEquipmentList = new MenuSmartEquipmentList(smartEquipmentService);
         this.menuSmartEquipmentStates = new MenuSmartEquipmentStates(smartEquipmentHandlerService);
         this.menuSmartEquipmentSearch = new MenuSmartEquipmentSearch(smartEquipmentSearchService);
-        this.menuDemonstration = new MenuDemonstration();
+        this.menuDemonstration = new MenuDemonstration(clock);
         super();
     }
 

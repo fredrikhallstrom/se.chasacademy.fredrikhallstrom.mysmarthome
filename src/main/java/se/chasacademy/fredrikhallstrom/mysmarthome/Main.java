@@ -36,7 +36,8 @@ public class Main {
             BaseForMenu menuMain = new MenuMain(
                     smartEquipmentService,
                     smartEquipmentHandlerService,
-                    smartEquipmentSearchService
+                    smartEquipmentSearchService,
+                    clock
             );
 
             IO.println(welcomeLogo);
@@ -46,7 +47,8 @@ public class Main {
             BaseForMenu menuMain = new MenuMain(
                     smartEquipmentService,
                     smartEquipmentHandlerService,
-                    smartEquipmentSearchService
+                    smartEquipmentSearchService,
+                    clock
             );
 
             IO.println(welcomeLogo);

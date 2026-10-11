@@ -14,6 +14,7 @@ public interface InputValidate {
     }
 
     default String validateInputStringNoSpecialChars(String stringToValidate) {
-        return null;
+        String validatedString = stringToValidate;
+        return validatedString;
     }
 }

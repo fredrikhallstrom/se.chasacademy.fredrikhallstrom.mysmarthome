@@ -13,9 +13,9 @@ public class OptionSearch implements InputValidate {
 
     public void searchByName() {
         try {
-            IO.print("Search by name");
+            IO.println("Search by name");
 
-            IO.print("Enter name to Search for: ");
+            IO.println("Enter name to Search for: ");
             String validatedName = validateInputStringNoSpecialChars(IO.readln());
             IO.print("Search results:");
             IO.print("No results found");
@@ -26,10 +26,10 @@ public class OptionSearch implements InputValidate {
     }
 
     public void searchByType() {
-        IO.print("Search by type");
-        IO.print("Enter type: ");
+        IO.println("Search by type");
+        IO.println("Enter type: ");
         String type = IO.readln();
-        IO.print("Search results:");
-        IO.print("No results found");
+        IO.println("Search results:");
+        IO.println("No results found");
     }
 }

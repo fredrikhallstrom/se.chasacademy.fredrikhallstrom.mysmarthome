@@ -20,7 +20,10 @@ public interface SmartEquipmentServiceInterface {
             throws CreationOfSmartEquipmentDidFailSomewhereException, SmartEquipmentIdCantBeNegativeException;
 
     boolean removeSmartEquipment(String smartEquipmentIdStringToRemove)
-            throws MustBeANumberException, RemoveOfSmartEquipmentDidFailSomewhereException;
+            throws MustBeANumberException,
+            RemoveOfSmartEquipmentDidFailSomewhereException,
+            FoundNoSmartEquipmentByIdException,
+            SmartEquipmentIdCantBeNegativeException;
 
     SmartEquipment createSmartEquipment(
             String name,
@@ -29,14 +32,10 @@ public interface SmartEquipmentServiceInterface {
             InvalidSmartEquipmentNameException,
             CreationOfSmartEquipmentDidFailSomewhereException;
 
-    List<SmartEquipment> getAllSmartEquipmentAsList();
+    List<SmartEquipment> getAllSmartEquipmentAsList()
+            throws SmartEquipmentNotFoundInRepositoryException;
 
     LocalDateTime getCurrentLocalDateTime();
-
-    void validateSmartEquipmentName(
-            String smartEquipmentName,
-            SmartEquipmentType typeChoice)
-            throws InvalidSmartEquipmentNameException;
 
     SortedMap<Integer, SmartEquipment> getAllSmartEquipmentsSortedMapById()
             throws SmartEquipmentNotFoundInRepositoryException;

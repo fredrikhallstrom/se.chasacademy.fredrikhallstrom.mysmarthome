@@ -91,8 +91,7 @@ public class SmartEquipmentService implements SmartEquipmentServiceInterface, In
         return LocalDateTime.now(clock);
     }
 
-    @Override
-    public void validateSmartEquipmentName(
+    private void validateSmartEquipmentName(
             String smartEquipmentName,
             SmartEquipmentType typeChoice)
             throws InvalidSmartEquipmentNameException {

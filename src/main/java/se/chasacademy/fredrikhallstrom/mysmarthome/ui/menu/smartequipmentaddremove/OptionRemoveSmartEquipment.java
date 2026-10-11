@@ -4,12 +4,12 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.FoundNoSmartEquipme
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.MustBeANumberException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.RemoveOfSmartEquipmentDidFailSomewhereException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentIdCantBeNegativeException;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 
 class OptionRemoveSmartEquipment {
-    private final SmartEquipmentService smartEquipmentService;
+    private final SmartEquipmentServiceInterface smartEquipmentService;
 
-    OptionRemoveSmartEquipment(SmartEquipmentService smartEquipmentService) {
+    OptionRemoveSmartEquipment(SmartEquipmentServiceInterface smartEquipmentService) {
         this.smartEquipmentService = smartEquipmentService;
     }
 

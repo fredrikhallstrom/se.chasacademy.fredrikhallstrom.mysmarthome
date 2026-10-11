@@ -1,6 +1,7 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SmartEquipmentSearchService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.ui.BaseForMenu;
@@ -21,7 +22,7 @@ public class MenuMain extends BaseForMenu {
     private final MenuSmartEquipmentStates menuSmartEquipmentStates;
 
     public MenuMain(
-            SmartEquipmentService smartEquipmentService,
+            SmartEquipmentServiceInterface smartEquipmentService,
             SmartEquipmentHandlerService smartEquipmentHandlerService,
             SmartEquipmentSearchService smartEquipmentSearchService,
             Clock clock

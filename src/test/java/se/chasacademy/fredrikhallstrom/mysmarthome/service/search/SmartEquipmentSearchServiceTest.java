@@ -8,7 +8,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SearchSortingTypeCa
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.testutils.FixedClockForTest;
 
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnListOfFoundEquipments() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
@@ -55,7 +55,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSearchFoundNoSmartEquipmentsExceptionIfNoSmartEquipmentIsFound() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
@@ -86,7 +86,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldSortSearchListInAscendingOrder() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
@@ -120,7 +120,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldSortSearchListInDescendingOrder() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
@@ -155,7 +155,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnSmartEquipmentWhenCorrectIdInSearchId() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         int fakeIdStart = 1;
 
@@ -191,7 +191,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnSecondSmartEquipmentWhenSearchingItsIdTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         fakeLamp1.setId(1);
@@ -212,7 +212,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnLastSmartEquipmentWhenSearchingLastIdTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         fakeLamp1.setId(1);
@@ -235,7 +235,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnOnlySmartEquipmentWhenListHasOneElementTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
         fakeLamp.setId(1);
@@ -254,7 +254,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSearchFoundNoSmartEquipmentByIdExceptionWhenIdIsUnknownTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
         fakeLamp.setId(1);
@@ -273,7 +273,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSmartEquipmentInRepositoryNotFoundExceptionWhenSearchingIdInEmptyRepositoryTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
@@ -289,7 +289,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnAllSmartEquipmentWhenSearchTermIsEmptyTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         Lamp fakeLamp2 = new Lamp("otherLamp", LocalDateTime.now(FIXED_CLOCK));
@@ -308,7 +308,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSearchFoundNoSmartEquipmentsByNameExceptionWhenOnlyCaseDiffersTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
 
@@ -326,7 +326,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSmartEquipmentNotFoundExceptionWhenSearchingNameInEmptyRepositoryTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         SmartEquipmentSearchService smartEquipmentSearchService = new SmartEquipmentSearchService(smartEquipmentService);
 
@@ -342,7 +342,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldKeepOriginalOrderWhenSortingTypeIsNoneTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
         Lamp fakeLamp2 = new Lamp("fakeLamp2", LocalDateTime.now(FIXED_CLOCK));
@@ -362,7 +362,7 @@ public class SmartEquipmentSearchServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSearchSortingTypeCantBeNullExceptionWhenSortingTypeIsNullTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp1 = new Lamp("fakeLamp1", LocalDateTime.now(FIXED_CLOCK));
 

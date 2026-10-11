@@ -27,14 +27,17 @@ public class Main {
         );
 
         if (Arrays.toString(args).contains("demo")) {
-            DemoMySmartHome.menu();
+            DemoMySmartHome demoMySmartHome = new DemoMySmartHome(clock);
+            demoMySmartHome.run();
+
         } else if (Arrays.toString(args).contains("with_fake_repo")) {
             FakeRepoInit.init(smartEquipmentService, smartEquipmentHandlerService);
 
             BaseForMenu menuMain = new MenuMain(
                     smartEquipmentService,
                     smartEquipmentHandlerService,
-                    smartEquipmentSearchService
+                    smartEquipmentSearchService,
+                    clock
             );
 
             IO.println(welcomeLogo);
@@ -44,7 +47,8 @@ public class Main {
             BaseForMenu menuMain = new MenuMain(
                     smartEquipmentService,
                     smartEquipmentHandlerService,
-                    smartEquipmentSearchService
+                    smartEquipmentSearchService,
+                    clock
             );
 
             IO.println(welcomeLogo);

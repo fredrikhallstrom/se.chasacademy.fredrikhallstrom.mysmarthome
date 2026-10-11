@@ -7,7 +7,7 @@ import se.chasacademy.fredrikhallstrom.mysmarthome.exception.CantDeactivateAlrea
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentHasNoExtraStateException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Camera;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.Lamp;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.testutils.FixedClockForTest;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldCallMethodSetStateActiveOfSmartEquipmentWhenTurnStateOnIsTrue() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         int fakeId = 1;
 
@@ -41,7 +41,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldCallMethodSetStateInactiveOfSmartEquipmentWhenTurnStateOnIsFalse() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         int fakeId = 1;
 
@@ -63,7 +63,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowCantActiveAlreadyActivatedEquipmentExceptionIfAlreadySmartEquipmentActivated() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         int fakeId = 1;
 
@@ -87,7 +87,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowCantDeactivateAlreadyDeactivatedEquipmentExceptionIfAlreadySmartEquipmentDeactivated() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         int fakeId = 1;
 
@@ -111,7 +111,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldSetLastActivationTimeFromClockWhenTurnedOnTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK).minusDays(1));
 
@@ -127,7 +127,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldSetLastDeactivationTimeFromClockWhenTurnedOffTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK).minusDays(1));
         fakeLamp.setStateActive(LocalDateTime.now(FIXED_CLOCK).minusHours(1));
@@ -144,7 +144,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldTurnExtraStateOnWhenCameraAndExtraStateIsTrueTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
 
@@ -161,7 +161,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldTurnExtraStateOffWhenCameraAndExtraStateIsTrueTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
         fakeCamera.setExtraStateOn();
@@ -179,7 +179,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldNotChangeMainStateWhenExtraStateTurnedOnTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
 
@@ -195,7 +195,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldNotChangeExtraStateWhenMainStateTurnedOnTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
 
@@ -212,7 +212,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSmartEquipmentHasNoExtraStateExceptionWhenLampAndExtraStateIsTrueTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
 
@@ -228,7 +228,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowCantActiveAlreadyActivatedStateExceptionWhenCameraExtraStateAlreadyOnTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
         fakeCamera.setExtraStateOn();
@@ -245,7 +245,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnLampIsOffAsExtraStateStringWhenNewCameraTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
 
@@ -261,7 +261,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnLampIsOnAsExtraStateStringWhenCameraLightOnTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
         fakeCamera.setExtraStateOn();
@@ -278,7 +278,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldReturnLampIsOffAsExtraStateStringWhenOnlyRecordingIsOnTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Camera fakeCamera = new Camera("fakeCamera", LocalDateTime.now(FIXED_CLOCK));
         fakeCamera.setStateActive(LocalDateTime.now(FIXED_CLOCK));
@@ -295,7 +295,7 @@ public class SmartEquipmentHandlerServiceTest implements FixedClockForTest {
     @Test
     public void shouldThrowSmartEquipmentHasNoExtraStateExceptionWhenGettingExtraStateOfLampTest() {
         // Arrange
-        SmartEquipmentService smartEquipmentService = mock(SmartEquipmentService.class);
+        SmartEquipmentServiceInterface smartEquipmentService = mock(SmartEquipmentServiceInterface.class);
 
         Lamp fakeLamp = new Lamp("fakeLamp", LocalDateTime.now(FIXED_CLOCK));
 

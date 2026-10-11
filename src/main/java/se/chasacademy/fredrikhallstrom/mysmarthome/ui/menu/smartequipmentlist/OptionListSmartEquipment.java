@@ -2,12 +2,12 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu.smartequipmentlist;
 
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.SmartEquipmentNotFoundInRepositoryException;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
+import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 
 public class OptionListSmartEquipment {
-    private final SmartEquipmentService smartEquipmentService;
+    private final SmartEquipmentServiceInterface smartEquipmentService;
 
-    OptionListSmartEquipment(SmartEquipmentService smartEquipmentService) {
+    OptionListSmartEquipment(SmartEquipmentServiceInterface smartEquipmentService) {
         this.smartEquipmentService = smartEquipmentService;
     }
 

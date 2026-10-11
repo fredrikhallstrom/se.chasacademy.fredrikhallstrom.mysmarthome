@@ -40,6 +40,12 @@ sitt eget meddelande, t.ex. "heating is on".
 - Services är också komponerade via konstruktorn. SmartEquipmentHandlerService har ett SmartEquipmentServiceInterface 
 och en Clock, och MenuMain har alla sina undermenyer.
 
+#### Polymorfism: toString + List/Search
+
+- SmartEquipment har en toString() som anropar getStateMessages(). getStateMessages() returnerar en lista med olika 
+versioner av meddelanden beroende på vilken enhet.
+- List och Search itererar över SmartEquipment utan att veta vilken typ av enhet det är.
+
 Alternativa lösningar:
 
 - En enda klass med typfält (type = "LAMP") och switch överallt. Varje ny typ kräver då ändringar i flera switchar, 
@@ -104,3 +110,11 @@ som vi inte gått igenom än men har försökt satt mig in i ändå och till ref
 - Jag tog bort 14 tester som AI gjorde som utfyllnad bara för att jag gav den ett krav på att nå 2 normalfall, 2 gränsfall, 
 2 felhanterings-tester.
 
+
+### 7. Motivering Collections
+
+- LinkedHashMap i BaseForMenu och alla menyer: Den behåller insättningsordningen så att menyvalens nummer blir samma. 
+En vanlig HashMap hade inte garanterat ordningen.
+- TreeMap som SortedMap i getAllSmartEquipmentsSortedMapById: sorterar automatiskt på nyckeln, så listan kommer i id-ordning.
+- HashMap i repot: snabb Map, men som jag skrivit ovan är nyckeln "fel" för sökning på id.
+- Map.copyOf: repot lämnar ut en kopia som inte kan ändras, så ingen utanför kan ändra innehållet förbi servicen.

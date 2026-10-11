@@ -2,8 +2,8 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.demomysmarthome;
 
 import java.time.Clock;
 
-public class Main  {
-    void main () {
+public class Main {
+    void main() {
         Clock clock = Clock.systemUTC();
         DemoMySmartHome demoMySmartHome = new DemoMySmartHome(clock);
         demoMySmartHome.run();

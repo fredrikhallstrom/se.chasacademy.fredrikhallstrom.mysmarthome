@@ -3,7 +3,6 @@ package se.chasacademy.fredrikhallstrom.mysmarthome.service.handler;
 import se.chasacademy.fredrikhallstrom.mysmarthome.exception.*;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.ExtraStateControllable;
 import se.chasacademy.fredrikhallstrom.mysmarthome.model.SmartEquipment;
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 
 import java.time.Clock;

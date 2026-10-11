@@ -1,6 +1,5 @@
 package se.chasacademy.fredrikhallstrom.mysmarthome.ui.menu;
 
-import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.SmartEquipmentServiceInterface;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.handler.SmartEquipmentHandlerService;
 import se.chasacademy.fredrikhallstrom.mysmarthome.service.search.SmartEquipmentSearchService;
